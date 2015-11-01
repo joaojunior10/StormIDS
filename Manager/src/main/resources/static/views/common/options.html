@@ -1,0 +1,116 @@
+<div class="configuration-cog" data-ng-click="app.isConfigOpen = !app.isConfigOpen">
+  <i class="fa fa-cog"></i>
+</div>
+<div class="configuration-options">
+  <div class="title">
+    Configuration
+  </div>
+  <div class="option">
+    <span>Collapsed sidebar</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isSmallSidebar">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Chat panel opened</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isChatOpen">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Fixed header</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isFixedHeader">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Boxed</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isBoxed">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Static sidebar</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isStaticSidebar">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Right sidebar</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isRightSidebar">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option">
+    <span>Fixed footer</span>
+    <label class="switch switch-sm pull-right">
+      <input type="checkbox" ng-model="app.layout.isFixedFooter">
+      <span>
+                <i class="handle"></i>
+            </span>
+    </label>
+  </div>
+  <div class="option styles">
+    <h6 class="text-uppercase">Sidebar Styles</h6>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-default'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-default">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#4a4e61;" class=""></div>
+      <div style="background-color:#46495A;" class=""></div>
+      <div style="background-color:#4C5064;" class=""></div>
+    </label>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-dark'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-dark">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#525371;"></div>
+      <div style="background-color:#46495A;"></div>
+      <div style="background-color:#50516E;"></div>
+    </label>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-eastbay'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-eastbay">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#53586F;"></div>
+      <div style="background-color:#46495A;"></div>
+      <div style="background-color:#53586F;"></div>
+    </label>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-nevada'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-nevada">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#656D78;"></div>
+      <div style="background-color:#656D78;"></div>
+      <div style="background-color:#656D78;"></div>
+    </label>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-hoki'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-hoki">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#2ECC71;"></div>
+      <div style="background-color:#607D8B;"></div>
+      <div style="background-color:#607D8B;"></div>
+    </label>
+    <label ng-click="app.layout.sidebarTheme='sidebar-skin-smart-blue'">
+      <input type="radio" name="sidebar-choice" ng-model="app.layout.sidebarTheme" value="sidebar-skin-smart-blue">
+      <i class="fa fa-check"></i>
+      <div style="background-color:#DD7676;"></div>
+      <div style="background-color:#597D8C;"></div>
+      <div style="background-color:#597D8C;"></div>
+    </label>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<!-- preloader -->
+<preloader class="preloader ng-hide"></preloader>
+<!-- /preloader -->
+
+<!-- sidebar panel -->
+<div class="sidebar-panel offscreen-left" data-ng-include="'views/common/sidebar-panel.html'"></div>
+<!-- /sidebar panel -->
+
+<!-- content panel -->
+<div class="main-panel">
+
+  <!-- top header -->
+  <div class="header navbar" data-ng-include="'views/common/header.html'"></div>
+  <!-- /top header -->
+
+  <!-- main area -->
+  <div class="main-content {{$state.current.data.contentClasses}}" data-ui-view></div>
+  <!-- /main area -->
+
+</div>
+<!-- /content panel -->
+
+<!-- bottom footer -->
+<footer class="content-footer" data-ng-include="'views/common/footer.html'"></footer>
+<!-- /bottom footer -->
+
+
