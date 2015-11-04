@@ -31,9 +31,11 @@ public class PacketData {
 		this.ip_proto_int = packet.ip_proto_int;
 		this.ip_proto_string = packet.ip_proto_string;
 		this.sameip = packet.sameip;
+		this.protocol = packet.protocol;
 	}
 	public String data;
-	
+	//Protocol
+	public  String protocol;
 	//Address
 	public String sourceIP;
 	public String destinationIP;

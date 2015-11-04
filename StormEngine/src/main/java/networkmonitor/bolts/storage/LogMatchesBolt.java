@@ -38,13 +38,17 @@ public class LogMatchesBolt extends BaseRichBolt{
     }
 
     public void execute(Tuple input) {
+        saveMatches(input);
+    }
+
+    private void saveMatches(Tuple input) {
         JSONArray matches = (JSONArray) input.getValue(0);
         for (int i = 0; i < matches.length() ; i++) {
             JSONObject match = matches.getJSONObject(i);
             String timelog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
             // Insert one record into the users table
-            _session.execute("INSERT INTO test (id, date, hostname) VALUES ("+UUID.randomUUID()+", dateOf(now()), '"+match.get("hostname")+"')");
+            _session.execute("INSERT INTO test (id, date, hostname) VALUES ("+ UUID.randomUUID()+", dateOf(now()), '"+match.get("hostname")+"')");
 
             //_collector.emit(input, new Values(UUID.randomUUID(), timelog, match.get("hostname")));
         }
@@ -53,9 +57,6 @@ public class LogMatchesBolt extends BaseRichBolt{
     public void treatData(JSONObject jsonObj, BasicOutputCollector collector) {
     }
 
-    public void saveMatch(JSONArray matches){
-
-    }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("id", "date","hostname"));

@@ -30,7 +30,7 @@ public class Matcher implements Serializable {
 
         for(SnortSignature rule : snortSignatures){
             boolean match = true;
-            match &= matchHeader(packet, rule);
+            match &= HeaderMatcher.match(packet, rule);
             //match &= NonPayloadMatcher.match(packet, rule.nonPayloadOptions);
             match &= PayloadMatcher.match(packet.data, rule.payloadOptions);
             if(match){
@@ -40,19 +40,5 @@ public class Matcher implements Serializable {
         }
     }
 
-    private boolean matchHeader(PacketData packet, SnortSignature rule) {
-        boolean match = true;
-        match &= rule.header.ipsSrc.containsKey("any") || rule.header.ipsSrc.containsKey(packet.sourceIP);
-        match &= rule.header.ipsDst.containsKey("any") || rule.header.ipsDst.containsKey(packet.destinationIP);
-        match &= rule.header.portsSrc.containsKey("any") || rule.header.portsSrc.containsKey(packet.sourcePort);
-        match &= rule.header.portsDst.containsKey("any") || rule.header.portsDst.containsKey(packet.destinationPort);
-        if(rule.header.direction == 2 && !match){
-            match = true;
-            match &= rule.header.ipsSrc.containsKey("any") || rule.header.ipsSrc.containsKey(packet.destinationIP);
-            match &= rule.header.ipsDst.containsKey("any") || rule.header.ipsDst.containsKey(packet.sourceIP);
-            match &= rule.header.portsSrc.containsKey("any") || rule.header.portsSrc.containsKey(packet.destinationPort);
-            match &= rule.header.portsDst.containsKey("any") || rule.header.portsDst.containsKey(packet.sourcePort);
-        }
-        return match;
-    }
+
 }

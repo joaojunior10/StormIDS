@@ -16,10 +16,13 @@ public class NonPayloadMatcher {
     }
 
     private static boolean matchFragoffset(PacketData packetData, NonPayloadOptions nonPayload, boolean match) {
-        if(nonPayload.fragoffset.operation != 0)
-            match &= Operators.Compare(nonPayload.fragoffset.operation, nonPayload.fragoffset.fragoffset, packetData.fragoffset);
-        else
-            match &= nonPayload.fragoffset.fragoffset == packetData.fragoffset;
+        if(nonPayload.fragoffset != null) {
+            if (nonPayload.fragoffset.operation != 0)
+                match &= Operators.Compare(nonPayload.fragoffset.operation, nonPayload.fragoffset.fragoffset, packetData.fragoffset);
+            else
+                match &= nonPayload.fragoffset.fragoffset == packetData.fragoffset;
+            return match;
+        }
         return match;
     }
 }

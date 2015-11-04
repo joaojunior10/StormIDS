@@ -155,11 +155,13 @@ public class PacketCapture extends Thread {
 			packetData.seq = tcpPacket.getSequenceNumber();
 			packetData.ack = tcpPacket.getAcknowledgmentNumber();
 			packetData.window = tcpPacket.getWindowAsInt();
+			packetData.protocol = "TCP";
 		}
 		else if(packet.get(UdpPacket.class) != null){
 			UdpHeader udpPacket = packet.get(UdpPacket.class).getHeader();
 			packetData.sourcePort = udpPacket.getSrcPort().toString().split(" ")[0].trim();
 			packetData.destinationPort = udpPacket.getDstPort().toString().split(" ")[0].trim();
+			packetData.protocol = "UDP";
 		}
 		packetData.data =  Base64.getEncoder().encodeToString(packet.getRawData());
 		return packetData;
