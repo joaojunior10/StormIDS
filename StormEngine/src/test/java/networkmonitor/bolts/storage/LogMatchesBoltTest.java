@@ -1,16 +1,30 @@
 package networkmonitor.bolts.storage;
 
 
+import backtype.storm.Constants;
+import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.google.gson.Gson;
 import org.junit.Test;
 import util.matcher.Match;
-import util.rules.GeneralOptions;
+import util.rules.general.GeneralOptions;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import backtype.storm.Constants;
+import backtype.storm.tuple.Tuple;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by joao on 9/6/15.
  */
 public class LogMatchesBoltTest {
+
     @Test
     public void testSaveMatch() throws Exception {
         Match match = new Match();
@@ -19,11 +33,43 @@ public class LogMatchesBoltTest {
         match.destinationIP = "186.213.210.125";
         match.sourcePort="8080";
         match.destinationPort="4321";
-        match.generalOptions = new GeneralOptions();
-        match.generalOptions.msg = "test";
-        match.generalOptions.sid = 132;
+        match.rule.generalOptions = new GeneralOptions();
+        match.rule.generalOptions.msg = "test";
+        match.rule.generalOptions.sid = 132;
 
         LogMatchesBolt logMatchesBolt = new LogMatchesBolt("networkdata");
+        logMatchesBolt.prepare(null,null,null);
+        Gson gson = new Gson();
+        List<Match> list = new ArrayList<>();
+        list.add(match);
+        String matches = gson.toJson(list);
+        Tuple input = MockTupleHelpers.mockTickTuple(matches);
+        logMatchesBolt.execute(input);
 
+        Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
+        Session session = cluster.connect("stormids");
+
+        ResultSet results = session.execute("SELECT * FROM test");
+        for (Row row : results) {
+            System.out.format("%s %s %s\n\n", row.getUUID("id"), row.getTimestamp("date"),  row.getString("hostname"));
+        }
+    }
+}
+
+final class MockTupleHelpers {
+
+    private MockTupleHelpers() {
+    }
+
+    public static Tuple mockTickTuple(String matches) {
+        return mockTuple(Constants.SYSTEM_COMPONENT_ID, Constants.SYSTEM_TICK_STREAM_ID, matches);
+    }
+
+    public static Tuple mockTuple(String componentId, String streamId,String matches) {
+        Tuple tuple = mock(Tuple.class);
+        when(tuple.getSourceComponent()).thenReturn(componentId);
+        when(tuple.getSourceStreamId()).thenReturn(streamId);
+        when(tuple.getValue(0)).thenReturn(matches);
+        return tuple;
     }
 }

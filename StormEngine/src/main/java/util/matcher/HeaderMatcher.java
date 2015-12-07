@@ -2,24 +2,25 @@ package util.matcher;
 
 import networkmonitor.bolts.networkdata.PacketData;
 import util.rules.SnortSignature;
+import util.rules.header.Header;
 
 /**
  * Created by joao on 2/11/15.
  */
 public class HeaderMatcher {
-    public static boolean match(PacketData packet, SnortSignature rule) {
+    public static boolean match(PacketData packet, Header header) {
         boolean match = true;
-        match &= rule.header.protocol.equals(packet.protocol);
-        match &= rule.header.ipsSrc.containsKey("any") || rule.header.ipsSrc.containsKey(packet.sourceIP);
-        match &= rule.header.ipsDst.containsKey("any") || rule.header.ipsDst.containsKey(packet.destinationIP);
-        match &= rule.header.portsSrc.containsKey("any") || rule.header.portsSrc.containsKey(packet.sourcePort);
-        match &= rule.header.portsDst.containsKey("any") || rule.header.portsDst.containsKey(packet.destinationPort);
-        if(rule.header.direction == 2 && !match){
+        match &= header.protocol.equalsIgnoreCase(packet.protocol);
+        match &= header.ipsSrc.containsKey("any") || header.ipsSrc.containsKey(packet.sourceIP);
+        match &= header.ipsDst.containsKey("any") || header.ipsDst.containsKey(packet.destinationIP);
+        match &= header.portsSrc.containsKey("any") || header.portsSrc.containsKey(packet.sourcePort);
+        match &= header.portsDst.containsKey("any") || header.portsDst.containsKey(packet.destinationPort);
+        if(header.direction == 2 && !match){
             match = true;
-            match &= rule.header.ipsSrc.containsKey("any") || rule.header.ipsSrc.containsKey(packet.destinationIP);
-            match &= rule.header.ipsDst.containsKey("any") || rule.header.ipsDst.containsKey(packet.sourceIP);
-            match &= rule.header.portsSrc.containsKey("any") || rule.header.portsSrc.containsKey(packet.destinationPort);
-            match &= rule.header.portsDst.containsKey("any") || rule.header.portsDst.containsKey(packet.sourcePort);
+            match &= header.ipsSrc.containsKey("any") || header.ipsSrc.containsKey(packet.destinationIP);
+            match &= header.ipsDst.containsKey("any") || header.ipsDst.containsKey(packet.sourceIP);
+            match &= header.portsSrc.containsKey("any") || header.portsSrc.containsKey(packet.destinationPort);
+            match &= header.portsDst.containsKey("any") || header.portsDst.containsKey(packet.sourcePort);
         }
         return match;
     }

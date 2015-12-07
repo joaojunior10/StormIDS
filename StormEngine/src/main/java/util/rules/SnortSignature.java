@@ -1,9 +1,15 @@
 package util.rules;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.regex.Pattern;
 
+import util.rules.general.GeneralOptions;
+import util.rules.header.Header;
 import util.rules.nonpayload.NonPayloadOptions;
 import util.rules.payload.PayloadOptions;
+import util.rules.payload.RegexGenerator;
+import util.rules.payload.options.Content;
 
 
 public class SnortSignature implements Serializable{
@@ -13,34 +19,35 @@ public class SnortSignature implements Serializable{
 	public NonPayloadOptions nonPayloadOptions;
 	public PayloadOptions payloadOptions;
 
-	SnortSignature(){
+	public SnortSignature(){
 		header = new Header();
 		generalOptions = new GeneralOptions();
 		nonPayloadOptions = new NonPayloadOptions();
 		payloadOptions = new PayloadOptions();
 	}
 	public void parse(String snortRule) {
+
 		String snortRulesHeader = snortRule.substring(0, snortRule.indexOf('('));
 		header.parse(snortRulesHeader);
-		
+
 		String[] snortRulesOptions = snortRule.substring((snortRule.indexOf('(') + 1), snortRule.indexOf(')')).split(";");
-		
-		for(String op : snortRulesOptions){
+
+		for (String op : snortRulesOptions) {
 			Option option = new Option();
 			option.parse(op);
 			//If it is a general option add to the General options
-			if(GeneralOptions.GENERALOPTIONS.containsKey(option.getName())){
+			if (GeneralOptions.GENERALOPTIONS.containsKey(option.getName())) {
 				generalOptions.parse(option);
-			}
-			else if(NonPayloadOptions.NONPAYLOADPTIONS.containsKey(option.getName())){
+			} else if (NonPayloadOptions.NONPAYLOADPTIONS.containsKey(option.getName())) {
 				nonPayloadOptions.parse(option);
-			}
-			else if(PayloadOptions.PAYLOADPTIONS.containsKey(option.getName())){
+			} else if (PayloadOptions.PAYLOADPTIONS.containsKey(option.getName())) {
 				payloadOptions.parse(option);
 			}
 		}
-		//TODO create regex
+		//Generate Pattern
+		payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 	}
+
 
 	public String toString(){
 		StringBuilder result = new StringBuilder();

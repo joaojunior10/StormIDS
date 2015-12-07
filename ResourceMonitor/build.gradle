@@ -15,6 +15,7 @@ dependencies {
     compile 'org.fusesource:sigar:1.6.4'
     compile 'org.pcap4j:pcap4j-core:1.6.0'
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.6.0'
+    compile 'com.google.code.gson:gson:2.3.1'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

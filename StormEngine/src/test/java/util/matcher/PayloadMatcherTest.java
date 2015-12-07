@@ -3,6 +3,7 @@ package util.matcher;
 import org.junit.Assert;
 import org.junit.Test;
 import util.rules.payload.PayloadOptions;
+import util.rules.payload.RegexGenerator;
 import util.rules.payload.options.Content;
 
 /**
@@ -18,6 +19,7 @@ public class PayloadMatcherTest {
         content.depth = 40;
         content.offset = 5;
         payloadOptions.contents.add(content);
+        payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
         String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eCAvLi4v";
         Assert.assertTrue(PayloadMatcher.match(data, payloadOptions));
@@ -32,6 +34,7 @@ public class PayloadMatcherTest {
         content.offset = 5;
         content.nocase = true;
         payloadOptions.contents.add(content);
+        payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
         String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eERFRg==";
         Assert.assertTrue(PayloadMatcher.match(data, payloadOptions));
@@ -52,6 +55,8 @@ public class PayloadMatcherTest {
         content.distance = 1;
         content.nocase = true;
         payloadOptions.contents.add(content);
+        
+        payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
         String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eERFRiBBQkM=";
         Assert.assertTrue(PayloadMatcher.match(data, payloadOptions));

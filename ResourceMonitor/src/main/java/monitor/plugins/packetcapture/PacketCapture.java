@@ -3,6 +3,8 @@ package monitor.plugins.packetcapture;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.google.gson.Gson;
+import monitor.Config;
 import monitor.plugins.packetcapture.packetdata.PacketData;
 
 import org.pcap4j.core.*;
@@ -29,10 +33,12 @@ import org.pcap4j.packet.TcpPacket.TcpHeader;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UdpPacket.UdpHeader;
 import org.pcap4j.util.IpV4Helper;
+import org.pcap4j.util.NifSelector;
 
 public class PacketCapture extends Thread {
 	private static PacketCapture instance = null;
-
+	private String bfp;
+    private Gson gson;
 	public static PacketCapture getInstance() {
 		if(instance == null) {
 			instance = new PacketCapture();
@@ -41,19 +47,21 @@ public class PacketCapture extends Thread {
 	}
 
 	public PacketCapture(){
+		bfp = Config.getInstance().bfp;
+        gson = new Gson();
 	}
 
 	public void run(){
 		PcapNetworkInterface nif = null;
 		try {
-			nif = Pcaps.findAllDevs().get(0);
-		} catch (PcapNativeException e) {
-			// TODO Auto-generated catch block
+			nif = new NifSelector().selectNetworkInterface();
+		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 
 		if (nif == null) {
-			System.out.println("Error getting nif");
+			System.out.println("No network interface was found");
 			return;
 		}
 
@@ -62,27 +70,33 @@ public class PacketCapture extends Thread {
 		= new HashMap<Short, List<IpV4Packet>>();
 		final Map<Short, Packet> originalPackets = new HashMap<Short, Packet>();
 
-
 		try {
 			final PcapHandle handle;
 			handle = nif.openLive(65536, PromiscuousMode.PROMISCUOUS, 10);
-			handle.setFilter(
-					"dst 52.3.93.191",
-					BpfProgram.BpfCompileMode.OPTIMIZE
-			);
+			//Set a filter if it is configured
+			if(bfp != null) {
+				handle.setFilter(
+                        bfp,
+                        BpfProgram.BpfCompileMode.OPTIMIZE
+                );
+			}
+			//Start Listening
 			PacketListener listener
 			= new PacketListener() {
 				public void gotPacket(Packet packet) {
-
-					//TODO Create message queue and parse packets in different threads
 					Connection c = getConnection(packet,handle.getTimestamp());
 					if(c != null){
-						//writeFile(c.toString(),"connection");
 						boolean isFlowToServer = ActiveConnections.getInstance().addConnection(c);
 						PacketData p = getPacketData(packet);
 
 						PacketQueue.getInstance().addPacket(p);
-						//writeFile(p.toString(),"packetData");
+						byte[] data = Base64.getDecoder().decode(p.data);
+						String stringData = new String(data, StandardCharsets.ISO_8859_1);
+						System.out.println("IP origem = " + p.sourceIP);
+						System.out.println("IP destino = " + p.destinationIP);
+						System.out.println(stringData);
+						System.out.println();
+
 					}
 				}
 			};		

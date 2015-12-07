@@ -48,14 +48,14 @@ public class NetworkDataBolt extends BaseBasicBolt {
 	//Every bolt that implements this class must decide how they want to treat the data.
 	public void treatData(JSONObject jsonObj, BasicOutputCollector collector) {
         hostname = jsonObj.getString("hostname");
+		//TODO use gson
 		List<PacketData> packets = parsePacket(jsonObj);
         this.matcher.match(packets,hostname);
         //Send result to LogMatchesBolt
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         if(this.matcher.matches.size() > 0) {
-            String json = gson.toJson(this.matcher.matches);
-            JSONArray matches = new JSONArray(new JSONTokener(json));
+            String matches = gson.toJson(this.matcher.matches);
             collector.emit(new Values(matches));
         }
 	}

@@ -14,7 +14,6 @@ import util.rules.payload.options.*;
 public class PayloadOptions implements Serializable{
 	public List<Content> contents;
 	public Pattern pattern;
-	// handle more than one content
 	public Content currentContent;
 	public HttpEncode http_encode;
 	//TODO handle negation modifiers
@@ -54,7 +53,6 @@ public class PayloadOptions implements Serializable{
 		PAYLOADPTIONS.put("http_raw_uri", 16);
 		PAYLOADPTIONS.put("http_stat_code", 17);
 		PAYLOADPTIONS.put("http_stat_msg", 18);
-		PAYLOADPTIONS.put("fast_pattern", 19);
 		PAYLOADPTIONS.put("uricontent", 20);
 		PAYLOADPTIONS.put("urilen", 21);
 		PAYLOADPTIONS.put("istadaa", 22);
@@ -122,9 +120,6 @@ public class PayloadOptions implements Serializable{
 				break;
 			case 18:
 				currentContent.http_stat_msg = true;
-				break;
-			case 19:
-				currentContent.fast_pattern.parse(option.getValue());;
 				break;
 			case 20:
 				break;

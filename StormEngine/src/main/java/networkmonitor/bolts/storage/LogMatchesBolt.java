@@ -12,12 +12,17 @@ import backtype.storm.tuple.Values;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import util.json.JSONArray;
 import util.json.JSONObject;
+import util.matcher.Match;
 
+import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,6 +33,7 @@ import java.util.UUID;
 public class LogMatchesBolt extends BaseRichBolt{
     private OutputCollector _collector;
     private Session _session;
+    private Gson _gson;
     public LogMatchesBolt(String topic) {
 
     }
@@ -35,6 +41,7 @@ public class LogMatchesBolt extends BaseRichBolt{
         _collector = collector;
         Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
         _session = cluster.connect("stormids");
+        _gson = new Gson();
     }
 
     public void execute(Tuple input) {
@@ -42,15 +49,16 @@ public class LogMatchesBolt extends BaseRichBolt{
     }
 
     private void saveMatches(Tuple input) {
-        JSONArray matches = (JSONArray) input.getValue(0);
-        for (int i = 0; i < matches.length() ; i++) {
-            JSONObject match = matches.getJSONObject(i);
+        Type listType = new TypeToken<List<Match>>() {}.getType();
+        String json = (String) input.getValue(0);
+        List<Match> matches =  _gson.fromJson(json,listType);
+        for (int i = 0; i < matches.size() ; i++) {
+            Match match = matches.get(i);
             String timelog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
             // Insert one record into the users table
-            _session.execute("INSERT INTO test (id, date, hostname) VALUES ("+ UUID.randomUUID()+", dateOf(now()), '"+match.get("hostname")+"')");
+            _session.execute("INSERT INTO test (id, date, hostname) VALUES ("+ UUID.randomUUID()+", dateOf(now()), '"+match.hostname+"')");
 
-            //_collector.emit(input, new Values(UUID.randomUUID(), timelog, match.get("hostname")));
         }
     }
 

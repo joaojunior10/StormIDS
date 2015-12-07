@@ -14,8 +14,7 @@ import java.util.List;
 /**
  * Created by joao on 9/6/15.
  */
-public class NetworkDataBoltTest extends TestCase {
-    @Test
+public class NetworkDataBoltTest {
     public void testTreatData() throws Exception {
         List<PacketData> packets = new ArrayList<PacketData>();
         PacketData packet = new PacketData();

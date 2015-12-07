@@ -18,6 +18,7 @@ public class KafkaSystemResourceMonitor extends SystemResourceMonitor {
 
 	public static void main(String[] args) {
 		//Creates the monitor
+
 		KafkaSystemResourceMonitor monitor = new KafkaSystemResourceMonitor("127.0.0.1", 2181);
 
 		//Add the plugins

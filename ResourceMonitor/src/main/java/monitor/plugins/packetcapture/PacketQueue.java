@@ -3,13 +3,16 @@ package monitor.plugins.packetcapture;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import monitor.plugins.packetcapture.packetdata.PacketData;
 
 public class PacketQueue {
 	public List<PacketData> packets;
 	private static PacketQueue instance = null;
+	private Gson gson;
 
 	protected PacketQueue() {
+		gson = new Gson();
 		packets = new ArrayList<PacketData>();
 	}
 
@@ -22,7 +25,7 @@ public class PacketQueue {
 
 	public  String getPackets() {
 		synchronized(this.packets){
-			String json = toJSON(this.packets);
+			String json = gson.toJson(this.packets);
 			this.packets = new ArrayList<PacketData>();
 			return json;
 		}

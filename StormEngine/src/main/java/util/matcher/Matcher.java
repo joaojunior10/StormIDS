@@ -19,8 +19,6 @@ public class Matcher implements Serializable {
         this.matches = new ArrayList<Match>();
     }
     public void match(List<PacketData> packets, String hostname){
-        //TODO create threads
-
         for(PacketData packet : packets){
             matchRules(packet, hostname);
         }
@@ -30,7 +28,7 @@ public class Matcher implements Serializable {
 
         for(SnortSignature rule : snortSignatures){
             boolean match = true;
-            match &= HeaderMatcher.match(packet, rule);
+            match &= HeaderMatcher.match(packet, rule.header);
             //match &= NonPayloadMatcher.match(packet, rule.nonPayloadOptions);
             match &= PayloadMatcher.match(packet.data, rule.payloadOptions);
             if(match){

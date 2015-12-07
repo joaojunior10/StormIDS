@@ -10,6 +10,7 @@ public class Content implements Serializable{
 	public String content;
     public byte[] bytecontent;
 	public boolean nocase = false;
+    public boolean negate = false;
 	public boolean rawbytes = false;
 	public Integer depth;
 	public Integer offset;
@@ -23,12 +24,13 @@ public class Content implements Serializable{
 	public boolean http_raw_uri;
 	public boolean http_stat_code;
 	public boolean http_stat_msg;
-	public FastPattern fast_pattern;
 
 	public void parseContent(String data) {
         StringBuilder content = new StringBuilder();
         ByteArrayOutputStream bytecontent = new ByteArrayOutputStream( );
-
+        if(data.charAt(0) == '!'){
+            negate = true;
+        }
         data = data.replace("\"", "");
         data = data.replace(";","");
         boolean isHex = false;
