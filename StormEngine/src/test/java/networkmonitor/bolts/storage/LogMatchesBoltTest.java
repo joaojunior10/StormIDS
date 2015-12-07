@@ -33,9 +33,6 @@ public class LogMatchesBoltTest {
         match.destinationIP = "186.213.210.125";
         match.sourcePort="8080";
         match.destinationPort="4321";
-        match.rule.generalOptions = new GeneralOptions();
-        match.rule.generalOptions.msg = "test";
-        match.rule.generalOptions.sid = 132;
 
         LogMatchesBolt logMatchesBolt = new LogMatchesBolt("networkdata");
         logMatchesBolt.prepare(null,null,null);
@@ -49,9 +46,9 @@ public class LogMatchesBoltTest {
         Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
         Session session = cluster.connect("stormids");
 
-        ResultSet results = session.execute("SELECT * FROM test");
+        ResultSet results = session.execute("SELECT * FROM matches");
         for (Row row : results) {
-            System.out.format("%s %s %s\n\n", row.getUUID("id"), row.getTimestamp("date"),  row.getString("hostname"));
+            System.out.format("%s %s %s\n\n", row.getUUID("id"), row.getTimestamp("timelog"),  row.getString("hostname"));
         }
     }
 }

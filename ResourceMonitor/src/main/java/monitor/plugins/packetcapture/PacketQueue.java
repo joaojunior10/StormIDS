@@ -25,6 +25,7 @@ public class PacketQueue {
 
 	public  String getPackets() {
 		synchronized(this.packets){
+			if(this.packets.size() < 1) return null;
 			String json = gson.toJson(this.packets);
 			this.packets = new ArrayList<PacketData>();
 			return json;

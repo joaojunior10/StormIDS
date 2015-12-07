@@ -90,12 +90,12 @@ public class PacketCapture extends Thread {
 						PacketData p = getPacketData(packet);
 
 						PacketQueue.getInstance().addPacket(p);
-						byte[] data = Base64.getDecoder().decode(p.data);
-						String stringData = new String(data, StandardCharsets.ISO_8859_1);
-						System.out.println("IP origem = " + p.sourceIP);
-						System.out.println("IP destino = " + p.destinationIP);
-						System.out.println(stringData);
-						System.out.println();
+//						byte[] data = Base64.getDecoder().decode(p.data);
+//						String stringData = new String(data, StandardCharsets.ISO_8859_1);
+//						System.out.println("IP origem = " + p.sourceIP);
+//						System.out.println("IP destino = " + p.destinationIP);
+//						System.out.println(stringData);
+//						System.out.println();
 
 					}
 				}

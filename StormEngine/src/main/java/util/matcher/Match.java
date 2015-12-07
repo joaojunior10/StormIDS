@@ -1,5 +1,6 @@
 package util.matcher;
 
+import com.google.gson.Gson;
 import networkmonitor.bolts.networkdata.PacketData;
 import util.rules.general.GeneralOptions;
 import util.rules.SnortSignature;
@@ -12,18 +13,20 @@ import java.util.Calendar;
  * Created by joao on 9/6/15.
  */
 public class Match implements Serializable {
+    public String id;
     public String timelog;
+    public String msg;
+    public String action;
     public String hostname;
     public String sourceIP;
     public String destinationIP;
     public String sourcePort;
     public String destinationPort;
-    public SnortSignature rule;
-    public PacketData packet;
+    public String rule;
+    public String packet;
 
     public Match(){
-        this.rule = new SnortSignature();
-        this.packet = new PacketData();
+
     }
     public Match(PacketData packet, SnortSignature rule, String hostname){
         this.timelog = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -32,8 +35,11 @@ public class Match implements Serializable {
         this.sourcePort = packet.sourcePort;
         this.destinationIP = packet.destinationIP;
         this.destinationPort = packet.destinationPort;
-        this.rule = rule;
-        this.packet = packet;
+        this.msg = rule.generalOptions.msg;
+        this.action = rule.header.action;
+        Gson gson = new Gson();
+        this.rule = gson.toJson(rule);
+        this.packet = gson.toJson(packet);
     }
 }
 

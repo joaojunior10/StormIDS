@@ -21,8 +21,10 @@ public class PacketDataPlugin extends SystemResourcePlugin{
 	
 	@Override
 	public JSONObject getSystemInformation() {
-		String packets = new String(PacketQueue.getInstance().getPackets());
+		String packets = PacketQueue.getInstance().getPackets();
+		if(packets == null) return  null;
 		//writeFile(packets);
+		System.out.println("packets sent");
 		objToReturn = new JSONObject(new JSONTokener(packets));
 		return objToReturn;
 	}

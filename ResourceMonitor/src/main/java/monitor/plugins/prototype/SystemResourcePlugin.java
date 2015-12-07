@@ -22,10 +22,12 @@ public abstract class SystemResourcePlugin implements Runnable {
 		try {
 			while (true){
 				JSONObject jsonObjToSend = getSystemInformation();
-				//Guarantee that every jsonObject contains the topic name and the hostname.
-				jsonObjToSend.put("topic",  topicName());
-				jsonObjToSend.put("hostname",  InetAddress.getLocalHost().getHostName());
-				if(jsonObjToSend != null)sendToChannel(jsonObjToSend);
+				if (jsonObjToSend != null) {
+					//Guarantee that every jsonObject contains the topic name and the hostname.
+					jsonObjToSend.put("topic", topicName());
+					jsonObjToSend.put("hostname", InetAddress.getLocalHost().getHostName());
+					sendToChannel(jsonObjToSend);
+				}
 				Thread.sleep(period);
 			}
 		} catch (InterruptedException e) {
