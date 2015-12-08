@@ -1,15 +1,14 @@
 package util.rules.payload;
 
-import java.io.IOException;
+import util.rules.Option;
+import util.rules.payload.options.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import util.rules.Option;
-import util.rules.payload.options.*;
 
 public class PayloadOptions implements Serializable{
 	public List<Content> contents;

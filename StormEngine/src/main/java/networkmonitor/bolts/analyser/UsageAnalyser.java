@@ -1,21 +1,17 @@
 package networkmonitor.bolts.analyser;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
-import org.apache.log4j.Logger;
-
-import scala.collection.mutable.StringBuilder;
-import util.json.JSONObject;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
+import org.apache.log4j.Logger;
+import scala.collection.mutable.StringBuilder;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class UsageAnalyser  extends BaseBasicBolt {
 

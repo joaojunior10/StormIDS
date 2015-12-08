@@ -5,18 +5,13 @@
  */
 package networkmonitor.topology;
 
-import networkmonitor.bolts.MultiplexerBolt;
-import networkmonitor.bolts.PrettyPrinterBolt;
-import networkmonitor.bolts.analyser.UsageAnalyser;
-import networkmonitor.bolts.networkdata.NetworkDataBolt;
-import networkmonitor.bolts.networkflow.NetworkFlowBolt;
-import networkmonitor.bolts.slidingwindowcounter.RollingCountBolt;
-import networkmonitor.spouts.netty.NettySpout;
-import networkmonitor.spouts.snortrules.SnortRulesSpout;
-import util.storm.StormRunner;
 import backtype.storm.Config;
 import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.tuple.Fields;
+import networkmonitor.bolts.MultiplexerBolt;
+import networkmonitor.bolts.PrettyPrinterBolt;
+import networkmonitor.bolts.networkdata.NetworkDataBolt;
+import networkmonitor.spouts.netty.NettySpout;
+import util.storm.StormRunner;
 
 public class NettyTopology{
 

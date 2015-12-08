@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import util.rules.SnortSignature;
-import util.rules.header.Header;
 
 /**
  * Created by joao on 11/11/15.

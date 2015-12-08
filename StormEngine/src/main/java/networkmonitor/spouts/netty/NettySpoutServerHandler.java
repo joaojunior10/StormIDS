@@ -11,11 +11,6 @@ import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.Map;
-
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 
 /**
  * Handles a server-side channel.

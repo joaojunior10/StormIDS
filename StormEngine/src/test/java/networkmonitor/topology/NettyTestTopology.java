@@ -5,12 +5,11 @@
  */
 package networkmonitor.topology;
 
-import networkmonitor.bolts.MultiplexerBolt;
+import backtype.storm.Config;
+import backtype.storm.topology.TopologyBuilder;
 import networkmonitor.bolts.TesterBolt;
 import networkmonitor.spouts.netty.NettySpout;
 import util.storm.StormRunner;
-import backtype.storm.Config;
-import backtype.storm.topology.TopologyBuilder;
 
 public class NettyTestTopology {
 

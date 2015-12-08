@@ -1,10 +1,10 @@
 package util.rules.nonpayload;
 
+import util.rules.Option;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import util.rules.Option;
 
 public class NonPayloadOptions implements Serializable{
 	//Create common class for similar options

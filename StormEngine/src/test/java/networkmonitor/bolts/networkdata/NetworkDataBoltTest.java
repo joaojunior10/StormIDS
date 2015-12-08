@@ -1,9 +1,6 @@
 package networkmonitor.bolts.networkdata;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
-import org.junit.Test;
-import util.matcher.Match;
 import util.matcher.Matcher;
 import util.rules.Rules;
 

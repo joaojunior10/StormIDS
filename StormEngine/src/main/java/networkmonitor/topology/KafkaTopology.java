@@ -1,35 +1,28 @@
 package networkmonitor.topology;
 
-import static com.github.fhuss.storm.cassandra.DynamicStatementBuilder.*;
-
-import backtype.storm.task.OutputCollector;
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
-import com.datastax.driver.core.exceptions.DriverException;
-import com.github.fhuss.storm.cassandra.BaseExecutionResultHandler;
-import com.github.fhuss.storm.cassandra.bolt.BatchCassandraWriterBolt;
-import com.github.fhuss.storm.cassandra.bolt.CassandraWriterBolt;
+import backtype.storm.Config;
+import backtype.storm.spout.SchemeAsMultiScheme;
+import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.tuple.Fields;
 import networkmonitor.bolts.MultiplexerBolt;
 import networkmonitor.bolts.PrettyPrinterBolt;
-import networkmonitor.bolts.analyser.UsageAnalyser;
 import networkmonitor.bolts.networkdata.NetworkDataBolt;
-import networkmonitor.bolts.slidingwindowcounter.RollingCountBolt;
 import networkmonitor.bolts.storage.LogMatchesBolt;
 import networkmonitor.spouts.kafka.KafkaSpout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import storm.kafka.BrokerHosts;
 import storm.kafka.SpoutConfig;
 import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
 import util.storm.StormRunner;
-import backtype.storm.Config;
-import backtype.storm.spout.SchemeAsMultiScheme;
-import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.tuple.Fields;
 
 public class KafkaTopology{
+    private static final Logger LOG = LoggerFactory.getLogger("reportsLogger");
 
 	public static void main(String[] args) {
 
+        LOG.trace("Application initiated");
 		TopologyBuilder builder = createTopology();
 
 		Config config = new Config();
@@ -40,7 +33,7 @@ public class KafkaTopology{
 			StormRunner.runTopologyLocally(builder.createTopology(),
 					"NetworkMonitor - Kafka Topology", config, 0);
 		} catch (InterruptedException e) {
-			System.out.println("\n\n Execution interrupted. \n\n");
+			LOG.error("\n\n Execution interrupted. \n\n");
 		}
 	}
 

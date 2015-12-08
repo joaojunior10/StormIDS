@@ -2,7 +2,6 @@ package util.matcher;
 
 import com.google.gson.Gson;
 import networkmonitor.bolts.networkdata.PacketData;
-import util.rules.general.GeneralOptions;
 import util.rules.SnortSignature;
 
 import java.io.Serializable;

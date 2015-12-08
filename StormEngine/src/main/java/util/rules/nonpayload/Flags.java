@@ -1,11 +1,11 @@
 package util.rules.nonpayload;
 
+import util.rules.Operators;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import util.rules.Operators;
 
 public class Flags implements Serializable{
 	public int operation;

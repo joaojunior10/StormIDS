@@ -1,9 +1,7 @@
 package networkmonitor.bolts.slidingwindowcounter;
 
 import networkmonitor.bolts.slidingwindowcounter.tools.AbstractSlidingWindowCounterBolt;
-
 import org.apache.log4j.Logger;
-
 import util.json.JSONObject;
 
 

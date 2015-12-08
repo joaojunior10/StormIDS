@@ -1,11 +1,7 @@
 package util.rules;
 
-import networkmonitor.bolts.networkdata.PacketData;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import util.matcher.HeaderMatcher;
-import util.rules.header.Header;
 
 /**
  * Created by joao on 26/11/15.

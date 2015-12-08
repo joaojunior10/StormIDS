@@ -3,7 +3,6 @@ package util.matcher;
 import networkmonitor.bolts.networkdata.PacketData;
 import util.rules.Operators;
 import util.rules.nonpayload.NonPayloadOptions;
-import util.rules.payload.PayloadOptions;
 
 /**
  * Created by joao on 29/10/15.

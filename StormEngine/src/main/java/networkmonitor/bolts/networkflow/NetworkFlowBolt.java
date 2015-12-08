@@ -1,20 +1,18 @@
 package networkmonitor.bolts.networkflow;
 
+import backtype.storm.topology.BasicOutputCollector;
+import backtype.storm.tuple.Tuple;
+import networkmonitor.bolts.analyser.Analyser;
+import org.apache.log4j.Logger;
+import util.json.JSONObject;
+import util.rules.Rules;
+import util.rules.SnortSignature;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
-import networkmonitor.bolts.analyser.Analyser;
-
-import org.apache.log4j.Logger;
-
-import util.json.JSONObject;
-import util.rules.Rules;
-import util.rules.SnortSignature;
-import backtype.storm.topology.BasicOutputCollector;
-import backtype.storm.tuple.Tuple;
 
 public class NetworkFlowBolt extends Analyser{
 	private List<SnortSignature> snortSignatures;

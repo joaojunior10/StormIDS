@@ -8,7 +8,6 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import networkmonitor.bolts.networkflow.NetworkFlowBolt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.json.JSONArray;

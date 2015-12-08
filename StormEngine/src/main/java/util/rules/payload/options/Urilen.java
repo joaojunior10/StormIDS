@@ -1,10 +1,10 @@
 package util.rules.payload.options;
 
+import util.rules.Operators;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import util.rules.Operators;
 
 public class Urilen implements Serializable{
 	public int operation;

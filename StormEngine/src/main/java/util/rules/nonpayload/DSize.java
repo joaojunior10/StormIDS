@@ -1,8 +1,8 @@
 package util.rules.nonpayload;
 
-import java.io.Serializable;
-
 import util.rules.Operators;
+
+import java.io.Serializable;
 
 public class DSize implements Serializable{
 	public int operation;

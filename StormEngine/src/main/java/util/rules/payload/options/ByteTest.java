@@ -1,8 +1,8 @@
 package util.rules.payload.options;
 
-import java.io.Serializable;
-
 import util.rules.Operators;
+
+import java.io.Serializable;
 
 public class ByteTest implements Serializable{
 	public Integer bytes;

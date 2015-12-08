@@ -1,8 +1,8 @@
 package util.rules.payload;
 
-import util.rules.Option;
 import org.junit.Assert;
 import org.junit.Test;
+import util.rules.Option;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

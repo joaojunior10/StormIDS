@@ -5,11 +5,11 @@
  */
 package networkmonitor.topology;
 
+import backtype.storm.Config;
+import backtype.storm.topology.TopologyBuilder;
 import networkmonitor.bolts.TesterBolt;
 import networkmonitor.spouts.netty.NettySpoutNoSSL;
 import util.storm.StormRunner;
-import backtype.storm.Config;
-import backtype.storm.topology.TopologyBuilder;
 
 public class NettyNoSSLTestTopology {
 

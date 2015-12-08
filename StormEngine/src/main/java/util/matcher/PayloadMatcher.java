@@ -1,15 +1,10 @@
 package util.matcher;
 
-import networkmonitor.bolts.networkdata.PacketData;
-import util.patternmatch.KMPMatch;
 import util.rules.payload.PayloadOptions;
-import util.rules.payload.options.Content;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by joao on 9/5/15.

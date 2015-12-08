@@ -5,17 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.GlobalEventExecutor;
-
-import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.Map;
-
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 
 /**
  * Handles a server-side channel.

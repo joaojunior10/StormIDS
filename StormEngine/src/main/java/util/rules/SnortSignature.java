@@ -1,15 +1,12 @@
 package util.rules;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import util.rules.general.GeneralOptions;
 import util.rules.header.Header;
 import util.rules.nonpayload.NonPayloadOptions;
 import util.rules.payload.PayloadOptions;
 import util.rules.payload.RegexGenerator;
-import util.rules.payload.options.Content;
+
+import java.io.Serializable;
 
 
 public class SnortSignature implements Serializable{

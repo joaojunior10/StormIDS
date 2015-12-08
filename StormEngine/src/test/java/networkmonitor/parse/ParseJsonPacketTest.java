@@ -1,16 +1,13 @@
 package networkmonitor.parse;
 
-import java.util.List;
-
-import junit.framework.TestCase;
 import networkmonitor.bolts.networkdata.NetworkDataBolt;
-
 import networkmonitor.bolts.networkdata.PacketData;
 import org.junit.Assert;
 import org.junit.Test;
-
 import util.json.JSONObject;
 import util.json.JSONTokener;
+
+import java.util.List;
 
 
 public class ParseJsonPacketTest {

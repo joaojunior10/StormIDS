@@ -3,7 +3,6 @@ package networkmonitor.bolts.storage;
 
 import backtype.storm.Constants;
 import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
@@ -11,14 +10,12 @@ import com.datastax.driver.core.Session;
 import com.google.gson.Gson;
 import org.junit.Test;
 import util.matcher.Match;
-import util.rules.general.GeneralOptions;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import backtype.storm.Constants;
-import backtype.storm.tuple.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by joao on 9/6/15.
