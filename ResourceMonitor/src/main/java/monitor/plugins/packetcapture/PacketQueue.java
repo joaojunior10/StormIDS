@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import monitor.plugins.packetcapture.packetdata.PacketData;
+import monitor.plugins.packetcapture.packetdata.PacketList;
 
 public class PacketQueue {
 	public List<PacketData> packets;
@@ -25,8 +26,11 @@ public class PacketQueue {
 
 	public  String getPackets() {
 		synchronized(this.packets){
-			if(this.packets.size() < 1) return null;
-			String json = gson.toJson(this.packets);
+			if (packets.size() == 0) return null;
+			PacketList packetList = new PacketList();
+			packetList.packetList = this.packets;
+			String json = gson.toJson(packetList);
+			System.out.println(packets.size() + " packets sent");
 			this.packets = new ArrayList<PacketData>();
 			return json;
 		}

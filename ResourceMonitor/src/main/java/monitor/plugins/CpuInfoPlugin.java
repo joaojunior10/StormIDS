@@ -3,9 +3,9 @@ package monitor.plugins;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
-import monitor.util.json.JSONTokener;
 
 import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.Sigar;
@@ -21,7 +21,7 @@ public class CpuInfoPlugin extends SystemResourcePlugin {
 	}
 
 	@Override
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		CpuInfo[] cpus = null;
 		try {
 			cpus = sigar.getCpuInfoList();
@@ -31,8 +31,8 @@ public class CpuInfoPlugin extends SystemResourcePlugin {
 				map.put("CPU" + i, '"' + cpu.toMap().toString() + '"');
 				i++;
 			}
-			objToReturn = new JSONObject(new JSONTokener(map.toString()
-					.replace("=", ":")));
+			JsonParser parser = new JsonParser();
+			objToReturn = parser.parse(map.toString().replace("=", ":")).getAsJsonObject();
 		} catch (SigarException e) {
 			e.printStackTrace();
 		}

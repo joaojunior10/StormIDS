@@ -1,7 +1,8 @@
 package monitor.plugins;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
 
 import org.hyperic.sigar.NetRoute;
 import org.hyperic.sigar.Sigar;
@@ -17,17 +18,18 @@ public class NetRouteListPlugin extends SystemResourcePlugin {
 		super(period);
 	}
 	@Override
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		
 		try{
 			routes = sigar.getNetRouteList();
 			//Map <String, Object> map = new TreeMap<String, Object>();
-			objToReturn = new JSONObject();
+			JsonParser parser = new JsonParser();
+			objToReturn = getSystemInformation();
 			int i=0;
 			for(NetRoute route: routes){
-				
+
 				//map.putAll(route.toMap());
-				objToReturn.put("Route"+i, route.toString().replace("=", ":"));
+				objToReturn.addProperty("Route"+i, route.toString().replace("=", ":"));
 				i++;
 			}
 			

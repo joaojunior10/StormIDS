@@ -1,9 +1,8 @@
 package monitor.plugins;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
-import monitor.util.json.JSONTokener;
-
 import org.hyperic.sigar.NetInfo;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
@@ -17,13 +16,14 @@ public class NetInfoPlugin extends SystemResourcePlugin {
 		super(period);
 	}
 
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		NetInfo netInfo = null;
 		
 		try {
 			netInfo = sigar.getNetInfo();
 			String b = netInfo.toMap().toString().replace('=', ':');
-			objToReturn = new JSONObject(new JSONTokener(b));
+			JsonParser parser = new JsonParser();
+			objToReturn = parser.parse(b).getAsJsonObject();
 			//System.out.println("JSON:"+ objToReturn.toString() + "\r\n");
 		} catch (SigarException e) {
 			e.printStackTrace();

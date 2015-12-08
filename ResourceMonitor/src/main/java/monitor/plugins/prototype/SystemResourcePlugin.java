@@ -2,17 +2,18 @@ package monitor.plugins.prototype;
 
 import java.net.InetAddress;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.connectors.ChannelSpecification;
-import monitor.util.json.JSONObject;
 
 
 //Abstract class that defines the default behaviour of a plugin.
 public abstract class SystemResourcePlugin implements Runnable {
 	protected Integer period;
 	ChannelSpecification channel = null;
-	protected JSONObject objToReturn = null;
+	protected JsonObject objToReturn = null;
 	
-	public abstract JSONObject getSystemInformation();
+	public abstract JsonObject getSystemInformation();
 	public abstract String topicName();
 	
 	protected SystemResourcePlugin(Integer period){
@@ -21,12 +22,13 @@ public abstract class SystemResourcePlugin implements Runnable {
 	public void run() {
 		try {
 			while (true){
-				JSONObject jsonObjToSend = getSystemInformation();
+				JsonParser parser = new JsonParser();
+				JsonObject jsonObjToSend = getSystemInformation();
 				if (jsonObjToSend != null) {
 					//Guarantee that every jsonObject contains the topic name and the hostname.
-					jsonObjToSend.put("topic", topicName());
-					jsonObjToSend.put("hostname", InetAddress.getLocalHost().getHostName());
-					sendToChannel(jsonObjToSend);
+					jsonObjToSend.addProperty("topic", topicName());
+					jsonObjToSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
+					sendToChannel(jsonObjToSend.toString());
 				}
 				Thread.sleep(period);
 			}
@@ -55,7 +57,7 @@ public abstract class SystemResourcePlugin implements Runnable {
 
 	}
 	
-	public void sendToChannel(JSONObject obj) throws Exception {
+	public void sendToChannel(String obj) throws Exception {
 		channel.send(obj);
 	}
 }

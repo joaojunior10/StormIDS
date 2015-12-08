@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
 
 import org.hyperic.sigar.NetRoute;
 import org.hyperic.sigar.ProcCredName;
@@ -31,12 +33,11 @@ public class ProcessListPlugin extends SystemResourcePlugin {
 		super(period);
 	}
 	@Override
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 
 		try{
 			routes = sigar.getNetRouteList();
 			//Map <String, Object> map = new TreeMap<String, Object>();
-			objToReturn = new JSONObject();
 			int i=0;
 
 			long[] pidList = sigar.getProcList();
@@ -44,8 +45,9 @@ public class ProcessListPlugin extends SystemResourcePlugin {
 			{
 				output(pidList[i]);
 			}
-
-			objToReturn = new JSONObject(toSend);
+			Gson gson = new Gson();
+			JsonParser parser = new JsonParser();
+			objToReturn = parser.parse(gson.toJson(toSend)).getAsJsonObject();
 
 			//System.out.println("JSON:"+ objToReturn.toString() + "\r\n");
 		} catch (SigarException e) {

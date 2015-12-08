@@ -3,10 +3,9 @@ package monitor.plugins;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
-import monitor.util.json.JSONTokener;
-
 import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
@@ -20,7 +19,7 @@ public class FileSystemUsagePlugin extends SystemResourcePlugin {
 		super(period);
 	}
 
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		FileSystemUsage info = null;
 
 		try {
@@ -30,7 +29,8 @@ public class FileSystemUsagePlugin extends SystemResourcePlugin {
 			Map <String,String> map = new HashMap<String, String>();
 			map.put(topicName(), value);
 			//System.out.println("Map:"+ map.toString() + "\r\n");
-			objToReturn = new JSONObject(new JSONTokener(map.toString().replace("=", ":")));
+			JsonParser parser = new JsonParser();
+			objToReturn = parser.parse(map.toString().replace("=", ":")).getAsJsonObject();
 			//System.out.println("JSON:"+ objToReturn.toString() + "\r\n");
 		} catch (SigarException e) {
 			e.printStackTrace();

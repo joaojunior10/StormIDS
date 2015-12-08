@@ -1,7 +1,8 @@
 package monitor.connectors;
 
-import monitor.util.json.JSONObject;
+
+import com.google.gson.JsonObject;
 
 public interface ChannelSpecification {
-	 void send(JSONObject objToSend) throws Exception;
+	 void send(String objToSend) throws Exception;
 }

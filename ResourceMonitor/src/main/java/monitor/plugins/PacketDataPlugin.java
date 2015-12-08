@@ -6,11 +6,11 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.packetcapture.PacketCapture;
 import monitor.plugins.packetcapture.PacketQueue;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
-import monitor.util.json.JSONTokener;
 
 public class PacketDataPlugin extends SystemResourcePlugin{
 	public PacketDataPlugin(Integer period){
@@ -20,12 +20,12 @@ public class PacketDataPlugin extends SystemResourcePlugin{
 	}
 	
 	@Override
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		String packets = PacketQueue.getInstance().getPackets();
-		if(packets == null) return  null;
+		if(packets == null) return null;
 		//writeFile(packets);
-		System.out.println("packets sent");
-		objToReturn = new JSONObject(new JSONTokener(packets));
+		JsonParser parser = new JsonParser();
+		objToReturn = parser.parse(packets).getAsJsonObject();
 		return objToReturn;
 	}
 

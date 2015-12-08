@@ -3,7 +3,6 @@ package monitor.connectors.netty;
 import java.nio.channels.ClosedChannelException;
 
 import monitor.connectors.ChannelSpecification;
-import monitor.util.json.JSONObject;
 import io.netty.channel.Channel;
 
 public class NettyChannelSpecification implements ChannelSpecification {
@@ -11,7 +10,7 @@ public class NettyChannelSpecification implements ChannelSpecification {
 	public NettyChannelSpecification (Channel channel){
 		this.channel = channel;
 	}
-	public void send(JSONObject obj) throws ClosedChannelException {
+	public void send(String obj) throws ClosedChannelException {
 		if(channel != null){
 			if(!channel.isActive()) {
         		throw new ClosedChannelException();

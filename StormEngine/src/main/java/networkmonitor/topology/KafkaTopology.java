@@ -35,7 +35,6 @@ public class KafkaTopology{
 		Config config = new Config();
 		config.setDebug(true);
 		config.put("cassandra.keyspace","stormids");
-
 		//config.setMaxSpoutPending(1);
 		try {
 			StormRunner.runTopologyLocally(builder.createTopology(),
@@ -58,29 +57,15 @@ public class KafkaTopology{
 
 		topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("KafkaSpout");
 		//topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("NettySpout");
-		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData")).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
-		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches")).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
-//		topology.setBolt("CassandraWriterBolt", new CassandraWriterBolt(insertInto("test")
-//                .values(
-//                        with(fields("id", "date", "hostname")
-//                        )).build()).withResultHandler(new EmitOnDriverExceptionResultHandler()));
-
+		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 5).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
+		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 1).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
 //		topology.setBolt("MemUsageRollingCountBolt", new RollingCountBolt("MemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "MemUsageStream");
 //		topology.setBolt("MemUsageAnalyser", new UsageAnalyser("MemUsage")).fieldsGrouping("MemUsageRollingCountBolt", new Fields("hostname","count"));
 //		topology.setBolt("CpuUsageRollingCountBolt", new RollingCountBolt("CpuUsage",30,1)).shuffleGrouping("MultiplexerBolt", "CpuUsageStream");
 //		topology.setBolt("CpuUsageAnalyser", new UsageAnalyser("CpuUsage")).fieldsGrouping("CpuUsageRollingCountBolt", new Fields("hostname","count"));
 //		topology.setBolt("FileSystemUsageRollingCountBolt", new RollingCountBolt("FileSystemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "FileSystemUsageStream");
 //		topology.setBolt("FileSystemUsageAnalyser", new UsageAnalyser("FileSystemUsage")).fieldsGrouping("FileSystemUsageRollingCountBolt", new Fields("hostname","count"));
-//		
-		topology.setBolt("PrettyPrinterBolt", new PrettyPrinterBolt(), 1).shuffleGrouping("MultiplexerBolt","DefaultStream");
+		topology.setBolt("PrettyPrinterBolt", new PrettyPrinterBolt(), 1).shuffleGrouping("MultiplexerBolt", "DefaultStream");
 		return topology;
-
 	}
-    public static class EmitOnDriverExceptionResultHandler extends BaseExecutionResultHandler {
-        @Override
-        protected void onDriverException(DriverException e, OutputCollector collector, Tuple tuple) {
-            collector.emit("stream_error", new Values(e.getMessage()));
-            collector.ack(tuple);
-        }
-    }
 }

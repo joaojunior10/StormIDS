@@ -6,11 +6,12 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import monitor.plugins.packetcapture.ActiveConnections;
 import monitor.plugins.packetcapture.PacketCapture;
 import monitor.plugins.prototype.SystemResourcePlugin;
-import monitor.util.json.JSONObject;
-import monitor.util.json.JSONTokener;
 
 public class PacketCapturePlugin extends SystemResourcePlugin {
 
@@ -22,10 +23,12 @@ public class PacketCapturePlugin extends SystemResourcePlugin {
 	}
 	
 	@Override
-	public JSONObject getSystemInformation() {
+	public JsonObject getSystemInformation() {
 		String activeConnections = new String(ActiveConnections.getInstance().toJSON());
 		//writeFile(activeConnections);
-		objToReturn = new JSONObject(new JSONTokener(activeConnections));
+		Gson gson = new Gson();
+		JsonParser parser = new JsonParser();
+		objToReturn =  parser.parse(gson.toJson(activeConnections)).getAsJsonObject();
 		return objToReturn;
 	}
 
