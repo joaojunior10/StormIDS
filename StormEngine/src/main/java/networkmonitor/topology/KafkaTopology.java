@@ -1,6 +1,9 @@
 package networkmonitor.topology;
 
 import backtype.storm.Config;
+import backtype.storm.StormSubmitter;
+import backtype.storm.generated.AlreadyAliveException;
+import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
@@ -28,13 +31,23 @@ public class KafkaTopology{
 		Config config = new Config();
 		config.setDebug(true);
 		config.put("cassandra.keyspace","stormids");
+		config.setNumWorkers(2);
+
 		//config.setMaxSpoutPending(1);
 		try {
-			StormRunner.runTopologyLocally(builder.createTopology(),
-					"NetworkMonitor - Kafka Topology", config, 0);
-		} catch (InterruptedException e) {
-			LOG.error("\n\n Execution interrupted. \n\n");
+			StormSubmitter.submitTopology("NetworkMonitor - Kafka Topology", config, builder.createTopology());
+		} catch (AlreadyAliveException e) {
+			e.printStackTrace();
+		} catch (InvalidTopologyException e) {
+			e.printStackTrace();
 		}
+
+//		try {
+//			StormRunner.runTopologyLocally(builder.createTopology(),
+//					"NetworkMonitor - Kafka Topology", config, 0);
+//		} catch (InterruptedException e) {
+//			LOG.error("\n\n Execution interrupted. \n\n");
+//		}
 	}
 
 	static private TopologyBuilder createTopology() {

@@ -24,9 +24,9 @@ public class Rules implements Serializable {
                     File file = new File(filePath.toString());
                     try {
                         readFile(snortSignatures, file);
-                        System.out.println(count);
+                        //System.out.println(count);
                     } catch (IOException e) {
-                        System.out.println(count);
+                        //System.out.println(count);
                         e.printStackTrace();
 
                     }
@@ -55,38 +55,12 @@ public class Rules implements Serializable {
                 } catch (Exception e) {
                     System.out.println(rule);
                     System.out.println(file.getPath());
-
-                    count++;
-                    System.out.println(count);
+                    //count++;
+                    //System.out.println(count);
                 }
             });
             //Dump the results to a text file and print out rules that didn't match the regex.
         }
-    }
-
-    static void writeOutputToFile(String warningMessage) {
-        String path = "./analytics/ParseLog.txt";
-
-        //creating file object from given path
-        File file = new File(path);
-
-        //FileWriter second argument is for append if its true than FileWritter will
-        //write bytes at the end of File (append) rather than beginning of file
-        FileWriter fileWriter;
-        try {
-            fileWriter = new FileWriter(file, false);
-            //Use BufferedWriter instead of FileWriter for better performance
-            BufferedWriter bufferFileWriter = new BufferedWriter(fileWriter);
-            fileWriter.append(warningMessage + "\n");
-
-            //Don't forget to close Streams or Reader to free FileDescriptor associated with it
-            bufferFileWriter.close();
-
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
     }
 }
 

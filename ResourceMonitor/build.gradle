@@ -6,6 +6,12 @@ version = '1.0'
 repositories {
     mavenCentral()
 }
+//jar {
+//    manifest {
+//        attributes 'Main-Class': 'net.petrikainulainen.gradle.HelloWorld'
+//    }
+//}
+
 
 dependencies {
     compile 'org.apache.kafka:kafka_2.10:0.8.2.1'
