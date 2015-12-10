@@ -22,6 +22,9 @@ dependencies {
     compile 'org.pcap4j:pcap4j-core:1.6.0'
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.6.0'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.slf4j:slf4j-api:1.7.13'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.slf4j:slf4j-log4j12:1.7.13'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

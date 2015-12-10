@@ -34,18 +34,36 @@ import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UdpPacket.UdpHeader;
 import org.pcap4j.util.IpV4Helper;
 import org.pcap4j.util.NifSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketCapture extends Thread {
 	private static PacketCapture instance = null;
 	private String bfp;
     private Gson gson;
+	private int count = 0;
+	private static Map intervals = new HashMap();
+	private static final Logger LOG = LoggerFactory.getLogger(PacketCapture.class);
+
 	public static PacketCapture getInstance() {
 		if(instance == null) {
 			instance = new PacketCapture();
 		}
 		return instance;
 	}
+	static {
+		intervals.put(1,1);
+		intervals.put(10,1);
+		intervals.put(100,1);
+		intervals.put(1000,1);
+		intervals.put(10000,1);
+		intervals.put(100000,1);
+		intervals.put(1000000,1);
+		intervals.put(10000000,1);
+		intervals.put(100000000,1);
+		intervals.put(1000000000,1);
 
+	}
 	public PacketCapture(){
 		bfp = Config.getInstance().bfp;
         gson = new Gson();
@@ -84,19 +102,11 @@ public class PacketCapture extends Thread {
 			PacketListener listener
 			= new PacketListener() {
 				public void gotPacket(Packet packet) {
-					Connection c = getConnection(packet,handle.getTimestamp());
-					if(c != null){
-						boolean isFlowToServer = ActiveConnections.getInstance().addConnection(c);
-						PacketData p = getPacketData(packet);
-
-						PacketQueue.getInstance().addPacket(p);
-//						byte[] data = Base64.getDecoder().decode(p.data);
-//						String stringData = new String(data, StandardCharsets.ISO_8859_1);
-//						System.out.println("IP origem = " + p.sourceIP);
-//						System.out.println("IP destino = " + p.destinationIP);
-//						System.out.println(stringData);
-//						System.out.println();
-
+					PacketData p = getPacketData(packet);
+					PacketQueue.getInstance().addPacket(p);
+					count++;
+					if(intervals.containsKey(count)){
+						LOG.trace(Integer.toString(count));
 					}
 				}
 			};		
@@ -115,26 +125,6 @@ public class PacketCapture extends Thread {
 		}
 	}
 
-	/**
-	 * Create a connection according to a packet
-	 * @param packet
-	 * @param ts
-	 * @return Connection
-	 */
-	private Connection getConnection(Packet packet, Timestamp ts){
-
-		Connection connection = new Connection();
-		connection.setLastSeen(ts);
-		if(getProtocol(packet, connection)){
-			return connection;
-		}
-		else{
-			//Save in a file
-			//writeFile(packet.toString());
-			return null;
-		}
-	}
-	
 	private PacketData getPacketData(Packet packet) {
 		PacketData packetData = new PacketData();
 		//packetData.connectionId = id;
@@ -181,61 +171,6 @@ public class PacketCapture extends Thread {
 		return packetData;
 	}
 
-	private boolean getProtocol(Packet packet, Connection connection) {
-		//TODO Ethernet layer information
-		//Internet layer information
-		//TODO Better method to get server/client/source/destination address
-		if(packet.get(IpV4Packet.class) != null){
-			IpV4Header ipPacket = packet.get(IpV4Packet.class).getHeader();
-			connection.setInternetProtocol("IPv4");
-			connection.serverToClient.sourceIP = ipPacket.getSrcAddr().toString().replace('/', '\0').trim();
-			connection.serverToClient.destinationIP = ipPacket.getDstAddr().toString().replace('/', '\0').trim();
-			connection.setClientIP(ipPacket.getSrcAddr().toString().replace('/', '\0').trim());
-			connection.setServerIP(ipPacket.getDstAddr().toString().replace('/', '\0').trim());
-			connection.getServerToClient().setBytes(ipPacket.getTotalLengthAsInt());
-			connection.setBytes(ipPacket.getTotalLengthAsInt());
-
-		}
-		else if(packet.get(IpV6Packet.class) != null){
-			IpV6Header ipPacket = packet.get(IpV6Packet.class).getHeader();
-			connection.setInternetProtocol("IPv6");
-			connection.getServerToClient().setSourceIP(ipPacket.getSrcAddr().toString().replace('/', '\0').trim());
-			connection.getServerToClient().setDestinationIP(ipPacket.getDstAddr().toString().replace('/', '\0').trim());
-			connection.setClientIP(ipPacket.getSrcAddr().toString().replace('/', '\0').trim());
-			connection.setServerIP(ipPacket.getDstAddr().toString().replace('/', '\0').trim());
-			connection.getServerToClient().setBytes(ipPacket.getPayloadLengthAsInt() + ipPacket.length());
-			connection.setBytes(ipPacket.getPayloadLengthAsInt() + ipPacket.length());
-
-		}
-
-		//Transport layer information
-		if(packet.get(TcpPacket.class) != null){
-			TcpHeader tcpPacket = packet.get(TcpPacket.class).getHeader();
-			connection.setTransportProtocol("TCP");
-			connection.getServerToClient().setSourcePort(tcpPacket.getSrcPort().toString().split(" ")[0].trim());
-			connection.getServerToClient().setDestinationPort(tcpPacket.getDstPort().toString().split(" ")[0].trim());
-			connection.setClientPort(tcpPacket.getSrcPort().toString().split(" ")[0].trim());
-			connection.setServerPort(tcpPacket.getDstPort().toString().split(" ")[0].trim());
-			connection.getServerToClient().setPackets();
-			connection.setPackets();
-			return true;
-		}
-		else if(packet.get(UdpPacket.class) != null){
-			UdpHeader tcpPacket = packet.get(UdpPacket.class).getHeader();
-			connection.setTransportProtocol("UDP");
-			connection.getServerToClient().setSourcePort(tcpPacket.getSrcPort().toString().split(" ")[0].trim());
-			connection.getServerToClient().setDestinationPort(tcpPacket.getDstPort().toString().split(" ")[0].trim());
-			connection.setClientPort(tcpPacket.getSrcPort().toString().split(" ")[0].trim());
-			connection.setServerPort(tcpPacket.getDstPort().toString().split(" ")[0].trim());
-			connection.getServerToClient().setPackets();
-			connection.setPackets();
-
-			return true;
-		}
-		//TODO ICMP, ARP, IGRP, GRE, OSPF, RIP, IPX
-		return false;
-	}
-	
 	private void defragmentIpv4(
 			final Map<Short, List<IpV4Packet>> ipV4Packets,
 			final Map<Short, Packet> originalPackets, Packet packet) {
@@ -261,25 +196,7 @@ public class PacketCapture extends Thread {
 			System.out.println(builder.build());
 		}
 	}
-	//TODO Create organized log file
-	void writeFile(String packets,String fileName){
-		BufferedWriter writer = null;
-		try {
-			//create a temporary file
-			String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-			File logFile = new File(fileName);
-			writer = new BufferedWriter(new FileWriter(logFile,true));
-			writer.write(packets);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// Close the writer regardless of what happens...
-				writer.close();
-			} catch (Exception e) {
-			}
-		}
-	}
+
 	
 	
 

@@ -20,6 +20,12 @@
             <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} %-5p [%c] - %m%n</pattern>
         </encoder>
     </appender>
+    <appender name="tracesLog" class="ch.qos.logback.core.FileAppender">
+        <File>logs/tracesLog.log</File>
+        <encoder>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} %-5p [%c] - %m%n</pattern>
+        </encoder>
+    </appender>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <Target>System.out</Target>
         <encoder>
@@ -31,6 +37,9 @@
     </logger>
     <logger name="errorsLog" additivity="false" level="ERROR">
         <appender-ref ref="errorsLog"/>
+    </logger>
+    <logger name="tracesLogger" additivity="false" level="TRACE">
+        <appender-ref ref="tracesLog"/>
     </logger>
     <root level="DEBUG">
         <appender-ref ref="console"/>

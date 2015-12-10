@@ -30,8 +30,8 @@ public class LogMatchesBolt extends BaseRichBolt{
     }
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
         _collector = collector;
-        Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
-        _session = cluster.connect("stormids");
+        Cluster cluster = Cluster.builder().addContactPoint(stormConf.get("cassandra.address").toString()).build();
+        _session = cluster.connect(stormConf.get("cassandra.keyspace").toString());
         _gson = new Gson();
     }
 

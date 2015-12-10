@@ -1,9 +1,8 @@
 package networkmonitor.topology;
 
 import backtype.storm.Config;
+import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
-import backtype.storm.generated.AlreadyAliveException;
-import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
@@ -18,42 +17,40 @@ import storm.kafka.BrokerHosts;
 import storm.kafka.SpoutConfig;
 import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
-import util.storm.StormRunner;
 
 public class KafkaTopology{
     private static final Logger LOG = LoggerFactory.getLogger("reportsLogger");
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
         LOG.trace("Application initiated");
 		TopologyBuilder builder = createTopology();
 
 		Config config = new Config();
 		config.setDebug(true);
-		config.put("cassandra.keyspace","stormids");
-		config.setNumWorkers(2);
+		config.put("cassandra.keyspace",util.Config.getInstance().cassandraKeyspace);
+		config.put("cassandra.address",util.Config.getInstance().cassandraAddress);
 
-		//config.setMaxSpoutPending(1);
-		try {
-			StormSubmitter.submitTopology("NetworkMonitor - Kafka Topology", config, builder.createTopology());
-		} catch (AlreadyAliveException e) {
-			e.printStackTrace();
-		} catch (InvalidTopologyException e) {
-			e.printStackTrace();
+		if (args != null && args.length > 0) {
+			config.setNumWorkers(2);
+
+			try {
+				StormSubmitter.submitTopologyWithProgressBar(args[0], config, builder.createTopology());
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("\n\n Execution interrupted. \n\n" + e.getMessage());
+			}
 		}
-
-//		try {
-//			StormRunner.runTopologyLocally(builder.createTopology(),
-//					"NetworkMonitor - Kafka Topology", config, 0);
-//		} catch (InterruptedException e) {
-//			LOG.error("\n\n Execution interrupted. \n\n");
-//		}
+		else {
+			LocalCluster cluster = new LocalCluster();
+			cluster.submitTopology("NetworkMonitor - Kafka Topology", config, builder.createTopology());
+		}
 	}
 
 	static private TopologyBuilder createTopology() {
-		BrokerHosts brokerHosts = new ZkHosts("localhost:2181");
+		BrokerHosts brokerHosts = new ZkHosts(util.Config.getInstance().kafkaZooKeeper+":2181");
 		String topicName = "ResourceMonitorTopic";
-		SpoutConfig kafkaConfig = new SpoutConfig(brokerHosts, topicName, "/" + topicName, "GuiwyStormEngine");
+		SpoutConfig kafkaConfig = new SpoutConfig(brokerHosts, topicName, "/" + topicName, "StormIDSEngine");
 
 		kafkaConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
 
@@ -63,7 +60,7 @@ public class KafkaTopology{
 
 		topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("KafkaSpout");
 		//topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("NettySpout");
-		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 5).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
+		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 6).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
 		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 1).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
 //		topology.setBolt("MemUsageRollingCountBolt", new RollingCountBolt("MemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "MemUsageStream");
 //		topology.setBolt("MemUsageAnalyser", new UsageAnalyser("MemUsage")).fieldsGrouping("MemUsageRollingCountBolt", new Fields("hostname","count"));

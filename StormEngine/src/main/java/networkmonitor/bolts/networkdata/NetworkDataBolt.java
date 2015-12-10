@@ -15,6 +15,7 @@ import util.json.JSONObject;
 import util.matcher.Matcher;
 import util.rules.Rules;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,12 @@ public class NetworkDataBolt extends BaseBasicBolt {
 
     public NetworkDataBolt(String topic) {
         Rules rules = new Rules();
-        matcher = new Matcher(rules.get());
-        LOG.info("NetworkDataBolt initiated");
+		try {
+			matcher = new Matcher(rules.get());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		LOG.info("NetworkDataBolt initiated");
     }
 
     public void treatData(JSONObject jsonObj, BasicOutputCollector collector) {
