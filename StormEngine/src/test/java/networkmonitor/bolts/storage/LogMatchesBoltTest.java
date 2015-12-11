@@ -1,6 +1,7 @@
 package networkmonitor.bolts.storage;
 
 
+import backtype.storm.Config;
 import backtype.storm.Constants;
 import backtype.storm.tuple.Tuple;
 import com.datastax.driver.core.Cluster;
@@ -32,7 +33,11 @@ public class LogMatchesBoltTest {
         match.destinationPort="4321";
 
         LogMatchesBolt logMatchesBolt = new LogMatchesBolt("networkdata");
-        logMatchesBolt.prepare(null,null,null);
+        Config config = new Config();
+        config.setDebug(true);
+        config.put("cassandra.keyspace","stormids");
+        config.put("cassandra.address","localhost");
+        logMatchesBolt.prepare(config,null,null);
         Gson gson = new Gson();
         List<Match> list = new ArrayList<>();
         list.add(match);

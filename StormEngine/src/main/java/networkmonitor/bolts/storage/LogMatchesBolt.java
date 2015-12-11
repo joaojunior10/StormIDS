@@ -43,23 +43,25 @@ public class LogMatchesBolt extends BaseRichBolt{
         Type listType = new TypeToken<List<Match>>() {}.getType();
         String json = (String) input.getValue(0);
         List<Match> matches =  _gson.fromJson(json,listType);
-        //TODO create bulk insert
+        StringBuilder query = new StringBuilder();
+        query.append("BEGIN BATCH");
         for (int i = 0; i < matches.size() ; i++) {
             Match match = matches.get(i);
-            String query = "INSERT INTO matches" +
+            query.append("\nINSERT INTO matches" +
                     " (id, timelog, hostname, sourceip, destinationip, sourceport, destinationport" +
                     ",msg, action, rule, packet)" +
                     " VALUES ("+ UUID.randomUUID()+", dateOf(now()), " +
                     "'"+match.hostname+"', '"+match.sourceIP+"','"+match.destinationIP+"'" +
                     ",'"+match.sourcePort+"', '"+match.destinationPort+"', " +
-                    "'"+match.msg+"', '"+match.action+"', '"+match.rule+"', '"+match.packet+"')";
+                    "'"+match.msg+"', '"+match.action+"', '"+match.rule+"', '"+match.packet+"')");
             // Insert one record into the users table
-            _session.execute(query);
         }
+        query.append("\nAPPLY BATCH;");
+        _session.execute(query.toString());
+
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("id", "date","hostname"));
-
     }
 }
