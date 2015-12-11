@@ -1,21 +1,142 @@
-# Copyright 2001-2013 Sourcefire, Inc. All Rights Reserved.
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
 #
-# This file contains (i) proprietary rules that were created, tested and certified by
-# Sourcefire, Inc. (the "VRT Certified Rules") that are distributed under the VRT
-# Certified Rules License Agreement (v 2.0), and (ii) rules that were created by
-# Sourcefire and other third parties (the "GPL Rules") that are distributed under the
-# GNU General Public License (GPL), v2.
-# 
-# The VRT Certified Rules are owned by Sourcefire, Inc. The GPL Rules were created
-# by Sourcefire and other third parties. The GPL Rules created by Sourcefire are
-# owned by Sourcefire, Inc., and the GPL Rules not created by Sourcefire are owned by
-# their respective creators. Please see http://www.snort.org/snort/snort-team/ for a
-# list of third party owners and their respective copyrights.
-# 
-# In order to determine what rules are VRT Certified Rules or GPL Rules, please refer
-# to the VRT Certified Rules License Agreement (v2.0).
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
 #
-#------------
+#
+# $Id: misc.rules,v 1.113.4.8.4.7.4.1.2.5 2011/02/08 18:31:37 vrtbuild Exp $
+#-----------
 # MISC RULES
-#------------
+#-----------
 
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 1417 (msg:"MISC Insecure TIMBUKTU Password"; flow:to_server,established; content:"|05 00|>"; depth:16; reference:arachnids,229; classtype:bad-unknown; sid:505; rev:6;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 5631 (msg:"MISC PCAnywhere Attempted Administrator Login"; flow:to_server,established; content:"ADMINISTRATOR"; classtype:attempted-admin; sid:507; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 70 (msg:"MISC gopher proxy"; flow:to_server,established; content:"ftp|3A|"; fast_pattern:only; content:"@/"; reference:arachnids,409; classtype:bad-unknown; sid:508; rev:9;)
+# alert tcp $HOME_NET 5631:5632 -> $EXTERNAL_NET any (msg:"MISC PCAnywhere Failed Login"; flow:from_server,established; content:"Invalid login"; depth:16; reference:arachnids,240; classtype:unsuccessful-user; sid:512; rev:5;)
+# alert tcp $HOME_NET any -> $EXTERNAL_NET 27374 (msg:"MISC ramen worm"; flow:to_server,established; content:"GET "; depth:8; nocase; reference:arachnids,461; classtype:bad-unknown; sid:514; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 161 (msg:"MISC SNMP NT UserList"; flow:to_server; content:"+|06 10|@|14 D1 02 19|"; fast_pattern:only; reference:nessus,10546; classtype:attempted-recon; sid:516; rev:8;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 177 (msg:"MISC xdmcp query"; flow:to_server; content:"|00 01 00 03 00 01 00|"; fast_pattern:only; reference:arachnids,476; classtype:attempted-recon; sid:517; rev:4;)
+
+# once we get response, check for content:"|00 01 00|"; offset:0; depth:3;
+# alert udp $EXTERNAL_NET any -> $HOME_NET 177 (msg:"MISC xdmcp info query"; flow:to_server; content:"|00 01 00 02 00 01 00|"; fast_pattern:only; reference:nessus,10891; classtype:attempted-recon; sid:1867; rev:4;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 1900 (msg:"MISC UPnP malformed advertisement"; flow:to_server; content:"NOTIFY * "; fast_pattern:only; content:"LOCATION|3A|"; nocase; detection_filter:track by_dst, count 10, seconds 1; reference:bugtraq,3723; reference:cve,2001-0876; reference:cve,2001-0877; reference:nessus,10829; reference:url,www.microsoft.com/technet/security/bulletin/MS01-059.mspx; classtype:misc-attack; sid:1384; rev:12;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET any (msg:"MISC UPnP Location overflow attempt"; content:"Location"; fast_pattern:only; pcre:"/^Location\s*\x3a\s*\w+\x3a\/\/([^\n]*\x3a)?[^\n]{128}/smi"; reference:bugtraq,3723; reference:cve,2001-0876; reference:cve,2007-2386; reference:nessus,10829; reference:url,www.microsoft.com/technet/security/bulletin/MS01-059.mspx; classtype:misc-attack; sid:1388; rev:17;)
+# alert tcp $AIM_SERVERS any -> $HOME_NET any (msg:"MISC AIM AddGame attempt"; flow:to_client,established; content:"aim|3A|AddGame?"; fast_pattern:only; reference:bugtraq,3769; reference:cve,2002-0005; reference:url,www.w00w00.org/files/w00aimexp/; classtype:misc-attack; sid:1393; rev:14;)
+# alert tcp $AIM_SERVERS any -> $HOME_NET any (msg:"MISC AIM AddExternalApp attempt"; flow:to_client,established; content:"aim|3A|AddExternalApp?"; fast_pattern:only; reference:url,www.w00w00.org/files/w00aimexp/; classtype:misc-attack; sid:1752; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 7001 (msg:"MISC AFS access"; flow:to_server; content:"|00 00 03 E7 00 00 00 00 00 00 00|e|00 00 00 00 00 00 00 00 0D 05 00 00 00 00 00 00 00|"; fast_pattern:only; reference:nessus,10441; classtype:misc-activity; sid:1504; rev:9;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 32000 (msg:"MISC Xtramail Username overflow attempt"; flow:to_server,established; content:"Username|3A|"; nocase; isdataat:100,relative; pcre:"/^Username\:[^\n]{100}/smi"; reference:bugtraq,791; reference:cve,1999-1511; reference:nessus,10323; classtype:attempted-admin; sid:1636; rev:12;)
+
+# alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 443 (msg:"MISC OpenSSL Worm traffic"; flow:to_server,established; content:"TERM=xterm"; fast_pattern:only; reference:url,www.cert.org/advisories/CA-2002-27.html; classtype:web-application-attack; sid:1887; rev:5;)
+# alert udp $EXTERNAL_NET 2002 -> $HTTP_SERVERS 2002 (msg:"MISC slapper worm admin traffic"; content:"|00 00|E|00 00|E|00 00|@|00|"; depth:10; reference:url,isc.incidents.org/analysis.html?id=167; reference:url,www.cert.org/advisories/CA-2002-27.html; classtype:trojan-activity; sid:1889; rev:6;)
+
+
+# once we get response, check for content:"|03|"; offset:0; depth:1;
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 3389 (msg:"MISC MS Terminal server request RDP"; flow:to_server,established; content:"|03 00 00 0B 06 E0 00 00 00 00 00|"; depth:11; reference:bugtraq,3099; reference:cve,2001-0540; reference:nessus,10940; reference:url,www.microsoft.com/technet/security/bulletin/MS01-040.mspx; classtype:protocol-command-decode; sid:1447; rev:14;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 3389 (msg:"MISC MS Terminal server request"; flow:to_server,established; content:"|03 00 00|"; depth:3; content:"|E0 00 00 00 00 00|"; depth:6; offset:5; reference:bugtraq,3099; reference:cve,2001-0540; reference:nessus,10940; reference:url,www.microsoft.com/technet/security/bulletin/MS01-040.mspx; classtype:protocol-command-decode; sid:1448; rev:14;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 3389 (msg:"MISC MS Terminal Server no encryption session initiation attempt"; flow:to_server,established; content:"|03 00 01|"; depth:3; content:"|00|"; depth:1; offset:288; reference:url,www.microsoft.com/technet/security/bulletin/MS01-052.mspx; classtype:attempted-dos; sid:2418; rev:5;)
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 2533 (msg:"MISC Alcatel PABX 4400 connection attempt"; flow:established,to_server; content:"|00 01|C"; depth:3; reference:nessus,11019; classtype:misc-activity; sid:1819; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 67 (msg:"MISC bootp hardware address length overflow"; flow:to_server; content:"|01|"; depth:1; byte_test:1,>,6,2; reference:cve,1999-0798; classtype:misc-activity; sid:1939; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 67 (msg:"MISC bootp invalid hardware type"; flow:to_server; content:"|01|"; depth:1; byte_test:1,>,7,1; reference:cve,1999-0798; classtype:misc-activity; sid:1940; rev:5;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 67 (msg:"MISC bootp hostname format string attempt"; flow:to_server; content:"|01|"; depth:1; content:"|0C|"; distance:240; content:"%"; distance:0; content:"%"; within:8; distance:1; content:"%"; within:8; distance:1; reference:bugtraq,4701; reference:cve,2002-0702; reference:nessus,11312; classtype:misc-attack; sid:2039; rev:8;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 27155 (msg:"MISC GlobalSunTech Access Point Information Disclosure attempt"; flow:to_server; content:"gstsearch"; fast_pattern:only; reference:bugtraq,6100; classtype:misc-activity; sid:1966; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 7100 (msg:"MISC xfs overflow attempt"; flow:to_server,established; isdataat:512; content:"B|00 02|"; depth:3; reference:bugtraq,6241; reference:cve,2002-1317; reference:nessus,11188; classtype:misc-activity; sid:1987; rev:9;)
+
+# alert udp $HOME_NET 49 -> $EXTERNAL_NET any (msg:"MISC xtacacs failed login response"; flow:to_client; content:"|80 02|"; depth:2; content:"|02|"; distance:4; classtype:misc-activity; sid:2041; rev:4;)
+# alert udp $HOME_NET 500 -> $EXTERNAL_NET 500 (msg:"MISC isakmp login failed"; content:"|10 05|"; depth:2; offset:17; content:"|00 00 00 01 01 00 00 18|"; within:8; distance:13; classtype:misc-activity; sid:2043; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 873 (msg:"MISC rsyncd module list access"; flow:to_server,established; content:"|23|list"; depth:5; classtype:misc-activity; sid:2047; rev:3;)
+
+
+# This rule needs some work since you don't have to pass BEGIN and END
+# anywhere near each other.
+#
+#! alert tcp $EXTERNAL_NET any -> $HOME_NET 2401 ( \
+#!   msg:"MISC CVS username overflow attempt"; flow:to_server,established; \
+#!   content:"BEGIN AUTH REQUEST|0A|"; content:!"|0A|END AUTH REQUEST|0A|"; \
+#!   within:255; classtype:misc-attack;)
+
+
+# normally Idon't like using 3a for :, but in this case... I'd like to remove the false positives stemming from someone using anoncvs to checkout snort rules :)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS invalid user authentication response"; flow:from_server,established; content:"E Fatal error, aborting."; fast_pattern:only; content:"|3A| no such user"; classtype:misc-attack; sid:2008; rev:6;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS invalid repository response"; flow:from_server,established; content:"error "; content:"|3A| no such repository"; content:"I HATE YOU"; fast_pattern:only; classtype:misc-attack; sid:2009; rev:4;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS double free exploit attempt response"; flow:from_server,established; content:"free|28 29 3A| warning|3A| chunk is already free"; fast_pattern:only; reference:bugtraq,6650; reference:cve,2003-0015; reference:nessus,11385; classtype:misc-attack; sid:2010; rev:9;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS invalid directory response"; flow:from_server,established; content:"E protocol error|3A| invalid directory syntax in"; fast_pattern:only; reference:bugtraq,6650; reference:cve,2003-0015; reference:nessus,11385; classtype:misc-attack; sid:2011; rev:9;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS missing cvsroot response"; flow:from_server,established; content:"E protocol error|3A| Root request missing"; fast_pattern:only; classtype:misc-attack; sid:2012; rev:4;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS invalid module response"; flow:from_server,established; content:"cvs server|3A| cannot find module"; fast_pattern:only; content:"error"; distance:1; classtype:misc-attack; sid:2013; rev:4;)
+# alert tcp $HOME_NET 2401 -> $EXTERNAL_NET any (msg:"MISC CVS non-relative path error response"; flow:from_server,established; content:"E cvs server|3A| warning|3A| cannot make directory CVS in /"; fast_pattern:only; reference:bugtraq,9178; reference:cve,2003-0977; reference:nessus,11947; classtype:misc-attack; sid:2317; rev:7;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 2401 (msg:"MISC CVS non-relative path access attempt"; flow:to_server,established; content:"Argument"; pcre:"/^Argument\s+\//smi"; pcre:"/^Directory/smiR"; reference:bugtraq,9178; reference:cve,2003-0977; reference:nessus,11947; classtype:misc-attack; sid:2318; rev:6;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 2401 (msg:"MISC CVS Max-dotdot integer overflow attempt"; flow:to_server,established; content:"Max-dotdot"; fast_pattern:only; pcre:"/^Max-dotdot[\s\r\n]*\d{3,}/msi"; reference:bugtraq,10499; reference:cve,2004-0417; classtype:misc-attack; sid:2583; rev:6;)
+
+
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 1723 (msg:"MISC Microsoft PPTP Start Control Request buffer overflow attempt"; flow:to_server,established,no_stream; isdataat:156; content:"|00 01|"; depth:2; offset:2; content:"|00 01|"; depth:2; offset:8; reference:bugtraq,5807; reference:cve,2002-1214; reference:nessus,11178; reference:url,www.microsoft.com/technet/security/bulletin/MS02-063.mspx; classtype:attempted-admin; sid:2126; rev:11;)
+
+# this rule is specificly not looking for flow, since tcpdump handles lengths wrong
+# alert tcp any any <> any 179 (msg:"MISC BGP invalid length"; flow:stateless; content:"|FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF|"; byte_test:2,<,19,0,relative; reference:bugtraq,6213; reference:cve,2002-1350; reference:nessus,14011; reference:nessus,15043; reference:url,sf.net/tracker/index.php?func=detail&aid=744523&group_id=53066&atid=469575; classtype:bad-unknown; sid:2158; rev:10;)
+# alert tcp $EXTERNAL_NET any <> $HOME_NET 179 (msg:"MISC BGP invalid type 0"; flow:stateless; content:"|FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF|"; depth:16; content:"|00|"; within:1; distance:2; reference:bugtraq,6213; reference:cve,2002-1350; reference:nessus,14011; reference:nessus,15043; classtype:bad-unknown; sid:2159; rev:13;)
+
+
+
+
+
+
+
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 8000 (msg:"MISC HP Web JetAdmin remote file upload attempt"; flow:to_server,established; content:"/plugins/hpjwja/script/devices_update_printer_fw_upload.hts"; fast_pattern:only; content:"Content-Type|3A|"; nocase; http_header; content:"Multipart"; nocase; http_header; reference:bugtraq,9971; reference:cve,2004-1856; classtype:web-application-activity; sid:2547; rev:6;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 8000 (msg:"MISC HP Web JetAdmin setinfo access"; flow:to_server,established; content:"/plugins/hpjdwm/script/test/setinfo.hts"; fast_pattern:only; reference:bugtraq,9972; reference:cve,2004-1857; reference:nessus,12120; classtype:web-application-activity; sid:2548; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 8000 (msg:"MISC HP Web JetAdmin file write attempt"; flow:to_server,established; content:"/plugins/framework/script/tree.xms"; fast_pattern:only; content:"WriteToFile"; nocase; reference:bugtraq,9973; classtype:web-application-activity; sid:2549; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 8000 (msg:"MISC HP Web JetAdmin ExecuteFile admin access"; flow:to_server,established; content:"/plugins/framework/script/content.hts"; fast_pattern:only; content:"ExecuteFile"; nocase; reference:bugtraq,10224; classtype:attempted-admin; sid:2655; rev:5;)
+
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 873 (msg:"MISC rsync backup-dir directory traversal attempt"; flow:to_server,established; content:"--backup-dir"; fast_pattern:only; pcre:"/--backup-dir\s+\x2e\x2e\x2f/"; reference:bugtraq,10247; reference:cve,2004-0426; reference:nessus,12230; classtype:string-detect; sid:2561; rev:6;)
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 3632 (msg:"MISC distccd command execution attempt"; flow:to_server,established; content:"DIST00000001"; depth:12; nocase; reference:url,distcc.samba.org/security.html; classtype:misc-activity; sid:3061; rev:3;)
+
+# alert udp $EXTERNAL_NET any -> $HOME_NET 7787 (msg:"MISC Unreal Tournament secure overflow attempt"; flow:to_server; content:"|5C|secure|5C|"; fast_pattern:only; pcre:"/\x5csecure\x5c[^\x00]{50}/smi"; reference:bugtraq,10570; reference:cve,2004-0608; classtype:misc-attack; sid:3080; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 617 (msg:"MISC Arkeia client backup system info probe"; flow:established,to_server; content:"ARKADMIN_GET_"; pcre:"/^(CLIENT|MACHINE)_INFO/Ri"; reference:bugtraq,12594; reference:cve,2005-0491; classtype:attempted-recon; sid:3453; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 617 (msg:"MISC Arkeia client backup generic info probe"; flow:established,to_server; content:"ARKFS|00|root|00|root"; fast_pattern:only; reference:bugtraq,12594; reference:cve,2005-0491; classtype:attempted-recon; sid:3454; rev:4;)
+# alert tcp $HOME_NET any -> $HOME_NET 2702 (msg:"MISC Microsoft SMS remote control client DoS overly long length attempt"; flow:to_server,established; content:"RCH0"; fast_pattern:only; content:"RCHE"; nocase; byte_test:2,>,131,-8,relative,little; isdataat:131,relative; reference:bugtraq,10726; reference:cve,2004-0728; classtype:attempted-user; sid:3673; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 50000 (msg:"MISC IBM DB2 DTS empty format string dos attempt"; flow:to_server,established; content:"SELECT"; fast_pattern:only; pcre:"/SELECT\s*(TO_(DATE|CHAR)|(VARCHAR|TIMESTAMP)_FORMAT)\s*\('[^']*'\s*,\s*''\)/smi"; reference:bugtraq,11400; reference:url,www-1.ibm.com/support/docview.wss?uid=swg1IY61781; classtype:attempted-dos; sid:3675; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 5000 (msg:"MISC UPnP malformed advertisement"; flow:to_server,established; content:"NOTIFY * "; fast_pattern:only; reference:bugtraq,3723; reference:cve,2001-0876; reference:cve,2001-0877; reference:nessus,10829; reference:url,www.microsoft.com/technet/security/bulletin/MS01-059.mspx; classtype:misc-attack; sid:8082; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 5000 (msg:"MISC UPnP Location overflow"; flow:to_server,established; content:"Location|3A|"; fast_pattern:only; pcre:"/^Location\:[^\n]{128}/smi"; reference:bugtraq,3723; reference:cve,2001-0876; reference:nessus,10829; reference:url,www.microsoft.com/technet/security/bulletin/MS01-059.mspx; classtype:misc-attack; sid:8083; rev:3;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 11000 (msg:"MISC bomberclone buffer overflow attempt"; flow:to_server; content:"|00 00 00 00|8|03|A"; depth:7; isdataat:764; reference:bugtraq,16697; reference:cve,2006-0460; classtype:attempted-user; sid:10125; rev:6;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 2869 (msg:"MISC UPNP notification type overflow attempt"; flow:to_server,established; content:"SUBSCRIBE"; fast_pattern:only; pcre:"/^(UN)?SUBSCRIBE\s/smi"; pcre:"/^(NT|CallBack|SID|TimeOut)\s*\x3a\s*[^\n]{512}/Rsmi"; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,23371; reference:cve,2007-1204; reference:url,www.microsoft.com/technet/security/bulletin/MS07-019.mspx; classtype:attempted-admin; sid:10475; rev:6;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 1080 (msg:"MISC Sun Java web proxy sockd buffer overflow attempt"; flow:to_server,established; content:"|05 01|"; depth:2; content:"|03|"; within:1; distance:1; byte_test:1,>,136,0,relative; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,24165; reference:cve,2007-2881; reference:url,sunsolve.sun.com/search/document.do?assetkey=1-26-102927-1; classtype:attempted-admin; sid:11680; rev:4;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"MISC Visio version number anomaly"; flow:established,to_client; content:"Visio |28|TM|29| Drawing|0D 0A 00 00 00 00|"; fast_pattern:only; pcre:"/Visio \x28TM\x29 Drawing\r\n\x00{4}([^\x00]|\x00[^\x00]|\x00\x00[^\x01-\x06\x0b]|\x00\x00[\x01-\x06\x0b][^\x00])/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service http; reference:cve,2007-0934; reference:url,www.microsoft.com/technet/security/bulletin/MS07-030.mspx; classtype:misc-activity; sid:11836; rev:4;)
+# alert tcp $EXTERNAL_NET 80 -> $HOME_NET any (msg:"MISC Microsoft Excel rtWindow1 record handling arbitrary code execution attempt"; flow:from_server,established; flowbits:isset,http.xls; content:"|FF FF FF FF FF FF FF FF 09 08|"; content:"|00 00|"; within:2; distance:1; content:"|05 00|"; within:2; distance:1; pcre:"/\x3d\x00\x12\x00..........(.[\x80-\xff]|...[\x80-\xff])/smiR"; reference:bugtraq,22555; reference:cve,2007-3029; reference:url,secunia.com/advisories/25995; reference:url,www.microsoft.com/technet/security/bulletin/MS07-036.mspx; classtype:attempted-user; sid:12099; rev:3;)
+# alert tcp $EXTERNAL_NET 80 -> $HOME_NET any (msg:"MISC Microsoft Excel workbook workspace designation handling arbitrary code execution attempt"; flow:from_server,established; flowbits:isset,http.xls; content:"|FF FF FF FF FF FF FF FF 09 08|"; fast_pattern:only; pcre:"/\xff{8}\x09\x08[\x08\x10]\x00\x00[\x05\x06]\x00\x01/sm"; reference:bugtraq,24803; reference:cve,2007-3030; reference:url,secunia.com/advisories/25995; reference:url,www.microsoft.com/technet/security/Bulletin/MS07-036.mspx; classtype:attempted-user; sid:12184; rev:4;)
+# alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"MISC asf file download"; flow:established,to_client; content:"HTTP"; depth:4; content:"|0D 0A 0D 0A C4 AB CD AB|"; within:768; reference:cve,2007-3040; reference:url,www.microsoft.com/technet/security/bulletin/ms07-051.mspx; classtype:misc-activity; sid:12454; rev:2;)
+alert tcp $EXTERNAL_NET 80 -> $HOME_NET any (msg:"MISC Microsoft Windows ShellExecute and IE7 url handling code execution attempt"; flow:to_client,established; content:"BEGIN|3A|VCARD"; fast_pattern:only; pcre:"/^URL\x3b\w+\x3amailto\x3a[^\n]*%[^\n]*\.(cmd|bat)/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service http; reference:bugtraq,25945; reference:cve,2007-3896; reference:url,www.microsoft.com/technet/security/advisory/943521.mspx; reference:url,www.microsoft.com/technet/security/bulletin/ms07-057.mspx; classtype:attempted-user; sid:12664; rev:3;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 8082 (msg:"MISC McAfee ePolicy Orchestrator Framework Services log handling format string attempt"; content:"Type=|22|AgentWakeup|22|"; fast_pattern:only; content:"|22 FA E5|"; content:"|8F|"; within:212; distance:20; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,28228; reference:cve,2008-1357; reference:url,knowledge.mcafee.com/article/234/615103_f.sal_public.html; classtype:attempted-admin; sid:13631; rev:2;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 3050 (msg:"MISC Borland Software InterBase ibserver.exe Service Attach Request buffer overflow attempt"; flow:to_server,established; content:"|00 00 00|R"; depth:4; byte_test:4,>,848,8; reference:bugtraq,28730; reference:cve,2008-1910; classtype:attempted-admin; sid:13804; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 1900 (msg:"MISC CA ARCServ NetBackup remote file upload attempt"; flow:to_server,established; content:"rxrReceiveFileFromServer~~8~~"; fast_pattern:only; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,28616; reference:cve,2008-1329; reference:url,secunia.com/advisories/25606/; reference:url,support.ca.com/irj/portal/anonymous/phpsupcontent?contentID=173105; classtype:web-application-activity; sid:13839; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 4888 (msg:"MISC Symantec Veritas Storage Scheduler Service NULL Session auth bypass attempt"; flow:to_server,established; content:"NTLMSSP|00 03 00 00 00|"; content:"|00 00|"; within:2; distance:34; metadata:policy balanced-ips drop, policy security-ips drop, service ident; reference:bugtraq,30596; reference:cve,2008-3703; classtype:attempted-user; sid:14768; rev:1;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 631 (msg:"MISC Multiple vendors CUPS HPGL filter remote code execution attempt"; flow:to_server,established; content:"PC"; byte_test:4,>=,1024,0,relative,string,dec; metadata:policy security-ips drop; reference:bugtraq,31688; reference:cve,2008-3641; reference:url,www.cups.org/str.php?L2911; classtype:attempted-user; sid:15188; rev:1;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 631 (msg:"MISC Multiple vendors CUPS HPGL filter remote code execution attempt"; flow:to_server,established; content:"PW"; fast_pattern:only; pcre:"/PW\x2D?\x2E?[0-9]+\s*,\s*/"; byte_test:4,>=,1024,0,relative,string,dec; metadata:policy security-ips drop; reference:bugtraq,31688; reference:cve,2008-3641; classtype:attempted-user; sid:15186; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 13722 (msg:"MISC Veritas NetBackup java user interface service format string attack attempt"; flow:established,to_server; content:"%n"; fast_pattern:only; metadata:policy security-ips drop; reference:cve,2005-2715; classtype:attempted-admin; sid:15931; rev:4;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 12168 (msg:"MISC CA Multiple Products Console Server login credentials handling overflow attempt"; flow:to_server,established; content:"|96|8|9E 04|"; depth:8; offset:4; byte_test:4,>,83,0; byte_test:1,&,192,20; reference:bugtraq,23906; reference:cve,2007-2522; classtype:attempted-user; sid:15943; rev:2;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 12168 (msg:"MISC CA Multiple Products Console Server login credentials handling overflow attempt"; flow:to_server,established; content:"|96|8|9E 04|"; depth:8; offset:4; byte_test:4,>,83,0; content:!"|F6|v|D0|"; depth:24; offset:21; reference:bugtraq,23906; reference:cve,2007-2522; classtype:attempted-user; sid:15942; rev:2;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 497 (msg:"MISC EMC Dantz Retrospect Backup Agent denial of service attempt"; flow:to_server,established; content:"|87 00 00|"; depth:3; offset:1; content:"|00 00 00 00|"; within:4; distance:4; metadata:policy connectivity-ips drop; reference:cve,2006-0995; classtype:denial-of-service; sid:16039; rev:1;)
+# alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"MISC ACD Systems ACDSee Products XPM values section buffer overflow attempt"; flow:to_client,established; flowbits:isset,http.xpm; content:"static"; fast_pattern:only; content:"Content-Type|3A|"; nocase; http_header; pcre:"/^static\s+(\w+\s+)??char\s*\x2A\s*\w+\s*\x5B\x5D\s*\x3D\s*\x7B.*\x22[^\x22]{200}/smiH"; reference:bugtraq,26554; reference:cve,2007-6009; classtype:attempted-user; sid:16062; rev:4;)
+# alert udp $EXTERNAL_NET 123 -> $HOME_NET 123 (msg:"MISC ntp mode 7 denial of service attempt"; byte_test:1,&,4,0; byte_test:1,&,2,0; byte_test:1,&,1,0; metadata:service ntp; reference:bugtraq,37255; reference:cve,2009-3563; classtype:attempted-dos; sid:16350; rev:2;)
+# alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS (msg:"MISC X PixMap file download"; flow:to_server,established; content:".xpm"; fast_pattern; nocase; http_uri; flowbits:set,http.xpm; flowbits:noalert; metadata:service http; classtype:misc-activity; sid:16061; rev:6;)
+alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS (msg:"MISC Microsoft EMF metafile access detected"; flow:to_server,established; content:".emf"; fast_pattern; nocase; http_uri; flowbits:set,emf.request; flowbits:noalert; reference:cve,2008-1087; reference:url,www.microsoft.com/technet/security/bulletin/MS08-021.mspx; classtype:attempted-user; sid:13678; rev:11;)
+# alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"MISC Panda Antivirus ZOO archive decompression buffer overflow attempt"; flow:to_client,established; file_data; content:"Rar!|1A|"; within:5; content:"|77|"; content:"|01 01 00|"; within:3; distance:8; byte_test:2,>,3168,0,relative; reference:cve,2005-3922; classtype:attempted-user; sid:17282; rev:3;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET [1918,6014,10110,14206,18302] (msg:"MISC IBM Tivoli Monitoring Express Universal Agent Buffer Overflow"; flow:to_server,established; dsize:>1002; metadata:policy security-ips drop; reference:bugtraq,23558; reference:cve,2007-2137; classtype:attempted-admin; sid:17298; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 631 (msg:"MISC Apple CUPS Text to PostScript Filter Integer Overflow attempt"; flow:established,to_server; flowbits:isset,ipp.application; content:"printer-uri"; nocase; content:"ipp://"; within:6; distance:2; pcre:"/(((c|l)pi\x00.{1}(-\d|0)\x21)|(columns\x00.{1}(-\d|0)\x21)|(page-(right|left|top|bottom)\x00.{1}(-\d|0|((3-9)\d{5}|24\d{4}|236\d{3}|23593\d{1}|23592(2-9))\x21)))/is"; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,31690; reference:cve,2008-3640; classtype:attempted-user; sid:17535; rev:1;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 631 (msg:"MISC IPP Application Content"; flow:established,to_server; content:"Content-Type|3A|"; nocase; content:"application/ipp"; distance:1; nocase; flowbits:set,ipp.application; flowbits:noalert; classtype:protocol-command-decode; sid:17534; rev:2;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 13722 (msg:"MISC Veritas NetBackup java user interface service format string attack attempt"; flow:established,to_server; content:"%hn"; fast_pattern:only; metadata:policy security-ips drop; reference:cve,2005-2715; classtype:attempted-admin; sid:17706; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 617 (msg:"MISC Arkeia Network Backup Client Buffer Overflow Type 84 Attempt"; flow:established,to_server; content:"|00 54|"; depth:2; byte_test:2,>,255,4,relative; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,12594; reference:cve,2005-0491; classtype:attempted-user; sid:18292; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 617 (msg:"MISC Arkeia Network Backup Client Buffer Overflow Type 77 Attempt"; flow:established,to_server; content:"|00 4D|"; depth:2; byte_test:2,>,23,4,relative; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,12594; reference:cve,2005-0491; classtype:attempted-user; sid:18291; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS (msg:"MISC HP DDMI Agent spoofing - command execution"; flow:established,to_server; content:"SOAPMethodName|3A| urn|3A|aiagent|23|executeProcess"; nocase; metadata:policy security-ips drop; reference:bugtraq,35250; reference:cve,2009-1419; classtype:attempted-admin; sid:18397; rev:1;)

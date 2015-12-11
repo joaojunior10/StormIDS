@@ -9,6 +9,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.google.gson.Gson;
+import networkmonitor.bolts.MockTupleHelpers;
 import org.junit.Test;
 import util.matcher.Match;
 
@@ -55,20 +56,3 @@ public class LogMatchesBoltTest {
     }
 }
 
-final class MockTupleHelpers {
-
-    private MockTupleHelpers() {
-    }
-
-    public static Tuple mockTickTuple(String matches) {
-        return mockTuple(Constants.SYSTEM_COMPONENT_ID, Constants.SYSTEM_TICK_STREAM_ID, matches);
-    }
-
-    public static Tuple mockTuple(String componentId, String streamId,String matches) {
-        Tuple tuple = mock(Tuple.class);
-        when(tuple.getSourceComponent()).thenReturn(componentId);
-        when(tuple.getSourceStreamId()).thenReturn(streamId);
-        when(tuple.getValue(0)).thenReturn(matches);
-        return tuple;
-    }
-}

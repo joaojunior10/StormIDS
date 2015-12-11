@@ -29,6 +29,7 @@ public class Matcher implements Serializable {
         for(SnortSignature rule : snortSignatures){
             boolean match = true;
             match &= HeaderMatcher.match(packet, rule.header);
+            if(!match) continue;
             //match &= NonPayloadMatcher.match(packet, rule.nonPayloadOptions);
             match &= PayloadMatcher.match(packet.data, rule.payloadOptions);
             if(match){

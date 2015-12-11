@@ -39,7 +39,6 @@ public class NettySystemResourceMonitor extends SystemResourceMonitor{
 				NetRouteListPlugin plugin7 = new NetRouteListPlugin(DEFAULT_LONG_PROBE_TIME_INTERVAL);
 				NetInterfaceStatsPlugin plugin8 = new NetInterfaceStatsPlugin(DEFAULT_LONG_PROBE_TIME_INTERVAL);
 				ProcessListPlugin plugin9 = new ProcessListPlugin(DEFAULT_LONG_PROBE_TIME_INTERVAL);
-				PacketCapturePlugin plugin10 = new PacketCapturePlugin(DEFAULT_SHORT_PROBE_TIME_INTERVAL);
 				PacketDataPlugin plugin11 = new PacketDataPlugin(DEFAULT_SHORT_PROBE_TIME_INTERVAL);
 
 //				monitor.addResourceMonitor(plugin1);
@@ -50,7 +49,6 @@ public class NettySystemResourceMonitor extends SystemResourceMonitor{
 //				monitor.addResourceMonitor(plugin6);
 //				monitor.addResourceMonitor(plugin7);
 //				monitor.addResourceMonitor(plugin8);
-				monitor.addResourceMonitor(plugin10);
 				monitor.addResourceMonitor(plugin11);
 
 				//Run the monitor;

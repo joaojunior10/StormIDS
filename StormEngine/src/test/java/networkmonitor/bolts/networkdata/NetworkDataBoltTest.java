@@ -1,30 +1,34 @@
 package networkmonitor.bolts.networkdata;
 
-import org.junit.Assert;
-import util.matcher.Matcher;
-import util.rules.Rules;
-
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import backtype.storm.tuple.Tuple;
+import networkmonitor.bolts.MockTupleHelpers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by joao on 9/6/15.
  */
 public class NetworkDataBoltTest {
-    public void testTreatData() throws Exception {
-        List<PacketData> packets = new ArrayList<PacketData>();
-        PacketData packet = new PacketData();
-        packet.data = "bHCf1cIeuOhWPQk4CABFAAG0OtFAAEAGZEgKAAEFa7QjcvsOAFBiRBoD4PbsZ4AYEAAWKwAAAQEICkb29FiEAav5R0VUIC9zdHlsZS9pbWFnZXMvZmF2aWNvbi5wbmcgSFRUUC8xLjENCkhvc3Q6IHd3dy5sZWdhcC5jb20uYnINCkNvbm5lY3Rpb246IGtlZXAtYWxpdmUNClVzZXItQWdlbnQ6IE1vemlsbGEvNS4wIChNYWNpbnRvc2g7IEludGVsIE1hYyBPUyBYIDEwXzEwXzUpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS80NS4wLjI0NTQuODUgU2FmYXJpLzUzNy4zNg0KQWNjZXB0OiAqLyoNCkROVDogMQ0KUmVmZXJlcjogaHR0cDovL3d3dy5sZWdhcC5jb20uYnIvDQpBY2NlcHQtRW5jb2Rpbmc6IGd6aXAsIGRlZmxhdGUsIHNkY2gNCkFjY2VwdC1MYW5ndWFnZTogZW4tVVMsZW47cT0wLjgscHQtQlI7cT0wLjYscHQ7cT0wLjQsZW4tQVU7cT0wLjINCg0K";
-        packet.sourceIP = InetAddress.getLocalHost().getHostAddress();
-        packet.destinationIP = "107.180.35.114";
-        packet.sourcePort = "64270";
-        packet.destinationPort = "80";
-        packets.add(packet);
-        Matcher matcher = new Matcher(new Rules().get());
-        matcher.match(packets,"PC-Joao");
+    private NetworkDataBolt networkdata;
+    private long start;
+    @Before
+    public void setup(){
+        networkdata = new NetworkDataBolt("networkdata");
+        start = System.currentTimeMillis();
+    }
+    @Test
+    public void testSaveMatch() throws Exception {
 
-        Assert.assertTrue(matcher.matches.size() > 0);
-
+        String packets = "{\"hostname\":\"Joaos-MacBook-Pro.local\",\"packetList\":[{\"TTL\":43,\"ack\":1553217724,\"data\":\"uOhWPQk4bHCf1cIeCABFAABQ1N4AACsGtHxA6bpfCgABBQG7weeTnTDYXJQ4vPAQD/CeTQAAAQEICjDYRF0o1s5UAQEFGlyUp4RclQJgXJSAvlyUofpclE7kXJR7NA==\"," +
+                "\"destinationIP\":\"10.0.1.5\",\"destinationPort\":\"49639\",\"dsize\":80,\"flags\":{},\"flow\":{},\"fragbits\":{\"D\":false,\"M\":false,\"R\":false},\"fragoffset\":0,\"icmp\":0,\"icmp_id\":0,\"icmp_seq\":0,\"icode\":0,\"id\":54494," +
+                "\"ip_proto_int\":0,\"ipopts\":{},\"protocol\":\"TCP\",\"sameip\":0,\"seq\":-1818414888,\"sourceIP\":\"64.233.186.95\",\"sourcePort\":\"443\",\"tos\":0,\"window\":4080}],\"topic\":\"NetworkData\"}";
+        Tuple input = MockTupleHelpers.mockTickTuple(packets);
+        networkdata.execute(input, null);
+    }
+    @After
+    public void end() {
+        System.out.println(System.currentTimeMillis() - start);
     }
 }
+
