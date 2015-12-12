@@ -6,10 +6,7 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,13 +48,15 @@ public class NetworkDataBolt extends BaseBasicBolt {
 		//Match packets
 		Type listType = new TypeToken<List<PacketData>>() {}.getType();
 
-		List<PacketData> packets = new Gson().fromJson(obj.get("packetList"),listType);
-        this.matcher.match(packets, hostname);
+		List<PacketData> packets = new Gson().fromJson(obj.getAsJsonArray("packetList"),listType);
+
+		this.matcher.match(packets, hostname);
         //Send result to LogMatchesBolt
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         if(this.matcher.matches.size() > 0) {
-            String matches = gson.toJson(this.matcher.matches);
+			LOG.info("NetworkDataBolt");
+			String matches = gson.toJson(this.matcher.matches);
 			if(collector != null)
             	collector.emit(new Values(matches));
         }

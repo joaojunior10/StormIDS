@@ -6,16 +6,15 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.joda.time.DateTime;
 import util.matcher.Match;
 
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -42,20 +41,27 @@ public class LogMatchesBolt extends BaseRichBolt{
         Type listType = new TypeToken<List<Match>>() {}.getType();
         String json = (String) input.getValue(0);
         List<Match> matches =  new Gson().fromJson(json,listType);
-        StringBuilder query = new StringBuilder();
-        query.append("BEGIN BATCH");
+
+        //Save off the prepared statement you're going to use
+        PreparedStatement statement = _session.prepare("INSERT INTO matches (id, timelog, hostname, " +
+                "sourceip, destinationip, sourceport, destinationport, " +
+                "msg, action, rule, packet) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+
+        List<ResultSetFuture> futures = new ArrayList<ResultSetFuture>();
+
         for (int i = 0; i < matches.size() ; i++) {
             Match match = matches.get(i);
-            query.append("\nINSERT INTO matches" +
-                    " (id, timelog, hostname, sourceip, destinationip, sourceport, destinationport" +
-                    ",msg, action, rule, packet)" +
-                    " VALUES ("+ UUID.randomUUID()+", dateOf(now()), " +
-                    "'"+match.hostname+"', '"+match.sourceIP+"','"+match.destinationIP+"'" +
-                    ",'"+match.sourcePort+"', '"+match.destinationPort+"', " +
-                    "'"+match.msg+"', '"+match.action+"', '"+match.rule+"', '"+match.packet+"')");
+
+            BoundStatement bind = statement.bind(UUID.randomUUID(), GregorianCalendar.getInstance().getTime(), match.hostname,
+                    match.sourceIP, match.destinationIP, match.sourcePort, match.destinationPort,
+                    match.msg, match.action, match.rule, match.packet);
+            ResultSetFuture resultSetFuture = _session.executeAsync(bind);
+            futures.add(resultSetFuture);
         }
-        query.append("\nAPPLY BATCH;");
-        _session.execute(query.toString());
+        //not returning anything useful but makes sure everything has completed before you exit the thread.
+        for(ResultSetFuture future: futures){
+            future.getUninterruptibly();
+        }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

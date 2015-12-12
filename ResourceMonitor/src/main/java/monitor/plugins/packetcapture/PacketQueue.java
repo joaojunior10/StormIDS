@@ -36,20 +36,6 @@ public class PacketQueue {
 		}
 	}
 
-	public String toJSON(List<PacketData> packets) {
-		StringBuilder result = new StringBuilder();
-		result.append("{\"PacketData\":[\n");
-		for(PacketData p : packets){
-			result.append(p.toString());
-			result.append(",\n\n");
-		}
-		//Remove last comma
-		if(!packets.isEmpty())
-			result.deleteCharAt(result.length() -3);
-		result.append("\n]}\n");
-		return result.toString();
-	}
-
 	public void addPacket(PacketData p) {
 		synchronized(this.packets){
 			this.packets.add(p);

@@ -11,6 +11,7 @@ public abstract class SystemResourceMonitor implements Runnable{
 	protected final int port;
 	
 	//Default frequency that the monitor will send information to the server
+	protected static final int DEFAULT_VERY_SHORT_PROBE_TIME_INTERVAL = 200;
 	protected static final int DEFAULT_SHORT_PROBE_TIME_INTERVAL = 1000;
 	protected static final int DEFAULT_LONG_PROBE_TIME_INTERVAL = 60*1000;
 	protected static final int DEFAULT_CHANNEL_CHECK_TIME_INTERVAL = DEFAULT_LONG_PROBE_TIME_INTERVAL;

@@ -55,11 +55,11 @@ public class KafkaSystemResourceMonitor extends SystemResourceMonitor {
 	public void run() {
 
 		Properties props = new Properties();
-		props.put("metadata.broker.list", "localhost:9092");
+		props.put("metadata.broker.list", Config.getInstance().kafkaBroker);
 		props.put("serializer.class", "kafka.serializer.StringEncoder");
 		//props.put("partitioner.class", "example.producer.SimplePartitioner");
 		props.put("request.required.acks", "1");
-		props.put("zk.connect", "localhost:" + port);
+		props.put("zk.connect", Config.getInstance().kafkaZooKeeper);
 		props.put("message.send.max.retries", new Integer(SystemResourceMonitor.DEFAULT_CHANNEL_CHECK_TIME_INTERVAL).toString());
 		props.put("retry.backoff.ms", new Integer(SystemResourceMonitor.DEFAULT_CHANNEL_CHECK_TIME_INTERVAL).toString());
 		ProducerConfig config = new ProducerConfig(props);

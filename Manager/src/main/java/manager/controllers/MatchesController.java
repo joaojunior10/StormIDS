@@ -28,15 +28,17 @@ public class MatchesController {
             Match match = new Match();
             match.id = row.getUUID("id").toString();
             match.hostname = row.getString("hostname");
-            match.timelog = row.getTimestamp("timelog").toString();
+            match.timelog = row.getTimestamp("timelog");
             match.sourceIP = row.getString("sourceIP");
             match.destinationIP = row.getString("destinationIP");
             match.sourcePort = row.getString("sourcePort");
             match.destinationPort = row.getString("destinationPort");
             match.rule = row.getString("rule");
             match.packet = row.getString("packet");
+            match.msg = row.getString("msg");
             matches.add(match);
         }
+        matches.sort((o1, o2) -> o2.timelog.compareTo(o1.timelog));
         return gson.toJson(matches);
     }
     @RequestMapping("/api/matchesByHost")

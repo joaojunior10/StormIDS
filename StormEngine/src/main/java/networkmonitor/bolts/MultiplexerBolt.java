@@ -7,6 +7,8 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import util.json.JSONObject;
 import util.json.JSONTokener;
 
@@ -19,18 +21,21 @@ public class MultiplexerBolt extends BaseBasicBolt {
 	private static final long serialVersionUID = 1L;
 	enum topics{
 		//NetRouteList, ProcessList
+		NetworkData,
 		MemUsage,
 		CpuUsage,
 		FileSystemUsage,
 		NetworkFlow,
-		NetworkData
+
 	}
 
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		try {
 			//Parse Json Object
-			JSONObject jsonObj = new JSONObject(new JSONTokener((String) tuple.getValue(0)));
-			String topic = jsonObj.getString("topic");
+			String jsonObj = (String) tuple.getValue(0);
+			JsonParser parser = new JsonParser();
+			JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
+			String topic = obj.get("topic").getAsString();
 			boolean sent = false;
 			//TODO refactoring - use a switch case or pattern matching
 			//TODO divide packet in 8 streams
@@ -38,6 +43,7 @@ public class MultiplexerBolt extends BaseBasicBolt {
 				if (topic.equals(tc.name())) {
 					collector.emit(topic+"Stream",new Values(jsonObj));
 					sent = true;
+					break;
 				}
 			}
 			if(!sent) collector.emit("DefaultStream",new Values(jsonObj));

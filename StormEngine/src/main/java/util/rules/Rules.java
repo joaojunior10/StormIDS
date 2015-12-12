@@ -33,10 +33,10 @@ public class Rules implements Serializable {
             if (uri.getScheme().equals("jar")) {
                 java.nio.file.FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
                 myPath = fileSystem.getPath("/rules");
-                LOG.trace(myPath.toString());
+               // LOG.trace(myPath.toString());
             } else {
                 myPath = Paths.get(uri);
-                LOG.trace(myPath.toString());
+                //LOG.trace(myPath.toString());
             }
             Files.walk(myPath).forEach(filePath -> {
                     if (Files.isRegularFile(filePath)) {
@@ -72,8 +72,8 @@ public class Rules implements Serializable {
                     snortSignatures.add(snortSignature);
                     rulesLogger.append(snortSignature.toString()).append("\n");
                 } catch (Exception e) {
-                    LOG.error(file.getPath());
-                    LOG.error(rule + "\n");
+                    //LOG.error(file.getPath());
+                    //LOG.error(rule + "\n");
                 }
             });
             //Dump the results to a text file and print out rules that didn't match the regex.

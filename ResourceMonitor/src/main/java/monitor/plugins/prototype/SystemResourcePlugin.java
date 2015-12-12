@@ -2,6 +2,7 @@ package monitor.plugins.prototype;
 
 import java.net.InetAddress;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import monitor.connectors.ChannelSpecification;
@@ -25,10 +26,30 @@ public abstract class SystemResourcePlugin implements Runnable {
 				JsonParser parser = new JsonParser();
 				JsonObject jsonObjToSend = getSystemInformation();
 				if (jsonObjToSend != null) {
-					//Guarantee that every jsonObject contains the topic name and the hostname.
-					jsonObjToSend.addProperty("topic", topicName());
-					jsonObjToSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
-					sendToChannel(jsonObjToSend.toString());
+					if(topicName().equals("NetworkData")){
+					JsonArray array = jsonObjToSend.getAsJsonArray("packetList");
+					int size = (7 + array.size() - 1)/7;
+					for (int i = 0; i < 7; i++) {
+						JsonArray mineArray = new JsonArray();
+						for (int j = size*i; j < size*(i+1); j++) {
+							try{
+								mineArray.add(array.get(j));
+							}catch (IndexOutOfBoundsException e){
+								//ignored
+							}
+						}
+						JsonObject toSend = new JsonObject();
+						toSend.addProperty("topic", topicName());
+						toSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
+						toSend.add("packetList", mineArray);
+						sendToChannel(toSend.toString());
+					}
+				}else {
+						//Guarantee that every jsonObject contains the topic name and the hostname.
+						jsonObjToSend.addProperty("topic", topicName());
+						jsonObjToSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
+						sendToChannel(jsonObjToSend.toString());
+					}
 				}
 				Thread.sleep(period);
 			}
@@ -57,7 +78,11 @@ public abstract class SystemResourcePlugin implements Runnable {
 
 	}
 	
-	public void sendToChannel(String obj) throws Exception {
-		channel.send(obj);
-	}
+	public void sendToChannel(String obj) {
+        try {
+            channel.send(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

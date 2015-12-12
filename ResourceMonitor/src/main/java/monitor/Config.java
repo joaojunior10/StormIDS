@@ -1,7 +1,6 @@
 package monitor;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,9 +19,10 @@ public class Config {
         try {
             String filename = "rm.config";
             ClassLoader classLoader = getClass().getClassLoader();
-            Path path = Paths.get(classLoader.getResource(filename).getPath());
-            List<String> configList = Files.readAllLines(path);
-            for (String config : configList){
+            InputStream in = classLoader.getResourceAsStream(filename);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String config;
+            while ((config = reader.readLine()) != null){
                 String[] options = config.split(":",2);
                 if(options[0].equals("kafka-zookeeper")){
                     kafkaZooKeeper = options[1];

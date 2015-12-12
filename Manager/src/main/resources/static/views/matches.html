@@ -20,7 +20,7 @@
         <tr ng-repeat="match in matches | startFrom:currentPage*pageSize | limitTo:pageSize">
           <td nowrap>{{match.timelog}}</td>
           <td nowrap>{{match.hostname}}</td>
-          <td nowrap>{{match.generalOptions.msg}}</td>
+          <td nowrap>{{match.msg}}</td>
           <td nowrap>{{match.sourceIP}}:{{match.sourcePort}}</td>
           <td nowrap>{{match.destinationIP}}:{{match.destinationPort}}</td>
           <td nowrap>{{match.generalOptions.references[0]}}</td>

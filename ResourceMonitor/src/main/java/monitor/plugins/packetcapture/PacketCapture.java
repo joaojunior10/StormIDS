@@ -42,7 +42,6 @@ public class PacketCapture extends Thread {
 	private String bfp;
     private Gson gson;
 	private int count = 0;
-	private static Map intervals = new HashMap();
 	private static final Logger LOG = LoggerFactory.getLogger(PacketCapture.class);
 
 	public static PacketCapture getInstance() {
@@ -51,19 +50,7 @@ public class PacketCapture extends Thread {
 		}
 		return instance;
 	}
-	static {
-		intervals.put(1,1);
-		intervals.put(10,1);
-		intervals.put(100,1);
-		intervals.put(1000,1);
-		intervals.put(10000,1);
-		intervals.put(100000,1);
-		intervals.put(1000000,1);
-		intervals.put(10000000,1);
-		intervals.put(100000000,1);
-		intervals.put(1000000000,1);
 
-	}
 	public PacketCapture(){
 		bfp = Config.getInstance().bfp;
         gson = new Gson();
@@ -105,7 +92,7 @@ public class PacketCapture extends Thread {
 					PacketData p = getPacketData(packet);
 					PacketQueue.getInstance().addPacket(p);
 					count++;
-					if(intervals.containsKey(count)){
+					if(count%1000 == 0){
 						LOG.trace(Integer.toString(count));
 					}
 				}
