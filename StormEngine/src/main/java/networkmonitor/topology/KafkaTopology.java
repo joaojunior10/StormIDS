@@ -61,7 +61,7 @@ public class KafkaTopology{
 
 		topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("KafkaSpout");
 		//topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("NettySpout");
-		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 8).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
+		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 6).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
 		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 1).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
 //		topology.setBolt("MemUsageRollingCountBolt", new RollingCountBolt("MemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "MemUsageStream");
 //		topology.setBolt("MemUsageAnalyser", new UsageAnalyser("MemUsage")).fieldsGrouping("MemUsageRollingCountBolt", new Fields("hostname","count"));

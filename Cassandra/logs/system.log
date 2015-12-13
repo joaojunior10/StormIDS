@@ -1188,3 +1188,4 @@ INFO  [CompactionExecutor:30] 2015-12-13 13:09:11,192 AutoSavingCache.java:398 -
 INFO  [IndexSummaryManager:1] 2015-12-13 13:09:12,853 IndexSummaryManager.java:256 - Redistributing index summaries
 INFO  [IndexSummaryManager:1] 2015-12-13 14:09:12,821 IndexSummaryManager.java:256 - Redistributing index summaries
 INFO  [IndexSummaryManager:1] 2015-12-13 15:09:12,792 IndexSummaryManager.java:256 - Redistributing index summaries
+INFO  [IndexSummaryManager:1] 2015-12-13 16:09:12,763 IndexSummaryManager.java:256 - Redistributing index summaries
