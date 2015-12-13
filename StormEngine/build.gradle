@@ -1,16 +1,10 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
-    }
+plugins {
+    id 'java' // or 'groovy' Must be explicitly applied
+    id 'com.github.johnrengelman.shadow' version '1.2.2'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'eu.appsatori.fatjar'
 
 sourceCompatibility = 1.8
 version = '1.0'
@@ -27,9 +21,20 @@ jar {
     }
 }
 
+shadowJar {
+    dependencies {
+        exclude(dependency('org.slf4j:slf4j-log4j12:.*'))
+        exclude(dependency('log4j:log4j:.*'))
+        exclude(dependency('org.slf4j:log4j-over-slf4j:.*'))
+        exclude(dependency('org.slf4j:log4j-slf4j-impl:.*'))
+        exclude(dependency('org.slf4j:log4j-core:.*'))
+        exclude(dependency('org.slf4j:log4j-api:.*'))
+        exclude(dependency('org.apache.storm:storm-core:.*'))
+    }
+}
 
 dependencies {
-    compile ('org.apache.storm:storm-core:0.9.6'){
+    compile ('org.apache.storm:storm-core:0.10.0'){
 //        exclude module: 'logback-core'
 //        exclude module: 'logback-classic'
 //        exclude module: 'log4j-over-slf4j'
@@ -37,21 +42,25 @@ dependencies {
             fatJarExclude = true
         }
     }
-    compile 'org.apache.storm:storm-kafka:0.9.6'
-    compile ('org.apache.kafka:kafka_2.10:0.8.2.1'){
-        exclude module: 'zookeeper'
+    compile 'org.apache.storm:storm-kafka:0.10.0'
+    compile ('org.apache.kafka:kafka_2.10:0.9.0.0'){
         exclude module: 'log4j'
+        exclude module: 'zookeeper'
+        exclude module: 'slf4j-log4j12'
     }
     compile 'commons-collections:commons-collections:3.2.2'
     compile ('io.netty:netty-all:4.0.30.Final'){
         exclude module: 'commons-logging'
+        exclude module: 'log4j'
     }
     compile 'org.javassist:javassist:3.20.0-GA'
     compile 'org.neo4j:neo4j-kernel:2.2.5'
-    compile 'com.datastax.cassandra:cassandra-driver-core:2.2.0-rc3'
+    compile ('com.datastax.cassandra:cassandra-driver-core:2.2.0-rc3'){
+        exclude module: 'log4j'
+        exclude module: 'slf4j-log4j12'
+    }
     compile 'com.google.code.gson:gson:2.5'
     compile 'org.mockito:mockito-all:1.10.19'
-
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

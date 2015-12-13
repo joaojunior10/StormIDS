@@ -25,7 +25,7 @@ public class Matcher implements Serializable {
     }
 
     private void matchRules(PacketData packet, String hostname) {
-
+        this.matches = new ArrayList<>();
         for(SnortSignature rule : snortSignatures){
             boolean match = true;
             match &= HeaderMatcher.match(packet, rule.header);

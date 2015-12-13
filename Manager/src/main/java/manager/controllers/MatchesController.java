@@ -19,7 +19,7 @@ public class MatchesController {
     public String matches() {
         //TODO paged search
 
-        Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
+        Cluster cluster = Cluster.builder().addContactPoint("10.1.1.46").build();
         Session session = cluster.connect("stormids");
         Gson gson = new Gson();
         ResultSet results = session.execute("SELECT * FROM matches");

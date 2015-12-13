@@ -1,8 +1,11 @@
 package networkmonitor.bolts.networkdata;
 
+import backtype.storm.task.OutputCollector;
+import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
@@ -20,28 +23,40 @@ import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class NetworkDataBolt extends BaseBasicBolt {
+public class NetworkDataBolt extends BaseRichBolt {
 	private Matcher matcher;
-	private static final long serialVersionUID = 1L;
+    private OutputCollector collector;
+    private static final long serialVersionUID = 1L;
 	String topic;
 	private static final Logger LOG = LoggerFactory.getLogger(NetworkDataBolt.class);
 
     public NetworkDataBolt(String topic) {
-        Rules rules = new Rules();
-		try {
-			matcher = new Matcher(rules.get());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		LOG.info("NetworkDataBolt initiated");
-    }
-	public void execute(Tuple input, BasicOutputCollector collector) {
-		String jsonObj = (String) input.getValue(0);
-		treatData(jsonObj,  collector);
-	}
 
-    public void treatData(String jsonObj, BasicOutputCollector collector) {
+    }
+
+    @Override
+    public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
+        Rules rules = new Rules();
+        try {
+            matcher = new Matcher(rules.get());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            LOG.error("Error reading rules - " + e.getStackTrace());
+        }
+        this.collector = collector;
+        LOG.info("NetworkDataBolt initiated");
+    }
+
+    @Override
+    public void execute(Tuple input) {
+        LOG.info("Packets received");
+        String jsonObj = (String) input.getValue(0);
+        treatData(jsonObj,  collector);
+    }
+
+    public void treatData(String jsonObj, OutputCollector collector) {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
         String hostname = obj.get("hostname").getAsString();
@@ -49,44 +64,20 @@ public class NetworkDataBolt extends BaseBasicBolt {
 		Type listType = new TypeToken<List<PacketData>>() {}.getType();
 
 		List<PacketData> packets = new Gson().fromJson(obj.getAsJsonArray("packetList"),listType);
+		LOG.info("Packets: " + packets.size());
 
 		this.matcher.match(packets, hostname);
         //Send result to LogMatchesBolt
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         if(this.matcher.matches.size() > 0) {
-			LOG.info("NetworkDataBolt");
+			LOG.info("Matches sent: " + this.matcher.matches.size());
 			String matches = gson.toJson(this.matcher.matches);
+            //reset Matches
 			if(collector != null)
             	collector.emit(new Values(matches));
         }
 	}
-	//TODO user GSON
-//	public List<PacketData> parsePacket(JSONObject jsonObjList) {
-//		JSONArray jsonPackets = jsonObjList.optJSONArray("packetList");
-//		List<PacketData> packets = new ArrayList<PacketData>();
-//		if(jsonPackets != null){
-//			for(int i = 0; i< jsonPackets.length(); i++){
-//				JSONObject jsonObj = jsonPackets.optJSONObject(i);
-//				PacketData packet = new PacketData();
-//				packet.data = jsonObj.optString("data");
-//				packet.protocol = jsonObj.optString("protocol");
-//				packet.sourceIP = jsonObj.optString("sourceIP");
-//				packet.destinationIP = jsonObj.optString("destinationIP");
-//				packet.sourcePort = jsonObj.optString("sourcePort");
-//				packet.destinationPort = jsonObj.optString("destinationPort");
-//				packet.fragoffset = jsonObj.optInt("fragoffset");
-//				packet.TTL = jsonObj.optInt("TTL");
-//				packet.tos = jsonObj.optInt("tos");
-//				packet.id = jsonObj.optInt("id");
-//				packet.dsize = jsonObj.optInt("dsize");
-//
-//				packets.add(packet);
-//			}
-//
-//		}
-//		return packets;
-//	}
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("matches"));

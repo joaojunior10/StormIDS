@@ -24,7 +24,7 @@ public class NetworkDataBoltTest {
                 "\"destinationIP\":\"10.0.1.5\",\"destinationPort\":\"49639\",\"dsize\":80,\"flags\":{},\"flow\":{},\"fragbits\":{\"D\":false,\"M\":false,\"R\":false},\"fragoffset\":0,\"icmp\":0,\"icmp_id\":0,\"icmp_seq\":0,\"icode\":0,\"id\":54494," +
                 "\"ip_proto_int\":0,\"ipopts\":{},\"protocol\":\"TCP\",\"sameip\":0,\"seq\":-1818414888,\"sourceIP\":\"64.233.186.95\",\"sourcePort\":\"443\",\"tos\":0,\"window\":4080}],\"topic\":\"NetworkData\"}";
         Tuple input = MockTupleHelpers.mockTickTuple(packets);
-        networkdata.execute(input, null);
+        networkdata.execute(input);
     }
     @After
     public void end() {

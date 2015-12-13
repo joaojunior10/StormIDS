@@ -37,8 +37,6 @@ public class MultiplexerBolt extends BaseBasicBolt {
 			JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
 			String topic = obj.get("topic").getAsString();
 			boolean sent = false;
-			//TODO refactoring - use a switch case or pattern matching
-			//TODO divide packet in 8 streams
 			for (topics tc : topics.values()){
 				if (topic.equals(tc.name())) {
 					collector.emit(topic+"Stream",new Values(jsonObj));

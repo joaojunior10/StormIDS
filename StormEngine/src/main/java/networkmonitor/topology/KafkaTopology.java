@@ -23,22 +23,23 @@ public class KafkaTopology{
 
 	public static void main(String[] args) throws Exception {
 
-        LOG.trace("Application initiated");
+        LOG.info("Application initiated");
 		TopologyBuilder builder = createTopology();
 
 		Config config = new Config();
 		config.setDebug(true);
+		config.put(Config.TOPOLOGY_DEBUG, false);
 		config.put("cassandra.keyspace",util.Config.getInstance().cassandraKeyspace);
 		config.put("cassandra.address",util.Config.getInstance().cassandraAddress);
 
 		if (args != null && args.length > 0) {
-			config.setNumWorkers(2);
+			config.setNumWorkers(1);
 
 			try {
 				StormSubmitter.submitTopologyWithProgressBar(args[0], config, builder.createTopology());
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOG.error("\n\n Execution interrupted. \n\n" + e.getMessage());
+				LOG.error("\n\n Execution interrupted. \n\n" + e.getStackTrace());
 			}
 		}
 		else {
@@ -60,8 +61,8 @@ public class KafkaTopology{
 
 		topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("KafkaSpout");
 		//topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("NettySpout");
-		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 6).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
-		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 2).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
+		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 8).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
+		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 1).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
 //		topology.setBolt("MemUsageRollingCountBolt", new RollingCountBolt("MemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "MemUsageStream");
 //		topology.setBolt("MemUsageAnalyser", new UsageAnalyser("MemUsage")).fieldsGrouping("MemUsageRollingCountBolt", new Fields("hostname","count"));
 //		topology.setBolt("CpuUsageRollingCountBolt", new RollingCountBolt("CpuUsage",30,1)).shuffleGrouping("MultiplexerBolt", "CpuUsageStream");
