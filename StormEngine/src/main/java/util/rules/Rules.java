@@ -41,12 +41,12 @@ public class Rules implements Serializable {
                         readFile(snortSignatures, txtReader);
                     }
                 } catch (IOException e) {
-                    LOG.error(path.toString() + " - " + e.getStackTrace());
+                  //  LOG.error(path.toString() + " - " + e.getStackTrace());
                     e.printStackTrace();
                 }
             });
         } catch (IOException e) {
-            LOG.error(e.getStackTrace().toString());
+        //    LOG.error(e.getStackTrace().toString());
 
             e.printStackTrace();
         }

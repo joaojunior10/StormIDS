@@ -12,6 +12,7 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Socket socket = null;
         String ipAddress = args[0];
+        int packets = Integer.parseInt(args[1]);
         int count = 0;
         try {
             socket = new Socket(ipAddress, 3000);
@@ -20,16 +21,15 @@ public class Client {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             System.out.println("Transmissão iniciado em " + sdf.format(System.currentTimeMillis()));
-            System.out.println("Millis " + System.currentTimeMillis());
 
-
-            while (true){
+            for (int i = 0; i < packets; i++){
                 count++;
                 byte[] bytes = new byte[256];
                 in.read(bytes);
-                out.writeByte(1);
-                out.flush();
             }
+            System.out.println("Pacotes lidos "+count);
+            System.out.println("Transmissão terminada em " + sdf.format(System.currentTimeMillis()));
+            socket.close();
         } catch (Exception e) {
             System.out.println("Pacotes lidos "+count);
             System.out.println("Fim da transmição");

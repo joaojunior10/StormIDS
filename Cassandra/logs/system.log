@@ -1279,3 +1279,257 @@ WARN  [SharedPool-Worker-1] 2015-12-13 19:59:20,510 SelectStatement.java:253 - A
 WARN  [SharedPool-Worker-1] 2015-12-13 19:59:21,687 SelectStatement.java:253 - Aggregation query used without partition key
 WARN  [SharedPool-Worker-1] 2015-12-13 19:59:22,768 SelectStatement.java:253 - Aggregation query used without partition key
 INFO  [HANDSHAKE-localhost/127.0.0.1] 2015-12-13 19:59:37,708 OutboundTcpConnection.java:494 - Handshaking version with localhost/127.0.0.1
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:21,634 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:42,375 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:43,576 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:44,278 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:44,928 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:02:46,222 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:03:09,497 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:03:11,330 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:03:27,276 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:06:22,451 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:30:44,680 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-16] 2015-12-13 20:48:59,434 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,975 MessagingService.java:924 - MUTATION messages were dropped in last 5000 ms: 336 for internal timeout and 0 for cross node timeout
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,976 StatusLogger.java:51 - Pool Name                    Active   Pending      Completed   Blocked  All Time Blocked
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,981 StatusLogger.java:55 - ReadStage                         1         0           3289         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,982 StatusLogger.java:55 - MutationStage                     0         0         119776         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,983 StatusLogger.java:55 - CounterMutationStage              0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,984 StatusLogger.java:55 - GossipStage                       0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,984 StatusLogger.java:55 - RequestResponseStage              0         0              2         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,985 StatusLogger.java:55 - AntiEntropyStage                  0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,986 StatusLogger.java:55 - MigrationStage                    0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,987 StatusLogger.java:55 - MiscStage                         0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,988 StatusLogger.java:55 - InternalResponseStage             0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,988 StatusLogger.java:55 - ReadRepairStage                   0         0              0         0                 0
+
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,988 StatusLogger.java:65 - CompactionManager                 0         0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:77 - MessagingService                n/a       0/0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:87 - Cache Type                     Size                 Capacity               KeysToSave
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:89 - KeyCache                       1496                104857600                      all
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:95 - RowCache                          0                        0                      all
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:102 - Table                       Memtable ops,data
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:105 - system_distributed.parent_repair_history                 0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,989 StatusLogger.java:105 - system_distributed.repair_history                 0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.compaction_history              27,720
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.hints                              0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.schema_aggregates                  1,8
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.IndexInfo                          0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.schema_columnfamilies           461,29693
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.schema_triggers                    1,8
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.schema_functions                   1,8
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.size_estimates                600,2776
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,990 StatusLogger.java:105 - system.paxos                              0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.peer_events                        0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.range_xfers                        0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.compactions_in_progress                 0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.peers                              1,8
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.schema_keyspaces                 4,121
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.schema_usertypes                   1,8
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.local                              0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.sstable_activity               156,735
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.schema_columns               967,50943
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,991 StatusLogger.java:105 - system.batchlog                           0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system.available_ranges                   0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - stormids.matches              248468,53841737
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - stormids.test                             0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_auth.roles                         0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_auth.role_members                  0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_auth.resource_role_permissons_index                 0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_auth.role_permissions                 0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_traces.sessions                    0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - system_traces.events                      0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,992 StatusLogger.java:105 - demo.users                                0,0
+INFO  [ScheduledTasks:1] 2015-12-13 20:48:59,993 StatusLogger.java:105 - demo.user                                 0,0
+WARN  [SharedPool-Worker-3] 2015-12-13 20:49:25,986 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:51:02,026 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 20:52:30,372 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [IndexSummaryManager:1] 2015-12-13 21:03:16,566 IndexSummaryManager.java:256 - Redistributing index summaries
+WARN  [SharedPool-Worker-1] 2015-12-13 21:03:23,667 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [PERIODIC-COMMIT-LOG-SYNCER] 2015-12-13 22:34:13,425 AbstractCommitLogService.java:117 - Out of 4 commit log syncs over the past 1224s with average duration of 898960.00ms, 1 have exceeded the configured commit interval by an average of 3585840.00ms
+WARN  [SharedPool-Worker-1] 2015-12-13 22:37:16,136 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-13 22:44:43,765 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [main] 2015-12-14 08:35:14,436 YamlConfigurationLoader.java:92 - Loading settings from file:/Users/joao/Programs/StormIDS/Cassandra/conf/cassandra.yaml
+INFO  [main] 2015-12-14 08:35:14,521 YamlConfigurationLoader.java:135 - Node configuration:[authenticator=AllowAllAuthenticator; authorizer=AllowAllAuthorizer; auto_snapshot=true; batch_size_fail_threshold_in_kb=50; batch_size_warn_threshold_in_kb=5; batchlog_replay_throttle_in_kb=1024; cas_contention_timeout_in_ms=1000; client_encryption_options=<REDACTED>; cluster_name=Test Cluster; column_index_size_in_kb=64; commit_failure_policy=stop; commitlog_segment_size_in_mb=32; commitlog_sync=periodic; commitlog_sync_period_in_ms=10000; compaction_large_partition_warning_threshold_mb=100; compaction_throughput_mb_per_sec=16; concurrent_counter_writes=32; concurrent_reads=32; concurrent_writes=32; counter_cache_save_period=7200; counter_cache_size_in_mb=null; counter_write_request_timeout_in_ms=5000; cross_node_timeout=false; disk_failure_policy=stop; dynamic_snitch_badness_threshold=0.1; dynamic_snitch_reset_interval_in_ms=600000; dynamic_snitch_update_interval_in_ms=100; enable_user_defined_functions=false; endpoint_snitch=SimpleSnitch; hinted_handoff_enabled=true; hinted_handoff_throttle_in_kb=1024; incremental_backups=false; index_summary_capacity_in_mb=null; index_summary_resize_interval_in_minutes=60; inter_dc_tcp_nodelay=false; internode_compression=all; key_cache_save_period=14400; key_cache_size_in_mb=null; listen_address=localhost; max_hint_window_in_ms=10800000; max_hints_delivery_threads=2; memtable_allocation_type=heap_buffers; native_transport_port=9042; num_tokens=256; partitioner=org.apache.cassandra.dht.Murmur3Partitioner; permissions_validity_in_ms=2000; range_request_timeout_in_ms=10000; read_request_timeout_in_ms=5000; request_scheduler=org.apache.cassandra.scheduler.NoScheduler; request_timeout_in_ms=10000; role_manager=CassandraRoleManager; roles_validity_in_ms=2000; row_cache_save_period=0; row_cache_size_in_mb=0; rpc_address=localhost; rpc_keepalive=true; rpc_port=9160; rpc_server_type=sync; seed_provider=[{class_name=org.apache.cassandra.locator.SimpleSeedProvider, parameters=[{seeds=127.0.0.1}]}]; server_encryption_options=<REDACTED>; snapshot_before_compaction=false; ssl_storage_port=7001; sstable_preemptive_open_interval_in_mb=50; start_native_transport=true; start_rpc=false; storage_port=7000; thrift_framed_transport_size_in_mb=15; tombstone_failure_threshold=100000; tombstone_warn_threshold=1000; tracetype_query_ttl=86400; tracetype_repair_ttl=604800; trickle_fsync=false; trickle_fsync_interval_in_kb=10240; truncate_request_timeout_in_ms=60000; windows_timer_interval=1; write_request_timeout_in_ms=2000]
+INFO  [main] 2015-12-14 08:35:14,547 DatabaseDescriptor.java:304 - DiskAccessMode 'auto' determined to be mmap, indexAccessMode is mmap
+INFO  [main] 2015-12-14 08:35:14,717 DatabaseDescriptor.java:406 - Global memtable on-heap threshold is enabled at 1004MB
+INFO  [main] 2015-12-14 08:35:14,718 DatabaseDescriptor.java:410 - Global memtable off-heap threshold is enabled at 1004MB
+INFO  [main] 2015-12-14 08:35:14,742 YamlConfigurationLoader.java:92 - Loading settings from file:/Users/joao/Programs/StormIDS/Cassandra/conf/cassandra.yaml
+INFO  [main] 2015-12-14 08:35:14,751 YamlConfigurationLoader.java:135 - Node configuration:[authenticator=AllowAllAuthenticator; authorizer=AllowAllAuthorizer; auto_snapshot=true; batch_size_fail_threshold_in_kb=50; batch_size_warn_threshold_in_kb=5; batchlog_replay_throttle_in_kb=1024; cas_contention_timeout_in_ms=1000; client_encryption_options=<REDACTED>; cluster_name=Test Cluster; column_index_size_in_kb=64; commit_failure_policy=stop; commitlog_segment_size_in_mb=32; commitlog_sync=periodic; commitlog_sync_period_in_ms=10000; compaction_large_partition_warning_threshold_mb=100; compaction_throughput_mb_per_sec=16; concurrent_counter_writes=32; concurrent_reads=32; concurrent_writes=32; counter_cache_save_period=7200; counter_cache_size_in_mb=null; counter_write_request_timeout_in_ms=5000; cross_node_timeout=false; disk_failure_policy=stop; dynamic_snitch_badness_threshold=0.1; dynamic_snitch_reset_interval_in_ms=600000; dynamic_snitch_update_interval_in_ms=100; enable_user_defined_functions=false; endpoint_snitch=SimpleSnitch; hinted_handoff_enabled=true; hinted_handoff_throttle_in_kb=1024; incremental_backups=false; index_summary_capacity_in_mb=null; index_summary_resize_interval_in_minutes=60; inter_dc_tcp_nodelay=false; internode_compression=all; key_cache_save_period=14400; key_cache_size_in_mb=null; listen_address=localhost; max_hint_window_in_ms=10800000; max_hints_delivery_threads=2; memtable_allocation_type=heap_buffers; native_transport_port=9042; num_tokens=256; partitioner=org.apache.cassandra.dht.Murmur3Partitioner; permissions_validity_in_ms=2000; range_request_timeout_in_ms=10000; read_request_timeout_in_ms=5000; request_scheduler=org.apache.cassandra.scheduler.NoScheduler; request_timeout_in_ms=10000; role_manager=CassandraRoleManager; roles_validity_in_ms=2000; row_cache_save_period=0; row_cache_size_in_mb=0; rpc_address=localhost; rpc_keepalive=true; rpc_port=9160; rpc_server_type=sync; seed_provider=[{class_name=org.apache.cassandra.locator.SimpleSeedProvider, parameters=[{seeds=127.0.0.1}]}]; server_encryption_options=<REDACTED>; snapshot_before_compaction=false; ssl_storage_port=7001; sstable_preemptive_open_interval_in_mb=50; start_native_transport=true; start_rpc=false; storage_port=7000; thrift_framed_transport_size_in_mb=15; tombstone_failure_threshold=100000; tombstone_warn_threshold=1000; tracetype_query_ttl=86400; tracetype_repair_ttl=604800; trickle_fsync=false; trickle_fsync_interval_in_kb=10240; truncate_request_timeout_in_ms=60000; windows_timer_interval=1; write_request_timeout_in_ms=2000]
+INFO  [main] 2015-12-14 08:35:14,763 CassandraDaemon.java:385 - Hostname: joaos-macbook-pro.local
+INFO  [main] 2015-12-14 08:35:14,763 CassandraDaemon.java:392 - JVM vendor/version: Java HotSpot(TM) 64-Bit Server VM/1.8.0_25
+INFO  [main] 2015-12-14 08:35:14,763 CassandraDaemon.java:393 - Heap size: 4211081216/4211081216
+INFO  [main] 2015-12-14 08:35:14,764 CassandraDaemon.java:396 - Code Cache Non-heap memory: init = 2555904(2496K) used = 3457152(3376K) committed = 3473408(3392K) max = 251658240(245760K)
+INFO  [main] 2015-12-14 08:35:14,765 CassandraDaemon.java:396 - Metaspace Non-heap memory: init = 0(0K) used = 12514504(12221K) committed = 12713984(12416K) max = -1(-1K)
+INFO  [main] 2015-12-14 08:35:14,765 CassandraDaemon.java:396 - Compressed Class Space Non-heap memory: init = 0(0K) used = 1569912(1533K) committed = 1703936(1664K) max = 1073741824(1048576K)
+INFO  [main] 2015-12-14 08:35:14,765 CassandraDaemon.java:396 - Par Eden Space Heap memory: init = 671088640(655360K) used = 107374688(104858K) committed = 671088640(655360K) max = 671088640(655360K)
+INFO  [main] 2015-12-14 08:35:14,765 CassandraDaemon.java:396 - Par Survivor Space Heap memory: init = 83886080(81920K) used = 0(0K) committed = 83886080(81920K) max = 83886080(81920K)
+INFO  [main] 2015-12-14 08:35:14,766 CassandraDaemon.java:396 - CMS Old Gen Heap memory: init = 3456106496(3375104K) used = 0(0K) committed = 3456106496(3375104K) max = 3456106496(3375104K)
+INFO  [main] 2015-12-14 08:35:14,766 CassandraDaemon.java:398 - Classpath: bin/../conf:bin/../build/classes/main:bin/../build/classes/thrift:bin/../lib/ST4-4.0.8.jar:bin/../lib/airline-0.6.jar:bin/../lib/antlr-runtime-3.5.2.jar:bin/../lib/apache-cassandra-2.2.3.jar:bin/../lib/apache-cassandra-clientutil-2.2.3.jar:bin/../lib/apache-cassandra-thrift-2.2.3.jar:bin/../lib/cassandra-driver-core-2.2.0-rc2-SNAPSHOT-20150617-shaded.jar:bin/../lib/commons-cli-1.1.jar:bin/../lib/commons-codec-1.2.jar:bin/../lib/commons-lang3-3.1.jar:bin/../lib/commons-math3-3.2.jar:bin/../lib/compress-lzf-0.8.4.jar:bin/../lib/concurrentlinkedhashmap-lru-1.4.jar:bin/../lib/crc32ex-0.1.1.jar:bin/../lib/disruptor-3.0.1.jar:bin/../lib/ecj-4.4.2.jar:bin/../lib/guava-16.0.jar:bin/../lib/high-scale-lib-1.0.6.jar:bin/../lib/jackson-core-asl-1.9.2.jar:bin/../lib/jackson-mapper-asl-1.9.2.jar:bin/../lib/jamm-0.3.0.jar:bin/../lib/javax.inject.jar:bin/../lib/jbcrypt-0.3m.jar:bin/../lib/jcl-over-slf4j-1.7.7.jar:bin/../lib/jna-4.0.0.jar:bin/../lib/joda-time-2.4.jar:bin/../lib/json-simple-1.1.jar:bin/../lib/libthrift-0.9.2.jar:bin/../lib/log4j-over-slf4j-1.7.7.jar:bin/../lib/logback-classic-1.1.3.jar:bin/../lib/logback-core-1.1.3.jar:bin/../lib/lz4-1.3.0.jar:bin/../lib/metrics-core-3.1.0.jar:bin/../lib/metrics-logback-3.1.0.jar:bin/../lib/netty-all-4.0.23.Final.jar:bin/../lib/ohc-core-0.3.4.jar:bin/../lib/ohc-core-j8-0.3.4.jar:bin/../lib/reporter-config-base-3.0.0.jar:bin/../lib/reporter-config3-3.0.0.jar:bin/../lib/sigar-1.6.4.jar:bin/../lib/slf4j-api-1.7.7.jar:bin/../lib/snakeyaml-1.11.jar:bin/../lib/snappy-java-1.1.1.7.jar:bin/../lib/stream-2.5.2.jar:bin/../lib/super-csv-2.1.0.jar:bin/../lib/thrift-server-0.3.7.jar:bin/../lib/jsr223/*/*.jar:bin/../lib/jamm-0.3.0.jar
+WARN  [main] 2015-12-14 08:35:14,804 CLibrary.java:72 - JNA link failure, one or more native method will be unavailable.
+WARN  [main] 2015-12-14 08:35:14,805 StartupChecks.java:130 - JMX is not enabled to receive remote connections. Please see cassandra-env.sh for more info.
+INFO  [main] 2015-12-14 08:35:14,807 SigarLibrary.java:42 - Initializing SIGAR library
+WARN  [main] 2015-12-14 08:35:14,821 SigarLibrary.java:167 - Cassandra server running in degraded mode. Is swap disabled? : true,  Address space adequate? : false,  nofile limit adequate? : true, nproc limit adequate? : false 
+INFO  [main] 2015-12-14 08:35:15,287 ColumnFamilyStore.java:382 - Initializing system.sstable_activity
+INFO  [main] 2015-12-14 08:35:16,047 CacheService.java:111 - Initializing key cache with capacity of 100 MBs.
+INFO  [main] 2015-12-14 08:35:16,054 CacheService.java:133 - Initializing row cache with capacity of 0 MBs
+INFO  [main] 2015-12-14 08:35:16,055 CacheService.java:162 - Initializing counter cache with capacity of 50 MBs
+INFO  [main] 2015-12-14 08:35:16,056 CacheService.java:173 - Scheduling counter cache save to every 7200 seconds (going to save all keys).
+INFO  [main] 2015-12-14 08:35:16,072 ColumnFamilyStore.java:382 - Initializing system.hints
+INFO  [main] 2015-12-14 08:35:16,076 ColumnFamilyStore.java:382 - Initializing system.compaction_history
+INFO  [main] 2015-12-14 08:35:16,085 ColumnFamilyStore.java:382 - Initializing system.peers
+INFO  [main] 2015-12-14 08:35:16,089 ColumnFamilyStore.java:382 - Initializing system.schema_columnfamilies
+INFO  [main] 2015-12-14 08:35:16,096 ColumnFamilyStore.java:382 - Initializing system.schema_functions
+INFO  [main] 2015-12-14 08:35:16,101 ColumnFamilyStore.java:382 - Initializing system.IndexInfo
+INFO  [main] 2015-12-14 08:35:16,104 ColumnFamilyStore.java:382 - Initializing system.schema_columns
+INFO  [main] 2015-12-14 08:35:16,110 ColumnFamilyStore.java:382 - Initializing system.schema_triggers
+INFO  [main] 2015-12-14 08:35:16,115 ColumnFamilyStore.java:382 - Initializing system.local
+INFO  [main] 2015-12-14 08:35:16,139 ColumnFamilyStore.java:382 - Initializing system.schema_usertypes
+INFO  [main] 2015-12-14 08:35:16,144 ColumnFamilyStore.java:382 - Initializing system.batchlog
+INFO  [main] 2015-12-14 08:35:16,146 ColumnFamilyStore.java:382 - Initializing system.available_ranges
+INFO  [main] 2015-12-14 08:35:16,148 ColumnFamilyStore.java:382 - Initializing system.schema_aggregates
+INFO  [main] 2015-12-14 08:35:16,152 ColumnFamilyStore.java:382 - Initializing system.paxos
+INFO  [main] 2015-12-14 08:35:16,157 ColumnFamilyStore.java:382 - Initializing system.peer_events
+INFO  [main] 2015-12-14 08:35:16,159 ColumnFamilyStore.java:382 - Initializing system.size_estimates
+INFO  [main] 2015-12-14 08:35:16,163 ColumnFamilyStore.java:382 - Initializing system.compactions_in_progress
+INFO  [main] 2015-12-14 08:35:16,166 ColumnFamilyStore.java:382 - Initializing system.schema_keyspaces
+INFO  [main] 2015-12-14 08:35:16,170 ColumnFamilyStore.java:382 - Initializing system.range_xfers
+INFO  [main] 2015-12-14 08:35:16,614 ColumnFamilyStore.java:382 - Initializing system_distributed.parent_repair_history
+INFO  [main] 2015-12-14 08:35:16,616 ColumnFamilyStore.java:382 - Initializing system_distributed.repair_history
+INFO  [main] 2015-12-14 08:35:16,621 ColumnFamilyStore.java:382 - Initializing stormids.test
+INFO  [main] 2015-12-14 08:35:16,630 ColumnFamilyStore.java:382 - Initializing stormids.matches
+INFO  [main] 2015-12-14 08:35:16,632 ColumnFamilyStore.java:382 - Initializing system_auth.role_permissions
+INFO  [main] 2015-12-14 08:35:16,634 ColumnFamilyStore.java:382 - Initializing system_auth.resource_role_permissons_index
+INFO  [main] 2015-12-14 08:35:16,636 ColumnFamilyStore.java:382 - Initializing system_auth.roles
+INFO  [main] 2015-12-14 08:35:16,641 ColumnFamilyStore.java:382 - Initializing system_auth.role_members
+INFO  [main] 2015-12-14 08:35:16,643 ColumnFamilyStore.java:382 - Initializing system_traces.sessions
+INFO  [main] 2015-12-14 08:35:16,644 ColumnFamilyStore.java:382 - Initializing system_traces.events
+INFO  [main] 2015-12-14 08:35:16,647 ColumnFamilyStore.java:382 - Initializing demo.user
+INFO  [main] 2015-12-14 08:35:16,654 ColumnFamilyStore.java:382 - Initializing demo.users
+INFO  [pool-2-thread-1] 2015-12-14 08:35:16,660 AutoSavingCache.java:187 - reading saved cache bin/../data/saved_caches/KeyCache-ca.db
+INFO  [pool-2-thread-1] 2015-12-14 08:35:16,667 AutoSavingCache.java:163 - Completed loading (7 ms; 27 keys) KeyCache cache
+INFO  [main] 2015-12-14 08:35:16,677 CommitLog.java:168 - Replaying bin/../data/commitlog/CommitLog-5-1450043738667.log, bin/../data/commitlog/CommitLog-5-1450043738668.log, bin/../data/commitlog/CommitLog-5-1450043738669.log, bin/../data/commitlog/CommitLog-5-1450043738670.log, bin/../data/commitlog/CommitLog-5-1450043738671.log
+INFO  [Service Thread] 2015-12-14 08:35:18,208 GCInspector.java:284 - ParNew GC in 305ms.  CMS Old Gen: 0 -> 57575720; Par Eden Space: 671088640 -> 0; Par Survivor Space: 15813032 -> 83886080
+INFO  [Service Thread] 2015-12-14 08:35:18,209 StatusLogger.java:51 - Pool Name                    Active   Pending      Completed   Blocked  All Time Blocked
+INFO  [Service Thread] 2015-12-14 08:35:18,214 StatusLogger.java:55 - ReadStage                         0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,215 StatusLogger.java:55 - MutationStage                     0         0          40687         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,216 StatusLogger.java:55 - CounterMutationStage              0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,217 StatusLogger.java:55 - GossipStage                       0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,217 StatusLogger.java:55 - RequestResponseStage              0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,219 StatusLogger.java:55 - AntiEntropyStage                  0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,220 StatusLogger.java:55 - MigrationStage                    0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,221 StatusLogger.java:55 - MiscStage                         0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,222 StatusLogger.java:55 - InternalResponseStage             0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,223 StatusLogger.java:55 - ReadRepairStage                   0         0              0         0                 0
+
+INFO  [Service Thread] 2015-12-14 08:35:18,223 StatusLogger.java:65 - CompactionManager                 0         1
+INFO  [Service Thread] 2015-12-14 08:35:18,224 StatusLogger.java:77 - MessagingService                n/a       0/0
+INFO  [Service Thread] 2015-12-14 08:35:18,224 StatusLogger.java:87 - Cache Type                     Size                 Capacity               KeysToSave
+INFO  [Service Thread] 2015-12-14 08:35:18,225 StatusLogger.java:89 - KeyCache                       2328                104857600                      all
+INFO  [Service Thread] 2015-12-14 08:35:18,225 StatusLogger.java:95 - RowCache                          0                        0                      all
+INFO  [Service Thread] 2015-12-14 08:35:18,225 StatusLogger.java:102 - Table                       Memtable ops,data
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system_distributed.parent_repair_history                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system_distributed.repair_history                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system.compaction_history                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system.hints                              0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system.schema_aggregates                  0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,226 StatusLogger.java:105 - system.IndexInfo                          0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.schema_columnfamilies                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.schema_triggers                    0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.schema_functions                   0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.size_estimates                     0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.paxos                              0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,227 StatusLogger.java:105 - system.peer_events                        0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.range_xfers                        0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.compactions_in_progress                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.peers                              0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.schema_keyspaces                   0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.schema_usertypes                   0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.local                              0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,228 StatusLogger.java:105 - system.sstable_activity                   0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,229 StatusLogger.java:105 - system.schema_columns                     0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,229 StatusLogger.java:105 - system.batchlog                           0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,229 StatusLogger.java:105 - system.available_ranges                   0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,229 StatusLogger.java:105 - stormids.matches                          0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,235 StatusLogger.java:105 - stormids.test                             0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,236 StatusLogger.java:105 - system_auth.roles                         0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,236 StatusLogger.java:105 - system_auth.role_members                  0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,236 StatusLogger.java:105 - system_auth.resource_role_permissons_index                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,236 StatusLogger.java:105 - system_auth.role_permissions                 0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,236 StatusLogger.java:105 - system_traces.sessions                    0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,237 StatusLogger.java:105 - system_traces.events                      0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,237 StatusLogger.java:105 - demo.users                                0,0
+INFO  [Service Thread] 2015-12-14 08:35:18,237 StatusLogger.java:105 - demo.user                                 0,0
+INFO  [main] 2015-12-14 08:35:18,388 CommitLog.java:170 - Log replay complete, 28051 replayed mutations
+INFO  [main] 2015-12-14 08:35:18,447 StorageService.java:585 - Cassandra version: 2.2.3
+INFO  [main] 2015-12-14 08:35:18,448 StorageService.java:586 - Thrift API version: 20.1.0
+INFO  [main] 2015-12-14 08:35:18,448 StorageService.java:587 - CQL supported versions: 3.3.1 (default: 3.3.1)
+INFO  [main] 2015-12-14 08:35:18,464 IndexSummaryManager.java:93 - Initializing index summary manager with a memory pool size of 200 MB and a resize interval of 60 minutes
+INFO  [main] 2015-12-14 08:35:18,464 StorageService.java:606 - Loading persisted ring state
+INFO  [main] 2015-12-14 08:35:18,472 StorageService.java:774 - Starting up server gossip
+INFO  [main] 2015-12-14 08:35:18,485 YamlConfigurationLoader.java:92 - Loading settings from file:/Users/joao/Programs/StormIDS/Cassandra/conf/cassandra.yaml
+INFO  [main] 2015-12-14 08:35:18,491 YamlConfigurationLoader.java:135 - Node configuration:[authenticator=AllowAllAuthenticator; authorizer=AllowAllAuthorizer; auto_snapshot=true; batch_size_fail_threshold_in_kb=50; batch_size_warn_threshold_in_kb=5; batchlog_replay_throttle_in_kb=1024; cas_contention_timeout_in_ms=1000; client_encryption_options=<REDACTED>; cluster_name=Test Cluster; column_index_size_in_kb=64; commit_failure_policy=stop; commitlog_segment_size_in_mb=32; commitlog_sync=periodic; commitlog_sync_period_in_ms=10000; compaction_large_partition_warning_threshold_mb=100; compaction_throughput_mb_per_sec=16; concurrent_counter_writes=32; concurrent_reads=32; concurrent_writes=32; counter_cache_save_period=7200; counter_cache_size_in_mb=null; counter_write_request_timeout_in_ms=5000; cross_node_timeout=false; disk_failure_policy=stop; dynamic_snitch_badness_threshold=0.1; dynamic_snitch_reset_interval_in_ms=600000; dynamic_snitch_update_interval_in_ms=100; enable_user_defined_functions=false; endpoint_snitch=SimpleSnitch; hinted_handoff_enabled=true; hinted_handoff_throttle_in_kb=1024; incremental_backups=false; index_summary_capacity_in_mb=null; index_summary_resize_interval_in_minutes=60; inter_dc_tcp_nodelay=false; internode_compression=all; key_cache_save_period=14400; key_cache_size_in_mb=null; listen_address=localhost; max_hint_window_in_ms=10800000; max_hints_delivery_threads=2; memtable_allocation_type=heap_buffers; native_transport_port=9042; num_tokens=256; partitioner=org.apache.cassandra.dht.Murmur3Partitioner; permissions_validity_in_ms=2000; range_request_timeout_in_ms=10000; read_request_timeout_in_ms=5000; request_scheduler=org.apache.cassandra.scheduler.NoScheduler; request_timeout_in_ms=10000; role_manager=CassandraRoleManager; roles_validity_in_ms=2000; row_cache_save_period=0; row_cache_size_in_mb=0; rpc_address=localhost; rpc_keepalive=true; rpc_port=9160; rpc_server_type=sync; seed_provider=[{class_name=org.apache.cassandra.locator.SimpleSeedProvider, parameters=[{seeds=127.0.0.1}]}]; server_encryption_options=<REDACTED>; snapshot_before_compaction=false; ssl_storage_port=7001; sstable_preemptive_open_interval_in_mb=50; start_native_transport=true; start_rpc=false; storage_port=7000; thrift_framed_transport_size_in_mb=15; tombstone_failure_threshold=100000; tombstone_warn_threshold=1000; tracetype_query_ttl=86400; tracetype_repair_ttl=604800; trickle_fsync=false; trickle_fsync_interval_in_kb=10240; truncate_request_timeout_in_ms=60000; windows_timer_interval=1; write_request_timeout_in_ms=2000]
+INFO  [main] 2015-12-14 08:35:18,542 MessagingService.java:527 - Starting Messaging Service on port 7000
+INFO  [main] 2015-12-14 08:35:18,558 YamlConfigurationLoader.java:92 - Loading settings from file:/Users/joao/Programs/StormIDS/Cassandra/conf/cassandra.yaml
+INFO  [main] 2015-12-14 08:35:18,562 YamlConfigurationLoader.java:135 - Node configuration:[authenticator=AllowAllAuthenticator; authorizer=AllowAllAuthorizer; auto_snapshot=true; batch_size_fail_threshold_in_kb=50; batch_size_warn_threshold_in_kb=5; batchlog_replay_throttle_in_kb=1024; cas_contention_timeout_in_ms=1000; client_encryption_options=<REDACTED>; cluster_name=Test Cluster; column_index_size_in_kb=64; commit_failure_policy=stop; commitlog_segment_size_in_mb=32; commitlog_sync=periodic; commitlog_sync_period_in_ms=10000; compaction_large_partition_warning_threshold_mb=100; compaction_throughput_mb_per_sec=16; concurrent_counter_writes=32; concurrent_reads=32; concurrent_writes=32; counter_cache_save_period=7200; counter_cache_size_in_mb=null; counter_write_request_timeout_in_ms=5000; cross_node_timeout=false; disk_failure_policy=stop; dynamic_snitch_badness_threshold=0.1; dynamic_snitch_reset_interval_in_ms=600000; dynamic_snitch_update_interval_in_ms=100; enable_user_defined_functions=false; endpoint_snitch=SimpleSnitch; hinted_handoff_enabled=true; hinted_handoff_throttle_in_kb=1024; incremental_backups=false; index_summary_capacity_in_mb=null; index_summary_resize_interval_in_minutes=60; inter_dc_tcp_nodelay=false; internode_compression=all; key_cache_save_period=14400; key_cache_size_in_mb=null; listen_address=localhost; max_hint_window_in_ms=10800000; max_hints_delivery_threads=2; memtable_allocation_type=heap_buffers; native_transport_port=9042; num_tokens=256; partitioner=org.apache.cassandra.dht.Murmur3Partitioner; permissions_validity_in_ms=2000; range_request_timeout_in_ms=10000; read_request_timeout_in_ms=5000; request_scheduler=org.apache.cassandra.scheduler.NoScheduler; request_timeout_in_ms=10000; role_manager=CassandraRoleManager; roles_validity_in_ms=2000; row_cache_save_period=0; row_cache_size_in_mb=0; rpc_address=localhost; rpc_keepalive=true; rpc_port=9160; rpc_server_type=sync; seed_provider=[{class_name=org.apache.cassandra.locator.SimpleSeedProvider, parameters=[{seeds=127.0.0.1}]}]; server_encryption_options=<REDACTED>; snapshot_before_compaction=false; ssl_storage_port=7001; sstable_preemptive_open_interval_in_mb=50; start_native_transport=true; start_rpc=false; storage_port=7000; thrift_framed_transport_size_in_mb=15; tombstone_failure_threshold=100000; tombstone_warn_threshold=1000; tracetype_query_ttl=86400; tracetype_repair_ttl=604800; trickle_fsync=false; trickle_fsync_interval_in_kb=10240; truncate_request_timeout_in_ms=60000; windows_timer_interval=1; write_request_timeout_in_ms=2000]
+INFO  [main] 2015-12-14 08:35:18,571 StorageService.java:948 - Using saved tokens [-1060992617615855756, -1062493112996087619, -1155604582456627189, -120997522820399408, -1232031744788599667, -1435624159091487012, -1482797914360166787, -1651284424581877794, -1691513000562817655, -1714697801261699200, -1742461560269316672, -1796840950742205964, -1828720192984094221, -1893908454958792813, -2079280415441391969, -2119366458495081498, -2134523342621065251, -2163861932873338690, -2212053369419573335, -2262653335837894994, -2304584432779534200, -2314573078255566757, -2357640889282015611, -2437167106807896182, -2643801712866678828, -2782604870660651217, -2854150602180927019, -2862267352370560931, -2863097216928950870, -3076353210074113806, -3078768809557296860, -307945952705603600, -3082296581657877034, -3084657146654105366, -3118498411086935284, -3134776990793035408, -3289769666959796412, -3348109217729725522, -3463286917516716284, -3525314776254834045, -3542368476553546524, -3545041696699493679, -3571682660445599955, -3572399185470915692, -3615300966551349473, -3650429963286947282, -3692788455731138009, -3697286672463265070, -3812722622342405046, -3963133598482719703, -3991437252642765095, -4106899013376783672, -4115476890377289410, -4133006816439899620, -4287024945779356317, -4307181466833393595, -4450705828670510357, -448793339896350852, -4499702357868437739, -4574168947297466900, -4698615475862257165, -4701794609955995, -476397719979061308, -4764179203131308482, -4764704116880020311, -4840378531993773993, -4946950067678644824, -5048710072206112395, -5053747191307438571, -5143158415632544274, -5197757835995848070, -5364326638273595472, -5428021197041312886, -5475657188193203508, -556728232508038344, -5587379933524445516, -5761356520179981533, -5876178563406174192, -5930728126519401198, -593243614493730410, -6011199688755284186, -6015813912349394617, -6038066540054343532, -6247515055635738623, -6250759994494673981, -6276201278711820525, -6342919694146858589, -6413462460766155632, -6420899474738429489, -6555196052112728573, -6658339914031844560, -6891922547801047705, -7217309011133266546, -7411992856754031399, -7579208484388578481, -7796479875256745648, -7836654998703393263, -7854650905342489762, -7868943223761256465, -7998209894945508004, -8187110297137549543, -8355909498180280111, -8392274402054739237, -8393831461572076715, -8460315957855163430, -8494527566973631197, -8627705220964316978, -8694954345084651309, -8741540193848915866, -8742105790874929180, -8743041565679396281, -8744908020027370128, -875715056693761480, -8834861741486915151, -8928067397409647890, -894263893510883120, -9007950798326421569, -9168738270038892552, -963286442016402782, 1055950747928025116, 1094916072497523853, 120628709066552474, 122075655540384036, 1443333873026428937, 1953846796777940597, 200958125980116285, 2062286710452324896, 2099728595377123765, 2186671484695877794, 2193188069746462283, 2378068302426782118, 2593206042789827348, 2603424248556399420, 2625102202503108618, 2691501441767889176, 2751106212464722105, 2765093525381449448, 2806388985826177386, 2844153289880678258, 2916587385251507383, 2950613284766172097, 2994913411177457101, 3039558117268705769, 3052087439971039061, 3280817253547036546, 3282372995966681041, 3332510454964975225, 3370810149100322375, 343031747113384678, 3544657646225416941, 3558422254809334351, 3560927085327432983, 3612685581906212810, 3630930212210276005, 3682089878940051431, 3737265621850728412, 3744636402154520272, 3763262166935151277, 3818089946701604189, 3908731939788313937, 3926294918003239567, 4011688748637032315, 4074734473676110377, 4164998339155337965, 4305113082942384932, 4324848386326071584, 4354352593485079284, 4415005564495812012, 4443205384223726308, 4495479968025180031, 465423926138047278, 4655384884548607538, 4835251832508978686, 4933002910470011589, 4948635222101951114, 4956064822253114255, 4959164488575730583, 4963850454643357390, 4964003024742845680, 4977004842505954538, 5001700610342785444, 506117409566778973, 5067218892285332918, 5206830241600876727, 5224563635074153963, 523131500856344654, 5263000476559406141, 5333040109207639410, 5401830693588734373, 5411254369540094024, 5588629939141661000, 5606185769768672772, 5642740114326421503, 5719947087649233300, 590838050177741796, 5920571709243837093, 592925502294123374, 5944980456689513685, 6101093110758294954, 6169125258565079640, 6367611203204125887, 6372651686288548119, 6442242923199279683, 6455065365999736519, 6558296259212406782, 6572174458888621938, 6682643284351959220, 6801474183914320833, 6803319549112716657, 680469683283404063, 6891886640267884728, 698937760042119004, 6993247519936532880, 6999195305536587519, 699943281785871578, 7038361082537092087, 7045854585766752611, 7162487401525794350, 7166388842816440152, 7202725936107679064, 746088796531075127, 7633201130278491300, 7634437675438727408, 7698439267446034218, 7702515281130928438, 7918347332434688196, 7923346984298471515, 7931501915204710230, 8067481815680344022, 8141690669837332100, 8387231866492062448, 8435461079731941076, 8544253768056404082, 8557271747225627808, 8595334697387542152, 8608525979705947437, 8611263801473848233, 8617548227249318164, 8698896402728526441, 8704696900885001067, 8704931737008095755, 8718540086716317084, 8806529174603519360, 8816677141975073128, 88287538789097778, 8830280120961465998, 8890061020051651251, 8927582035882467714, 9032762168238576390, 9065286448780255172, 9108631388735818217, 9155851383978238814, 9161931054308317366, 9185609372634789742, 919156071638711139, 944234311963769358]
+INFO  [main] 2015-12-14 08:35:18,614 StorageService.java:1904 - Node localhost/127.0.0.1 state jump to normal
+INFO  [main] 2015-12-14 08:35:18,702 Server.java:149 - Netty using Java NIO event loop
+INFO  [main] 2015-12-14 08:35:18,740 Server.java:174 - Using Netty Version: [netty-buffer=netty-buffer-4.0.23.Final.208198c, netty-codec=netty-codec-4.0.23.Final.208198c, netty-codec-http=netty-codec-http-4.0.23.Final.208198c, netty-codec-socks=netty-codec-socks-4.0.23.Final.208198c, netty-common=netty-common-4.0.23.Final.208198c, netty-handler=netty-handler-4.0.23.Final.208198c, netty-transport=netty-transport-4.0.23.Final.208198c, netty-transport-rxtx=netty-transport-rxtx-4.0.23.Final.208198c, netty-transport-sctp=netty-transport-sctp-4.0.23.Final.208198c, netty-transport-udt=netty-transport-udt-4.0.23.Final.208198c]
+INFO  [main] 2015-12-14 08:35:18,740 Server.java:175 - Starting listening for CQL clients on localhost/127.0.0.1:9042...
+INFO  [main] 2015-12-14 08:35:18,777 CassandraDaemon.java:436 - Not starting RPC server as requested. Use JMX (StorageService->startRPCServer()) or nodetool (enablethrift) to start it
+WARN  [SharedPool-Worker-1] 2015-12-14 08:36:05,618 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [HANDSHAKE-localhost/127.0.0.1] 2015-12-14 08:53:54,913 OutboundTcpConnection.java:494 - Handshaking version with localhost/127.0.0.1
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:01,086 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:03,653 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:04,445 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:05,910 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:06,813 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:42,246 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:00:43,533 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:03:50,330 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:06:40,670 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:11:09,866 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:11:11,538 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:24:51,834 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:25:26,570 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:25:30,801 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:27:47,487 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:28:13,392 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:30:00,036 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:30:50,180 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [IndexSummaryManager:1] 2015-12-14 09:35:18,414 IndexSummaryManager.java:256 - Redistributing index summaries
+WARN  [SharedPool-Worker-1] 2015-12-14 09:37:44,613 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:48:33,962 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:52:28,941 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:52:34,597 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 09:59:05,255 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:10:32,892 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:12:23,761 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:12:58,162 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:13:03,050 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:13:04,065 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:13:46,153 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:15:48,822 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:21:19,465 SelectStatement.java:253 - Aggregation query used without partition key
+WARN  [SharedPool-Worker-1] 2015-12-14 10:22:57,304 SelectStatement.java:253 - Aggregation query used without partition key
+INFO  [IndexSummaryManager:1] 2015-12-14 10:35:18,206 IndexSummaryManager.java:256 - Redistributing index summaries

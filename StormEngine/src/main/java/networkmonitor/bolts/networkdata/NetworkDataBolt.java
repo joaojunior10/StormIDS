@@ -18,19 +18,21 @@ import util.json.JSONObject;
 import util.matcher.Match;
 import util.matcher.Matcher;
 import util.rules.Rules;
+import util.rules.SnortSignature;
 
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class NetworkDataBolt extends BaseRichBolt {
-	private Matcher matcher;
+	private List<SnortSignature> rules;
     private OutputCollector collector;
     private static final long serialVersionUID = 1L;
-	String topic;
 	private static final Logger LOG = LoggerFactory.getLogger(NetworkDataBolt.class);
+    private int taskId;
 
     public NetworkDataBolt(String topic) {
 
@@ -39,8 +41,10 @@ public class NetworkDataBolt extends BaseRichBolt {
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         Rules rules = new Rules();
+        this.taskId = context.getThisTaskId();
+
         try {
-            matcher = new Matcher(rules.get());
+            this.rules = rules.get();
         } catch (URISyntaxException e) {
             e.printStackTrace();
             LOG.error("Error reading rules - " + e.getStackTrace());
@@ -51,7 +55,6 @@ public class NetworkDataBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple input) {
-        LOG.info("Packets received");
         String jsonObj = (String) input.getValue(0);
         treatData(jsonObj,  collector);
     }
@@ -60,24 +63,27 @@ public class NetworkDataBolt extends BaseRichBolt {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
         String hostname = obj.get("hostname").getAsString();
-		//Match packets
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
 		Type listType = new TypeToken<List<PacketData>>() {}.getType();
 
 		List<PacketData> packets = new Gson().fromJson(obj.getAsJsonArray("packetList"),listType);
-		LOG.info("Packets: " + packets.size());
-
-		this.matcher.match(packets, hostname);
+        LOG.info(taskId+" - Packets received: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
+        //Match packets
+        Matcher matcher = new Matcher(this.rules);
+        matcher.match(packets, hostname);
         //Send result to LogMatchesBolt
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        if(this.matcher.matches.size() > 0) {
-			LOG.info("Matches sent: " + this.matcher.matches.size());
-			String matches = gson.toJson(this.matcher.matches);
+
+        if(matcher.matches.size() > 0) {
+			String matches = gson.toJson(matcher.matches);
             //reset Matches
 			if(collector != null)
             	collector.emit(new Values(matches));
         }
-	}
+        LOG.info(taskId + " - Packets processed: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
+    }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("matches"));

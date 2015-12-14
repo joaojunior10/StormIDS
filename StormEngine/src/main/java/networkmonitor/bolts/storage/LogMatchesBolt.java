@@ -26,12 +26,14 @@ public class LogMatchesBolt extends BaseRichBolt{
     private Session session;
     private static final Logger LOG = LoggerFactory.getLogger(LogMatchesBolt.class);
     private PreparedStatement statement;
+    private int total = 0;
     public LogMatchesBolt(String topic) {
 
     }
 
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
-        collector = collector;
+        context.getThisTaskId();
+
         Cluster cluster = Cluster.builder().addContactPoint(stormConf.get("cassandra.address").toString()).build();
         session = cluster.connect(stormConf.get("cassandra.keyspace").toString());
         statement = session.prepare("INSERT INTO matches (id, timelog, hostname, " +
@@ -40,7 +42,6 @@ public class LogMatchesBolt extends BaseRichBolt{
     }
 
     public void execute(Tuple input) {
-        LOG.info("Matches received");
         saveMatches(input);
     }
 
@@ -48,26 +49,18 @@ public class LogMatchesBolt extends BaseRichBolt{
         Type listType = new TypeToken<List<Match>>() {}.getType();
         String json = (String) input.getValue(0);
         List<Match> matches =  new Gson().fromJson(json,listType);
-        LOG.info("Matches received: " + matches.size());
-
-        //Save off the prepared statement you're going to use
-
-
-//        List<ResultSetFuture> futures = new ArrayList<ResultSetFuture>();
-
-        for (int i = 0; i < matches.size() ; i++) {
+        int size = matches.size();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        for (int i = 0; i < size ; i++) {
             Match match = matches.get(i);
-
             BoundStatement bind = statement.bind(UUID.randomUUID(), GregorianCalendar.getInstance().getTime(), match.hostname,
                     match.sourceIP, match.destinationIP, match.sourcePort, match.destinationPort,
                     match.msg, match.action, match.rule, match.packet);
-            ResultSetFuture resultSetFuture = session.executeAsync(bind);
-//            futures.add(resultSetFuture);
+            session.executeAsync(bind);
+            total++;
         }
-        //not returning anything useful but makes sure everything has completed before you exit the thread.
-//        for(ResultSetFuture future: futures){
-//            future.getUninterruptibly();
-//        }
+        LOG.info("Matches Saved: " + size +" - "+ sdf.format(System.currentTimeMillis()));
+        LOG.info("Total: " + total);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

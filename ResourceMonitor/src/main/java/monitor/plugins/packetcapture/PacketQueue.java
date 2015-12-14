@@ -1,5 +1,6 @@
 package monitor.plugins.packetcapture;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,8 @@ public class PacketQueue {
 	public List<PacketData> packets;
 	private static PacketQueue instance = null;
 	private Gson gson;
-
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private int total;
 	protected PacketQueue() {
 		gson = new Gson();
 		packets = new ArrayList<PacketData>();
@@ -30,7 +32,7 @@ public class PacketQueue {
 			PacketList packetList = new PacketList();
 			packetList.packetList = this.packets;
 			String json = gson.toJson(packetList);
-			System.out.println(packets.size() + " packets sent");
+			System.out.println(packets.size() + " packets sent - " +  sdf.format(System.currentTimeMillis()));
 			this.packets = new ArrayList<PacketData>();
 			return json;
 		}

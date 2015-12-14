@@ -11,9 +11,9 @@
           <th>Hostname</th>
           <th>Message</th>
           <th>Source Address</th>
-          <th>Destination version</th>
-          <th>Reference</th>
-          <th>Sid</th>
+          <th>Destination Address</th>
+          <th>Rule</th>
+          <th>Packet</th>
         </tr>
         </thead>
         <tbody>
@@ -23,8 +23,8 @@
           <td nowrap>{{match.msg}}</td>
           <td nowrap>{{match.sourceIP}}:{{match.sourcePort}}</td>
           <td nowrap>{{match.destinationIP}}:{{match.destinationPort}}</td>
-          <td nowrap>{{match.generalOptions.references[0]}}</td>
-          <td nowrap>{{match.generalOptions.sid}}</td>
+          <td>{{match.packet}}</td>
+          <td>{{match.rule}}</td>
         </tr>
         </tbody>
       </table>
