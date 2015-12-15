@@ -4,6 +4,12 @@
   </div>
   <div class="panel-body">
     <div class="table-responsive">
+      <div style="padding:20px 0px 60px 0px">
+        <span class="col-md-1" style="font-weight:bold">Search</span>
+			<span class="col-md-3">
+			<input type="text" class="form-control ng-valid ng-dirty" ng-model="searchKeyword">
+			</span>
+      </div>
       <table class="table table-bordered table-striped mb0">
         <thead>
         <tr>
@@ -17,7 +23,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="match in matches | startFrom:currentPage*pageSize | limitTo:pageSize">
+        <tr ng-repeat="match in matches |  filter: searchKeyword ">
           <td nowrap>{{match.timelog}}</td>
           <td nowrap>{{match.hostname}}</td>
           <td nowrap>{{match.msg}}</td>

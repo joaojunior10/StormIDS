@@ -37,6 +37,9 @@ public class Rules implements Serializable {
                         Matcher matcher = pattern.matcher(filePath.toString());
                         matcher.find();
                         String group = matcher.group();
+                        if(group.equals("rules/rules/web-misc.rules")){
+                            count = 1;
+                        }
                         BufferedReader txtReader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(group)));
                         readFile(snortSignatures, txtReader);
                     }
@@ -65,10 +68,14 @@ public class Rules implements Serializable {
                 SnortSignature snortSignature = new SnortSignature();
                 try {
                     snortSignature.parse(rule);
+                    if(count == 1){
+                        snortSignature.payloadOptions.ftpbounce = true;
+                        count = 0;
+                    }
                     snortSignatures.add(snortSignature);
-                    rulesLogger.append(snortSignature.toString()).append("\n");
+//                    rulesLogger.append(snortSignature.toString()).append("\n");
                 } catch (Exception e) {
-                    LOG.error(rule + " - " + e.getStackTrace());
+                    //LOG.error(rule + " - " + e.getStackTrace());
                     //LOG.error(rule + "\n");
                 }
             }

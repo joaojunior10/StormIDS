@@ -65,10 +65,6 @@ public class MultiplexerBolt extends BaseRichBolt {
 
 	}
 
-	public void execute(Tuple tuple, BasicOutputCollector collector) {
-
-	}
-
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		//declarer.declare(new Fields("Topic", "JsonObject" ) );
 		declarer.declareStream("CpuUsageStream", new Fields("JsonObject" ) );

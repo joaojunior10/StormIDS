@@ -26,7 +26,7 @@ public class PayloadOptions implements Serializable{
 	public ByteTest byte_test;
 	public ByteJump byte_jump;
 	public ByteExtract byte_extract;
-	public boolean ftpbounce;
+	public boolean ftpbounce = false;
 	public Ans1 ans1;
 	public Csv csv;
 	//TODO protected content

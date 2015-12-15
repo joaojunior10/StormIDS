@@ -38,12 +38,12 @@ public class RegexGenerator {
             String contentPattern = String.format("%s%s(.|\\n|\\r\\n){%s,%s}%s",nocase,offset, distance,depth,content.content);
             regex.append(contentPattern);
         }
-        try {
-            Pattern test = Pattern.compile(regex.toString());
-        }catch (Exception e){
-            Gson gson = new Gson();
-            System.out.println(gson.toJson(contents));
-        }
+//        try {
+//            Pattern test = Pattern.compile(regex.toString());
+//        }catch (Exception e){
+//            Gson gson = new Gson();
+////            System.err.println(gson.toJson(contents));
+//        }
         return Pattern.compile(regex.toString());
     }
 }

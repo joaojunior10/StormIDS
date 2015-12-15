@@ -19,3 +19,4 @@
 # WEB-MISC RULES
 #----------------
 
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC /etc/passwd"; flow:to_server,established; content:"/etc/passwd"; nocase; http_uri; metadata:service http; classtype:attempted-recon; sid:1122; rev:8;)

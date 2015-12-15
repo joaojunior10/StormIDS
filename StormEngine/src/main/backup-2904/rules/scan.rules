@@ -1,0 +1,48 @@
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+#
+# $Id: scan.rules,v 1.41.4.1.8.1 2010/12/02 18:29:33 vrtbuild Exp $
+#-----------
+# SCAN RULES
+#-----------
+# These signatures are representitive of network scanners.  These include
+# port scanning, ip mapping, and various application scanners.
+#
+# NOTE: This does NOT include web scanners such as whisker.  Those are
+# in web*
+#
+
+# alert tcp $EXTERNAL_NET 10101 -> $HOME_NET any (msg:"SCAN myscan"; flow:stateless; ack:0; flags:S; ttl:>220; reference:arachnids,439; classtype:attempted-recon; sid:613; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 113 (msg:"SCAN ident version request"; flow:to_server,established; content:"VERSION|0A|"; depth:16; reference:arachnids,303; classtype:attempted-recon; sid:616; rev:4;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"SCAN cybercop os probe"; flow:stateless; dsize:0; flags:SF12; reference:arachnids,146; classtype:attempted-recon; sid:619; rev:7;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN FIN"; flow:stateless; flags:F,12; reference:arachnids,27; classtype:attempted-recon; sid:621; rev:8;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN ipEye SYN scan"; flow:stateless; flags:S; seq:1958810375; reference:arachnids,236; classtype:attempted-recon; sid:622; rev:8;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN NULL"; flow:stateless; ack:0; flags:0; seq:0; reference:arachnids,4; classtype:attempted-recon; sid:623; rev:7;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN SYN FIN"; flow:stateless; flags:SF,12; reference:arachnids,198; classtype:attempted-recon; sid:624; rev:8;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN synscan portscan"; flow:stateless; flags:SF; id:39426; reference:arachnids,441; classtype:attempted-recon; sid:630; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN cybercop os PA12 attempt"; flow:stateless; flags:PA12; content:"AAAAAAAAAAAAAAAA"; depth:16; reference:arachnids,149; classtype:attempted-recon; sid:626; rev:8;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN cybercop os SFU12 probe"; flow:stateless; ack:0; flags:SFU12; content:"AAAAAAAAAAAAAAAA"; depth:16; reference:arachnids,150; classtype:attempted-recon; sid:627; rev:8;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 10080:10081 (msg:"SCAN Amanda client-version request"; flow:to_server; content:"Amanda"; fast_pattern:only; classtype:attempted-recon; sid:634; rev:5;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 49 (msg:"SCAN XTACACS logout"; flow:to_server; content:"|80 07 00 00 07 00 00 04 00 00 00 00 00|"; fast_pattern:only; reference:arachnids,408; classtype:bad-unknown; sid:635; rev:5;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 7 (msg:"SCAN cybercop udp bomb"; flow:to_server; content:"cybercop"; fast_pattern:only; reference:arachnids,363; classtype:bad-unknown; sid:636; rev:3;)
+alert udp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN Webtrends Scanner UDP Probe"; flow:to_server; content:"|0A|help|0A|quite|0A|"; fast_pattern:only; reference:arachnids,308; reference:url,www.netiq.com/products/vsm/default.asp; classtype:attempted-recon; sid:637; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"SCAN SSH Version map attempt"; flow:to_server,established; content:"Version_Mapper"; fast_pattern:only; classtype:network-scan; sid:1638; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 1900 (msg:"SCAN UPnP service discover attempt"; flow:to_server; content:"M-SEARCH "; depth:9; content:"ssdp|3A|discover"; fast_pattern:only; classtype:network-scan; sid:1917; rev:9;)
+alert icmp $EXTERNAL_NET any -> $HOME_NET any (msg:"SCAN SolarWinds IP scan attempt"; icode:0; itype:8; content:"SolarWinds.Net"; fast_pattern:only; classtype:network-scan; sid:1918; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"SCAN cybercop os probe"; flow:stateless; ack:0; flags:SFP; content:"AAAAAAAAAAAAAAAA"; depth:16; reference:arachnids,145; classtype:attempted-recon; sid:1133; rev:12;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 5000 (msg:"SCAN UPnP service discover attempt"; flow:to_server,established; content:"M-SEARCH "; depth:9; content:"ssdp|3A|discover"; fast_pattern:only; classtype:network-scan; sid:8081; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS (msg:"SCAN Proxyfire.net anonymous proxy scan"; flow:to_server,established; content:"proxyfire.net/fastenv"; nocase; http_uri; metadata:service http; reference:url,www.proxyfire.net/index.php; classtype:network-scan; sid:18179; rev:1;)

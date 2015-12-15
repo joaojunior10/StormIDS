@@ -33,7 +33,7 @@ public class LogMatchesBolt extends BaseRichBolt{
 
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
         context.getThisTaskId();
-
+        this.collector = collector;
         Cluster cluster = Cluster.builder().addContactPoint(stormConf.get("cassandra.address").toString()).build();
         session = cluster.connect(stormConf.get("cassandra.keyspace").toString());
         statement = session.prepare("INSERT INTO matches (id, timelog, hostname, " +
@@ -51,16 +51,22 @@ public class LogMatchesBolt extends BaseRichBolt{
         List<Match> matches =  new Gson().fromJson(json,listType);
         int size = matches.size();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        List<ResultSetFuture> futures = new ArrayList<ResultSetFuture>();
         for (int i = 0; i < size ; i++) {
             Match match = matches.get(i);
             BoundStatement bind = statement.bind(UUID.randomUUID(), GregorianCalendar.getInstance().getTime(), match.hostname,
                     match.sourceIP, match.destinationIP, match.sourcePort, match.destinationPort,
                     match.msg, match.action, match.rule, match.packet);
-            session.executeAsync(bind);
+            ResultSetFuture resultSetFuture = session.executeAsync(bind);
+            futures.add(resultSetFuture);
             total++;
+        }
+        for(ResultSetFuture future: futures){
+            future.getUninterruptibly();
         }
         LOG.info("Matches Saved: " + size +" - "+ sdf.format(System.currentTimeMillis()));
         LOG.info("Total: " + total);
+        this.collector.ack(input);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

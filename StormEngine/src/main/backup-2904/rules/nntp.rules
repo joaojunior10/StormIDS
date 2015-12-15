@@ -1,0 +1,40 @@
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+#
+# $Id: nntp.rules,v 1.29.4.1 2010/05/05 18:17:42 vrtbuild Exp $
+#----------
+# NNTP RULES
+#----------
+
+# alert tcp $EXTERNAL_NET 119 -> $HOME_NET any (msg:"NNTP return code buffer overflow attempt"; flow:to_client,established; content:"200"; isdataat:256,relative; pcre:"/^200\s[^\n]{256}/smi"; metadata:service nntp; reference:bugtraq,4900; reference:cve,2002-0909; classtype:protocol-command-decode; sid:1792; rev:11;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP AUTHINFO USER overflow attempt"; flow:to_server,established; content:"AUTHINFO"; nocase; content:"USER"; distance:0; nocase; isdataat:200,relative; pcre:"/^AUTHINFO\s+USER\s[^\n]{200}/smi"; metadata:service nntp; reference:arachnids,274; reference:bugtraq,1156; reference:cve,2000-0341; reference:nessus,10388; classtype:attempted-admin; sid:1538; rev:15;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP sendsys overflow attempt"; flow:to_server,established; content:"sendsys"; fast_pattern:only; pcre:"/^sendsys\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2424; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP senduuname overflow attempt"; flow:to_server,established; content:"senduuname"; fast_pattern:only; pcre:"/^senduuname\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2425; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP version overflow attempt"; flow:to_server,established; content:"version"; fast_pattern:only; pcre:"/^version\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2426; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP checkgroups overflow attempt"; flow:to_server,established; content:"checkgroups"; fast_pattern:only; pcre:"/^checkgroups\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2427; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP ihave overflow attempt"; flow:to_server,established; content:"ihave"; fast_pattern:only; pcre:"/^ihave\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2428; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP sendme overflow attempt"; flow:to_server,established; content:"sendme"; fast_pattern:only; pcre:"/^sendme\x3a[^\n]{21}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2429; rev:7;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP newgroup overflow attempt"; flow:to_server,established; content:"newgroup"; fast_pattern:only; pcre:"/^newgroup\x3a[^\n]{32}/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2430; rev:10;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP rmgroup overflow attempt"; flow:to_server,established; content:"rmgroup"; fast_pattern:only; pcre:"/^rmgroup\x3a[^\n]{32}/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:2431; rev:10;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP article post without path attempt"; flow:to_server,established; content:"takethis"; fast_pattern:only; pcre:!"/^takethis.*?Path\x3a.*?[\r]{0,1}?\n[\r]{0,1}\n/si"; metadata:service nntp; classtype:attempted-admin; sid:2432; rev:4;)
+
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP XPAT pattern overflow attempt"; flow:to_server,established; content:"PAT"; depth:4; nocase; pcre:"/^X?PAT\s+[^\n]{160}/i"; metadata:service nntp; reference:cve,2004-0574; reference:url,www.microsoft.com/technet/security/bulletin/MS04-036.mspx; classtype:attempted-admin; sid:2927; rev:5;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP SEARCH pattern overflow attempt"; flow:to_server,established; content:"SEARCH"; depth:6; nocase; pcre:"/^SEARCH\s+[^\n]{160}/i"; metadata:service nntp; reference:cve,2004-0574; reference:url,www.microsoft.com/technet/security/bulletin/MS04-036.mspx; classtype:attempted-admin; sid:3078; rev:3;)
+
+
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP cancel overflow attempt"; flow:to_server,established; content:"cancel"; fast_pattern:only; pcre:"/^cancel\x3a[^\n]{32}/smi"; metadata:service nntp; reference:bugtraq,9382; reference:cve,2004-0045; reference:nessus,11984; classtype:attempted-admin; sid:12464; rev:2;)

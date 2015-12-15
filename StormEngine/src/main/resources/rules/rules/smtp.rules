@@ -19,3 +19,8 @@
 # SMTP RULES
 #------------
 
+alert tcp $EXTERNAL_NET any -> $HOME_NET 162 (msg:"SNMP trap tcp"; flow:stateless; metadata:service snmp; reference:bugtraq,4088; reference:bugtraq,4089; reference:bugtraq,4132; reference:cve,2002-0012; reference:cve,2002-0013; classtype:attempted-recon; sid:1420; rev:14;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 705 (msg:"SNMP AgentX/tcp request"; flow:stateless; metadata:service snmp; reference:bugtraq,4088; reference:bugtraq,4089; reference:bugtraq,4132; reference:cve,2002-0012; reference:cve,2002-0013; classtype:attempted-recon; sid:1421; rev:14;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 161 (msg:"SNMP request tcp"; flow:stateless; metadata:service snmp; reference:bugtraq,4088; reference:bugtraq,4089; reference:bugtraq,4132; reference:cve,2002-0012; reference:cve,2002-0013; classtype:attempted-recon; sid:1418; rev:14;)

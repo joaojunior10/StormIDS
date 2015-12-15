@@ -1,0 +1,44 @@
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+#
+# $Id: tftp.rules,v 1.34.8.3 2010/10/21 16:39:23 vrtbuild Exp $
+#-----------
+# TFTP RULES
+#-----------
+#
+# These signatures are based on TFTP traffic.  These include malicious files
+# that are distributed via TFTP.
+#
+# The last two signatures refer to generic GET and PUT via TFTP, which is
+# generally frowned upon on most networks, but may be used in some enviornments
+
+alert udp any any -> any 69 (msg:"TFTP GET filename overflow attempt"; flow:to_server; content:"|00 01|"; depth:2; isdataat:100,relative; content:!"|00|"; within:100; metadata:policy balanced-ips drop, policy security-ips drop, service tftp; reference:bugtraq,22923; reference:bugtraq,36121; reference:bugtraq,5328; reference:cve,2002-0813; reference:cve,2009-2957; reference:nessus,18264; classtype:attempted-admin; sid:1941; rev:14;)
+# alert udp any any -> any 69 (msg:"TFTP PUT filename overflow attempt"; flow:to_server; content:"|00 02|"; depth:2; isdataat:100,relative; content:!"|00|"; within:100; metadata:service tftp; reference:bugtraq,22923; reference:bugtraq,7819; reference:bugtraq,8505; reference:cve,2003-0380; reference:nessus,18264; classtype:attempted-admin; sid:2337; rev:13;)
+# alert udp any any -> any 69 (msg:"TFTP GET Admin.dll"; flow:to_server; content:"|00 01|"; depth:2; content:"admin.dll"; offset:2; nocase; metadata:service tftp; reference:url,www.cert.org/advisories/CA-2001-26.html; classtype:successful-admin; sid:1289; rev:7;)
+# alert udp any any -> any 69 (msg:"TFTP GET nc.exe"; flow:to_server; content:"|00 01|"; depth:2; content:"nc.exe"; offset:2; nocase; metadata:service tftp; classtype:successful-admin; sid:1441; rev:7;)
+# alert udp any any -> any 69 (msg:"TFTP GET shadow"; flow:to_server; content:"|00 01|"; depth:2; content:"shadow"; offset:2; nocase; metadata:service tftp; classtype:successful-admin; sid:1442; rev:7;)
+# alert udp any any -> any 69 (msg:"TFTP GET passwd"; flow:to_server; content:"|00 01|"; depth:2; content:"passwd"; offset:2; nocase; metadata:service tftp; classtype:successful-admin; sid:1443; rev:7;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP parent directory"; flow:to_server; content:".."; offset:2; metadata:service tftp; reference:arachnids,137; reference:cve,1999-0183; reference:cve,2002-1209; classtype:bad-unknown; sid:519; rev:9;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP root directory"; flow:to_server; content:"|00 01|/"; depth:3; metadata:service tftp; reference:arachnids,138; reference:cve,1999-0183; classtype:bad-unknown; sid:520; rev:8;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP Put"; flow:to_server; content:"|00 02|"; depth:2; metadata:service tftp; reference:arachnids,148; reference:cve,1999-0183; classtype:bad-unknown; sid:518; rev:9;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP Get"; flow:to_server; content:"|00 01|"; depth:2; metadata:service tftp; classtype:bad-unknown; sid:1444; rev:6;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP NULL command attempt"; flow:to_server; content:"|00 00|"; depth:2; metadata:service tftp; reference:bugtraq,7575; classtype:bad-unknown; sid:2339; rev:5;)
+# alert udp any any -> any 69 (msg:"TFTP GET transfer mode overflow attempt"; flow:to_server; content:"|00 01|"; content:"|00|"; distance:1; isdataat:100,relative; content:!"|00|"; within:100; metadata:service tftp; reference:bugtraq,13821; reference:cve,2005-1812; classtype:attempted-admin; sid:3817; rev:4;)
+# alert udp any any -> any 69 (msg:"TFTP PUT transfer mode overflow attempt"; flow:to_server; content:"|00 02|"; content:"|00|"; distance:1; isdataat:100,relative; content:!"|00|"; within:100; metadata:service tftp; reference:bugtraq,13821; reference:bugtraq,21301; reference:cve,2005-1812; reference:cve,2006-6183; classtype:attempted-admin; sid:3818; rev:5;)
+# alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP 3COM server transport mode buffer overflow attempt"; flow:to_server; content:"|00|"; depth:1; pcre:"/^(\x01|\x02)[^\x00]+\x00[^\x00]{473}/Rs"; metadata:service tftp; reference:bugtraq,21301; classtype:attempted-admin; sid:9621; rev:4;)
+# alert udp any any -> $HOME_NET 69 (msg:"TFTP PUT Microsoft RIS filename overwrite attempt"; flow:to_server; content:"|00 02|"; depth:2; content:"images"; distance:0; nocase; content:"windows"; distance:0; nocase; content:"|00|"; distance:0; metadata:service tftp; reference:cve,2006-5584; reference:url,www.microsoft.com/technet/security/bulletin/ms06-077.mspx; classtype:policy-violation; sid:9638; rev:4;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 69 (msg:"TFTP Server log generation buffer overflow attempt"; flow:to_server; content:"|00 05|"; depth:2; isdataat:485; metadata:policy balanced-ips drop, policy security-ips drop, service tftp; reference:cve,2008-2161; classtype:attempted-admin; sid:13927; rev:2;)

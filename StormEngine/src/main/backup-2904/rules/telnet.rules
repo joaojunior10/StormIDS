@@ -1,0 +1,50 @@
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET login failed"; flow:from_server,established; content:"Login failed"; nocase; classtype:bad-unknown; sid:492; rev:11;)
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET login incorrect"; flow:from_server,established; content:"Login incorrect"; reference:arachnids,127; classtype:bad-unknown; sid:718; rev:11;)
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+#
+# $Id: telnet.rules,v 1.61.4.2.4.2 2010/10/21 16:39:23 vrtbuild Exp $
+#-------------
+# TELNET RULES
+#-------------
+#
+# These signatures are based on various telnet exploits and unpassword
+# protected accounts.
+#
+
+
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET SGI telnetd format bug"; flow:to_server,established; content:"_RLD"; fast_pattern:only; content:"bin/sh"; metadata:service telnet; reference:arachnids,304; reference:bugtraq,1572; reference:cve,2000-0733; classtype:attempted-admin; sid:711; rev:13;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET ld_library_path"; flow:to_server,established; content:"ld_library_path"; fast_pattern:only; metadata:service telnet; reference:arachnids,367; reference:bugtraq,459; reference:cve,1999-0073; classtype:attempted-admin; sid:712; rev:11;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET livingston DOS"; flow:to_server,established; content:"|FF F3 FF F3 FF F3 FF F3 FF F3|"; fast_pattern:only; rawbytes; metadata:service telnet; reference:arachnids,370; reference:bugtraq,2225; reference:cve,1999-0218; classtype:attempted-dos; sid:713; rev:13;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET resolv_host_conf"; flow:to_server,established; content:"resolv_host_conf"; fast_pattern:only; metadata:service telnet; reference:arachnids,369; reference:bugtraq,2181; reference:cve,2001-0170; classtype:attempted-admin; sid:714; rev:10;)
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET Attempted SU from wrong group"; flow:from_server,established; content:"to su root"; fast_pattern:only; metadata:service telnet; classtype:attempted-admin; sid:715; rev:9;)
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET not on console"; flow:from_server,established; content:"not on system console"; fast_pattern:only; metadata:service telnet; reference:arachnids,365; classtype:bad-unknown; sid:717; rev:9;)
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET root login"; flow:from_server,established; content:"login|3A| root"; fast_pattern:only; metadata:service telnet; classtype:suspicious-login; sid:719; rev:10;)
+# alert tcp $TELNET_SERVERS 23 -> $EXTERNAL_NET any (msg:"TELNET bsd telnet exploit response"; flow:from_server,established; content:"|0D 0A|[Yes]|0D 0A FF FE 08 FF FD|&"; fast_pattern:only; rawbytes; metadata:service telnet; reference:bugtraq,3064; reference:cve,2001-0554; reference:nessus,10709; classtype:attempted-admin; sid:1252; rev:20;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET bsd exploit client finishing"; flow:to_client,established; dsize:>200; content:"|FF F6 FF F6 FF FB 08 FF F6|"; depth:50; offset:200; rawbytes; metadata:service telnet; reference:bugtraq,3064; reference:cve,2001-0554; reference:nessus,10709; classtype:successful-admin; sid:1253; rev:18;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET 4Dgifts SGI account attempt"; flow:to_server,established; content:"4Dgifts"; metadata:service telnet; reference:cve,1999-0501; reference:nessus,11243; classtype:suspicious-login; sid:709; rev:13;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET EZsetup account attempt"; flow:to_server,established; content:"OutOfBox"; metadata:service telnet; reference:cve,1999-0501; reference:nessus,11244; classtype:suspicious-login; sid:710; rev:13;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET APC SmartSlot default admin account attempt"; flow:to_server,established; content:"TENmanUFactOryPOWER"; fast_pattern:only; metadata:service telnet; reference:bugtraq,9681; reference:cve,2004-0311; reference:nessus,12066; classtype:suspicious-login; sid:2406; rev:9;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET login buffer non-evasive overflow attempt"; flow:to_server,established; flowbits:isnotset,ttyprompt; content:"|FF FA|'|00 00|"; rawbytes; pcre:"/T.*?T.*?Y.*?P.*?R.*?O.*?M.*?P.*?T/RBi"; flowbits:set,ttyprompt; metadata:service telnet; reference:bugtraq,3681; reference:cve,2001-0797; reference:nessus,10827; classtype:attempted-admin; sid:3274; rev:8;)
+# alert tcp $EXTERNAL_NET any -> $TELNET_SERVERS 23 (msg:"TELNET login buffer overflow attempt"; flow:to_server,established; flowbits:isnotset,ttyprompt; content:"|FF FA|'|00 00|TTYPROMPT|01|"; fast_pattern:only; rawbytes; flowbits:set,ttyprompt; metadata:service telnet; reference:bugtraq,3681; reference:cve,2001-0797; reference:nessus,10827; classtype:attempted-admin; sid:3147; rev:9;)
+# alert tcp $EXTERNAL_NET 23 -> $HOME_NET any (msg:"TELNET client LINEMODE SLC overflow attempt"; flow:to_client,established; content:"|FF FA 22 03|"; rawbytes; isdataat:123,relative,rawbytes; content:!"|FF|"; within:124; rawbytes; metadata:service telnet; reference:bugtraq,12918; reference:cve,2005-0469; classtype:attempted-user; sid:3533; rev:5;)
+# alert tcp $EXTERNAL_NET 23 -> $HOME_NET any (msg:"TELNET client ENV OPT escape overflow attempt"; flow:to_client,established; content:"|FF FA|'|01|"; rawbytes; pcre:"/(\x02([\x01\x02\x03]|\xFF\xFF)){100,}/RBsm"; content:"|FF F0|"; distance:0; rawbytes; metadata:service telnet; reference:bugtraq,12918; reference:cve,2005-0469; classtype:attempted-user; sid:3537; rev:4;)
+# alert tcp $EXTERNAL_NET 23 -> $HOME_NET any (msg:"TELNET client ENV OPT USERVAR information disclosure"; flow:to_client,established; content:"|FF FA|'|01 03|"; fast_pattern:only; rawbytes; metadata:service telnet; reference:bugtraq,13940; reference:cve,2005-1205; reference:url,www.microsoft.com/technet/Security/bulletin/ms05-033.mspx; classtype:attempted-recon; sid:3687; rev:6;)
+# alert tcp $EXTERNAL_NET 23 -> $HOME_NET any (msg:"TELNET client ENV OPT VAR information disclosure"; flow:to_client,established; content:"|FF FA|'|01 00|"; fast_pattern:only; rawbytes; metadata:service telnet; reference:bugtraq,13940; reference:cve,2005-1205; reference:url,www.microsoft.com/technet/Security/bulletin/ms05-033.mspx; classtype:attempted-recon; sid:3688; rev:6;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 23 (msg:"TELNET Solaris login environment variable authentication bypass attempt"; flow:to_server,established; content:"|FF FA|"; rawbytes; content:"USER|01|-f"; distance:0; rawbytes; metadata:service telnet; reference:bugtraq,22512; reference:cve,2007-0882; classtype:attempted-admin; sid:10136; rev:6;)
+# alert tcp $EXTERNAL_NET any -> $HOME_NET 23 (msg:"TELNET kerberos login environment variable authentication bypass attempt"; flow:to_server,established; content:"|FF FA|"; rawbytes; content:"USER|01|-e"; distance:0; rawbytes; metadata:service telnet; reference:cve,2007-0956; reference:url,web.mit.edu/kerberos/advisories/MITKRB5-SA-2007-001-telnetd.txt; classtype:attempted-admin; sid:10464; rev:3;)
+# alert tcp $EXTERNAL_NET 23 -> $HOME_NET any (msg:"TELNET Client env_opt_add Buffer Overflow attempt"; flow:to_client,established; content:"|FF FA 27 01|"; rawbytes; pcre:"/\xff\xfa\x27\x01.{128,}\xff\xf0/Bsmi"; reference:bugtraq,12919; reference:cve,2005-0468; classtype:attempted-dos; sid:17269; rev:2;)

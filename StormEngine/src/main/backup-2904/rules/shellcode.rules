@@ -1,0 +1,73 @@
+# Copyright 2001-2007 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2007 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2007 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+# ---------------
+# SHELLCODE RULES
+# ---------------
+# These signatures are based on shellcode that is common ammong multiple
+# publicly available exploits.
+#
+# Because these signatures check ALL traffic for shellcode, these signatures
+# are disabled by default.  There is a LARGE performance hit by enabling
+# these signatures.
+#
+
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE Sun sparc setuid 0"; content:"|82 10| |17 91 D0| |08|"; fast_pattern:only; reference:arachnids,282; classtype:system-call-detect; sid:647; rev:9;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 setgid 0"; content:"|B0 B5 CD 80|"; fast_pattern:only; reference:arachnids,284; classtype:system-call-detect; sid:649; rev:10;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 setuid 0"; content:"|B0 17 CD 80|"; fast_pattern:only; reference:arachnids,436; classtype:system-call-detect; sid:650; rev:10;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE SGI NOOP"; content:"|03 E0 F8|%|03 E0 F8|%|03 E0 F8|%|03 E0 F8|%"; fast_pattern:only; reference:arachnids,356; classtype:shellcode-detect; sid:638; rev:7;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE SGI NOOP"; content:"|24 0F 12|4|24 0F 12|4|24 0F 12|4|24 0F 12|4"; fast_pattern:only; reference:arachnids,357; classtype:shellcode-detect; sid:639; rev:7;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE AIX NOOP"; content:"O|FF FB 82|O|FF FB 82|O|FF FB 82|O|FF FB 82|"; fast_pattern:only; classtype:shellcode-detect; sid:640; rev:8;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE Digital UNIX NOOP"; content:"G|FF 04 1F|G|FF 04 1F|G|FF 04 1F|G|FF 04 1F|"; fast_pattern:only; reference:arachnids,352; classtype:shellcode-detect; sid:641; rev:8;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE HP-UX NOOP"; content:"|08|!|02 80 08|!|02 80 08|!|02 80 08|!|02 80|"; fast_pattern:only; reference:arachnids,358; classtype:shellcode-detect; sid:642; rev:8;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE HP-UX NOOP"; content:"|0B|9|02 80 0B|9|02 80 0B|9|02 80 0B|9|02 80|"; fast_pattern:only; reference:arachnids,359; classtype:shellcode-detect; sid:643; rev:9;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE sparc NOOP"; content:"|13 C0 1C A6 13 C0 1C A6 13 C0 1C A6 13 C0 1C A6|"; fast_pattern:only; reference:arachnids,345; classtype:shellcode-detect; sid:644; rev:7;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE sparc NOOP"; content:"|80 1C|@|11 80 1C|@|11 80 1C|@|11 80 1C|@|11|"; fast_pattern:only; reference:arachnids,353; classtype:shellcode-detect; sid:645; rev:7;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE sparc NOOP"; content:"|A6 1C C0 13 A6 1C C0 13 A6 1C C0 13 A6 1C C0 13|"; fast_pattern:only; reference:arachnids,355; classtype:shellcode-detect; sid:646; rev:7;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 NOOP"; content:"|90 90 90 90 90 90 90 90 90 90 90 90 90 90|"; fast_pattern:only; reference:arachnids,181; classtype:shellcode-detect; sid:648; rev:10;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE Linux shellcode"; content:"|90 90 90 E8 C0 FF FF FF|/bin/sh"; fast_pattern:only; reference:arachnids,343; classtype:shellcode-detect; sid:652; rev:11;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 inc ebx NOOP"; content:"CCCCCCCCCCCCCCCCCCCCCCCC"; classtype:shellcode-detect; sid:1390; rev:8;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 inc ecx NOOP"; content:"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; classtype:shellcode-detect; sid:1394; rev:12;)
+
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"SHELLCODE unescape encoded shellcode"; flow:to_client,established; content:"unescape"; fast_pattern:only; pcre:"/(spray|return_address|payloadcode|shellcode|retaddr|retaddress|block|payload|agent|hspt)/smi"; pcre:"/unescape\s*\x28(\x22|\x27|\x26quot\x3B|\x5c\x22)[\x25\x5c]u[0-9a-f]{4}(\x22\s*\x2B\s*\x22)?[\x25\x5c]u[0-9a-f]{4}/smi"; classtype:shellcode-detect; sid:10504; rev:2;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"SHELLCODE unescape encoded shellcode"; flow:to_client,established; content:"unescape"; fast_pattern:only; pcre:"/(spray|return_address|payloadcode|shellcode|retaddr|retaddress|block|payload|agent|hspt)/smi"; pcre:"/unescape\s*\x28(\x22|\x27|\x26quot\x3B|\x5c\x22)[\x25\x5c][0-9a-f]{2}[\x25\x5c][0-9a-f]{2}/smi"; classtype:shellcode-detect; sid:10505; rev:2;)
+
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"SHELLCODE unescape unicode encoded shellcode"; flow:to_client,established; content:"u|00|n|00|e|00|s|00|c|00|a|00|p|00|e|00|"; fast_pattern:only; pcre:"/(s\x00p\x00r\x00a\x00y\x00|r\x00e\x00t\x00u\x00r\x00n\x00_\x00a\x00d\x00d\x00r\x00e\x00s\x00s\x00|p\x00a\x00y\x00l\x00o\x00a\x00d\x00c\x00o\x00d\x00e\x00|s\x00h\x00e\x00l\x00l\x00c\x00o\x00d\x00e\x00|r\x00e\x00t\x00a\x00d\x00d\x00r\x00|r\x00e\x00t\x00a\x00d\x00d\x00r\x00e\x00s\x00s\x00|b\x00l\x00o\x00c\x00k\x00|p\x00a\x00y\x00l\x00o\x00a\x00d\x00|a\x00g\x00e\x00n\x00t\x00|h\x00s\x00p\x00t\x00)/smi"; pcre:"/u\x00n\x00e\x00s\x00c\x00a\x00p\x00e\x00\s*\x28(\x22|\x27|\x26quot\x3B|\x5c\x22)/smi"; classtype:shellcode-detect; sid:12630; rev:2;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE base64 x86 NOOP"; content:"QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"; metadata:policy security-ips drop; classtype:shellcode-detect; sid:12798; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE base64 x86 NOOP"; content:"QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC"; metadata:policy security-ips drop; classtype:shellcode-detect; sid:12799; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE base64 x86 NOOP"; content:"Q0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0ND"; metadata:policy security-ips drop; classtype:shellcode-detect; sid:12800; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE base64 x86 NOOP"; content:"kJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQ"; metadata:policy security-ips drop; classtype:shellcode-detect; sid:12802; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE base64 x86 NOOP"; content:"RERERERERERERERERERERERERERERERER"; metadata:policy security-ips drop; classtype:shellcode-detect; sid:12801; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 fldz get eip shellcode"; content:"|D9 EE D9|t|24 F4|X"; metadata:policy balanced-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:14986; rev:4;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET [139,445] (msg:"SHELLCODE x86 win2k-2k3 decoder base shellcode"; flow:to_server,established; content:"|C7 0B|GGGG|81|7"; content:"u|F4|"; within:2; distance:4; metadata:policy balanced-ips drop, policy security-ips drop; reference:bugtraq,19409; reference:cve,2006-3439; classtype:attempted-user; sid:15902; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 135 (msg:"SHELLCODE x86 PoC CVE-2003-0605"; flow:established,to_server; content:"|05 00 06 01 00 00 00 00|11111111111111111111111111111111|00 00 00 00 00 00 00 00|"; fast_pattern:only; reference:cve,2003-0605; classtype:attempted-user; sid:15903; rev:3;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic unicode mixed case decoder"; content:"j|00|X|00|A|00|Q|00|A|00|D|00|A|00|Z|00|A|00|B|00|A|00|R|00|A|00|L|00|A|00|Y|00|A|00|I|00|A|00|"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17342; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic xor dword decoder"; content:"|E8 FF FF FF FF C0 5E 81 76 0E|"; content:"|83 EE FC E2 F4|"; distance:4; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17344; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic alpha numeric upper case decoder"; content:"VTX30VX4AP0A3HH0A00ABAABTAAQ2AB2BB0BBXP8AC"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17340; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic alpha numeric upper case decoder variant"; content:"VTX630VX4A0B6HH0B30BCVX2BDBH4A2AD0ADTBDQB0"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17325; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic fnstenv geteip dword xor decoder"; content:"|D9 EE D9 74 24 F4|"; content:"|81|"; distance:1; content:"|13|"; distance:1; content:"|83|"; distance:1; content:"|FC E2 F4|"; distance:1; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17322; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic fnstenv geteip byte xor decoder"; content:"|D9 E1 D9 34 24|"; content:"|E7 31 C9 66 81 E9|"; distance:6; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17335; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 Windows 32-bit SEH get EIP technique"; content:"VTX630VXH49HHHPhYAAQhZYYYYAAQQDDDd36FFFFTXVj0PPTUPPa301089"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17338; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 Win32 export table enumeration variant"; content:"|8B 6C 24 24 8B 45 3C 8B 7C 05 78 01 EF 8B 4F 18 8B 5F 20 01 EB 49 8B 34 8B|"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17337; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic unicode upper case decoder"; content:"Q|00|A|00|T|00|A|00|X|00|A|00|Z|00|A|00|P|00|U|00|3|00|Q|00|A|00|D|00|A|00|Z|00|A|00|B|00|"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17343; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic fnstenv geteip dword xor decoder unescaped"; content:"unescape"; content:"%ud9ee%u2474%u"; content:"%uf4e2"; distance:18; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17323; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic alpha UTF8 tolower avoidance decoder"; content:"|6A|"; content:"|6B 3C 24 0B 60 03 0C 24 6A|"; distance:1; content:"03 0c 24 6a 04"; distance:1; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17341; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic dword additive feedback decoder"; content:"|EB 0C 5E 56 31 1E AD 01 C3 85 C0 75 F7 C3 E8 EF FF FF FF|"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17345; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 OS agnostic call geteip byte xor decoder"; content:"|EB 10|"; content:"|31 C9 66 81 E9|"; distance:1; content:"|E2 FA EB 05 E8 EB FF FF FF|"; distance:5; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17336; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 Linux reverse connect shellcode"; content:"|31 DB 53 43 53 6A 02 6A 66 58 89 E1 CD 80|"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17324; rev:1;)
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"SHELLCODE x86 generic OS alpha numeric mixed case decoder"; content:"jAXP0A0AkAAQ2AB2BB0BBABXP8ABu"; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop; classtype:shellcode-detect; sid:17339; rev:1;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"SHELLCODE JavaScript var shellcode"; flow:to_client,established; content:" shellcode"; fast_pattern:only; nocase; pcre:"/var\s+shellcode\s*=/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service http; classtype:shellcode-detect; sid:17392; rev:1;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"SHELLCODE JavaScript var heapspray"; flow:to_client,established; content:" heapspray"; fast_pattern:only; nocase; pcre:"/var\s+heapspray[A-Z\d_\s]*=/smi"; metadata:policy balanced-ips drop, policy security-ips drop, service http; classtype:shellcode-detect; sid:17393; rev:2;)

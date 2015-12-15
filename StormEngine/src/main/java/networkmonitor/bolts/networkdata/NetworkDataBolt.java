@@ -57,6 +57,7 @@ public class NetworkDataBolt extends BaseRichBolt {
     public void execute(Tuple input) {
         String jsonObj = (String) input.getValue(0);
         treatData(jsonObj,  collector);
+        this.collector.ack(input);
     }
 
     public void treatData(String jsonObj, OutputCollector collector) {
