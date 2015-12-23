@@ -10,6 +10,10 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import util.Response;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.util.Map;
 
 public class MultiplexerBolt extends BaseRichBolt {
@@ -29,8 +33,26 @@ public class MultiplexerBolt extends BaseRichBolt {
 	@Override
 	public void execute(Tuple input) {
 		try {
-			//Parse Json Object
-			Response response = (Response) input.getValue(0);
+			Response response;
+			ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) input.getValue(0));
+			ObjectInput in = null;
+			try {
+				in = new ObjectInputStream(bis);
+				response = (Response) in.readObject();
+			} finally {
+				try {
+					bis.close();
+				} catch (IOException ex) {
+					throw new Exception("error") ;
+				}
+				try {
+					if (in != null) {
+						in.close();
+					}
+				} catch (IOException ex) {
+					throw new Exception("error") ;
+				}
+			}
 
 			String topic = response.topic;
 			boolean sent = false;
