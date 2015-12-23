@@ -3,11 +3,15 @@ package monitor.plugins.prototype;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.nio.channels.ClosedChannelException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import monitor.connectors.ChannelSpecification;
+import monitor.plugins.packetcapture.Response;
+import monitor.plugins.packetcapture.packetdata.PacketData;
 
 
 //Abstract class that defines the default behaviour of a plugin.
@@ -16,7 +20,7 @@ public abstract class SystemResourcePlugin implements Runnable {
     ChannelSpecification channel = null;
     protected JsonObject objToReturn = null;
     private final static int processor = 6;
-    public abstract JsonObject getSystemInformation();
+    public abstract Object getSystemInformation();
 
     public abstract String topicName();
 
@@ -27,32 +31,27 @@ public abstract class SystemResourcePlugin implements Runnable {
     public void run() {
         try {
             while (true) {
-                JsonParser parser = new JsonParser();
-                JsonObject jsonObjToSend = getSystemInformation();
-                if (jsonObjToSend != null) {
+                List<PacketData> packets = (List<PacketData>) getSystemInformation();
+                if (packets != null) {
                     if (topicName().equals("NetworkData")) {
-                        JsonArray array = jsonObjToSend.getAsJsonArray("packetList");
-                        int size = (processor + array.size() - 1) / processor;
+                        int size = (processor + packets.size() - 1) / processor;
                         for (int i = 0; i < processor; i++) {
-                            JsonArray mineArray = new JsonArray();
+                            List<PacketData> mineArray = new ArrayList<PacketData>();
                             for (int j = size * i; j < size * (i + 1); j++) {
                                 try {
-                                    mineArray.add(array.get(j));
+                                    mineArray.add(packets.get(j));
                                 } catch (IndexOutOfBoundsException e) {
                                     //ignored
                                 }
                             }
-                            JsonObject toSend = new JsonObject();
-                            toSend.addProperty("topic", topicName());
-                            toSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
-                            toSend.add("packetList", mineArray);
-                            sendToChannel(toSend.toString());
+                            Response response = new Response(mineArray,InetAddress.getLocalHost().getHostName(),topicName());
+                            sendToChannel(response);
                         }
                     } else {
                         //Guarantee that every jsonObject contains the topic name and the hostname.
-                        jsonObjToSend.addProperty("topic", topicName());
-                        jsonObjToSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
-                        sendToChannel(jsonObjToSend.toString());
+//                        jsonObjToSend.addProperty("topic", topicName());
+//                        jsonObjToSend.addProperty("hostname", InetAddress.getLocalHost().getHostName());
+//                        sendToChannel(jsonObjToSend.toString());
                     }
                 }
                 Thread.sleep(period);
@@ -74,7 +73,7 @@ public abstract class SystemResourcePlugin implements Runnable {
         this.channel = channel;
     }
 
-    public void sendToChannel(String obj) {
+    public void sendToChannel(Response obj) {
         try {
             channel.send(obj);
         } catch (Exception e) {

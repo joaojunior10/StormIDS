@@ -1,8 +1,7 @@
 package monitor.connectors;
 
-
-import com.google.gson.JsonObject;
+import monitor.plugins.packetcapture.Response;
 
 public interface ChannelSpecification {
-	 void send(String objToSend) throws Exception;
+	 void send(Response objToSend) throws Exception;
 }

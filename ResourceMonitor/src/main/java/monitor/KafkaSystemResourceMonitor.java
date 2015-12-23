@@ -5,6 +5,7 @@ import java.util.Properties;
 import monitor.connectors.SystemResourceMonitor;
 import monitor.connectors.kafka.KafkaChannelSpecification;
 import monitor.plugins.*;
+import monitor.plugins.packetcapture.Response;
 import monitor.plugins.prototype.SystemResourcePlugin;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
@@ -68,7 +69,7 @@ public class KafkaSystemResourceMonitor extends SystemResourceMonitor {
 		try {
 			//Each monitor plugin is a thread, they manage how often they will send the info to the server.
 			for(SystemResourcePlugin plugin : listOfResourceMonitors) {
-				plugin.setChannel(new KafkaChannelSpecification (new Producer<String, String>(config)));
+				plugin.setChannel(new KafkaChannelSpecification (new Producer<String, Response>(config)));
 				new Thread(plugin).start();
 			}
 		} 

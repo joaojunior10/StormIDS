@@ -1,9 +1,10 @@
 package monitor.plugins.packetcapture.packetdata;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PacketData {
+public class PacketData implements Serializable {
 
 	public PacketData(PacketData packet) {
 		super();
