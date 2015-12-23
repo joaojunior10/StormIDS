@@ -18,7 +18,7 @@ public class NetworkDataBoltTest {
         start = System.currentTimeMillis();
     }
     @Test
-    public void testSaveMatch() throws Exception {
+    public void testNetworkData() throws Exception {
 
         String packets = "{\"hostname\":\"Joaos-MacBook-Pro.local\",\"packetList\":[{\"TTL\":43,\"ack\":1553217724,\"data\":\"uOhWPQk4bHCf1cIeCABFAABQ1N4AACsGtHxA6bpfCgABBQG7weeTnTDYXJQ4vPAQD/CeTQAAAQEICjDYRF0o1s5UAQEFGlyUp4RclQJgXJSAvlyUofpclE7kXJR7NA==\"," +
                 "\"destinationIP\":\"10.0.1.5\",\"destinationPort\":\"49639\",\"dsize\":80,\"flags\":{},\"flow\":{},\"fragbits\":{\"D\":false,\"M\":false,\"R\":false},\"fragoffset\":0,\"icmp\":0,\"icmp_id\":0,\"icmp_seq\":0,\"icode\":0,\"id\":54494," +

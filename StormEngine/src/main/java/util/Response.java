@@ -1,6 +1,5 @@
-package monitor.plugins.packetcapture;
-
-import monitor.plugins.packetcapture.packetdata.PacketData;
+package util;
+import networkmonitor.bolts.networkdata.PacketData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +12,7 @@ public class Response implements Serializable{
     public String hostname;
     public String topic;
 
-    public Response(List<PacketData> packetData,String hostname,String topic){
+    public Response(List<PacketData> packetData, String hostname, String topic){
         this.packetData = packetData;
         this.hostname = hostname;
         this.topic = topic;

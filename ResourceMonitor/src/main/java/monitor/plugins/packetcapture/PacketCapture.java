@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 public class PacketCapture extends Thread {
 	private static PacketCapture instance = null;
 	private String bfp;
-    private Gson gson;
 	private int count = 0;
 	private static final Logger LOG = LoggerFactory.getLogger(PacketCapture.class);
 
@@ -53,7 +52,6 @@ public class PacketCapture extends Thread {
 
 	public PacketCapture(){
 		bfp = Config.getInstance().bfp;
-        gson = new Gson();
 	}
 
 	public void run(){
@@ -154,37 +152,7 @@ public class PacketCapture extends Thread {
 			packetData.destinationPort = udpPacket.getDstPort().toString().split(" ")[0].trim();
 			packetData.protocol = "UDP";
 		}
-		packetData.data =  Base64.getEncoder().encodeToString(packet.getRawData());
+		packetData.data =  packet.getRawData();
 		return packetData;
 	}
-
-	private void defragmentIpv4(
-			final Map<Short, List<IpV4Packet>> ipV4Packets,
-			final Map<Short, Packet> originalPackets, Packet packet) {
-		Short id
-		= packet.get(IpV4Packet.class).getHeader().getIdentification();
-		if (ipV4Packets.containsKey(id)) {
-			ipV4Packets.get(id).add(packet.get(IpV4Packet.class));
-		}
-		else {
-			List<IpV4Packet> list = new ArrayList<IpV4Packet>();
-			list.add(packet.get(IpV4Packet.class));
-			ipV4Packets.put(id, list);
-			originalPackets.put(id, packet);
-		}
-		for (Short idIP: ipV4Packets.keySet()) {
-			List<IpV4Packet> list = ipV4Packets.get(idIP);
-			final IpV4Packet defragmentedIpV4Packet = IpV4Helper.defragment(list);
-
-			Packet.Builder builder = originalPackets.get(idIP).getBuilder();
-			builder.getOuterOf(IpV4Packet.Builder.class)
-			.payloadBuilder(new SimpleBuilder(defragmentedIpV4Packet));
-
-			System.out.println(builder.build());
-		}
-	}
-
-	
-	
-
 }

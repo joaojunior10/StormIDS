@@ -34,7 +34,7 @@ public class PacketData implements Serializable {
 		this.sameip = packet.sameip;
 		this.protocol = packet.protocol;
 	}
-	public String data;
+	public byte[] data;
 
 	//Protocol
 	public String protocol;

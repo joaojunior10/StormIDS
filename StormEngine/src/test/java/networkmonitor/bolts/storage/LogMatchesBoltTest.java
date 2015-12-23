@@ -40,7 +40,7 @@ public class LogMatchesBoltTest {
         config.put("cassandra.address","localhost");
         logMatchesBolt.prepare(config,null,null);
         Gson gson = new Gson();
-        List<Match> list = new ArrayList<>();
+        List<Match> list = new ArrayList<Match>();
         list.add(match);
         String matches = gson.toJson(list);
         Tuple input = MockTupleHelpers.mockTickTuple(matches);

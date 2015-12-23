@@ -33,7 +33,7 @@ public class PacketData {
 		this.sameip = packet.sameip;
 		this.protocol = packet.protocol;
 	}
-	public String data;
+	public byte[] data;
 	//Protocol
 	public  String protocol;
 	//Address

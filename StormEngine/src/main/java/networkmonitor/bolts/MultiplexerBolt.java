@@ -3,17 +3,12 @@ package networkmonitor.bolts;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import util.json.JSONObject;
-import util.json.JSONTokener;
+import util.Response;
 
 import java.util.Map;
 
@@ -35,20 +30,18 @@ public class MultiplexerBolt extends BaseRichBolt {
 	public void execute(Tuple input) {
 		try {
 			//Parse Json Object
-			String jsonObj = (String) input.getValue(0);
+			Response response = (Response) input.getValue(0);
 
-			JsonParser parser = new JsonParser();
-			JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
-			String topic = obj.get("topic").getAsString();
+			String topic = response.topic;
 			boolean sent = false;
 			for (topics tc : topics.values()){
 				if (topic.equals(tc.name())) {
-					collector.emit(topic+"Stream",new Values(jsonObj));
+					collector.emit(topic+"Stream",new Values(response));
 					sent = true;
 					break;
 				}
 			}
-			if(!sent) collector.emit("DefaultStream",new Values(jsonObj));
+			if(!sent) collector.emit("DefaultStream",new Values(response));
 			this.collector.ack(input);
 		} catch (Exception e) {
 			e.printStackTrace();

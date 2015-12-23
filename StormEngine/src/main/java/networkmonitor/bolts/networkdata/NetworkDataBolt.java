@@ -13,6 +13,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.Response;
 import util.json.JSONArray;
 import util.json.JSONObject;
 import util.matcher.Match;
@@ -55,33 +56,26 @@ public class NetworkDataBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple input) {
-        String jsonObj = (String) input.getValue(0);
-        treatData(jsonObj,  collector);
+        Response response = (Response) input.getValue(0);
+        treatData(response,  collector);
         this.collector.ack(input);
     }
 
-    public void treatData(String jsonObj, OutputCollector collector) {
-		JsonParser parser = new JsonParser();
-		JsonObject obj = parser.parse(jsonObj).getAsJsonObject();
-        String hostname = obj.get("hostname").getAsString();
+    public void treatData(Response response, OutputCollector collector) {
+        String hostname = response.hostname;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-		Type listType = new TypeToken<List<PacketData>>() {}.getType();
-
-		List<PacketData> packets = new Gson().fromJson(obj.getAsJsonArray("packetList"),listType);
+		List<PacketData> packets = response.packetData;
         LOG.info(taskId+" - Packets received: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
         //Match packets
         Matcher matcher = new Matcher(this.rules);
         matcher.match(packets, hostname);
         //Send result to LogMatchesBolt
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
 
         if(matcher.matches.size() > 0) {
-			String matches = gson.toJson(matcher.matches);
             //reset Matches
 			if(collector != null)
-            	collector.emit(new Values(matches));
+            	collector.emit(new Values(matcher.matches));
         }
         LOG.info(taskId + " - Packets processed: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
     }
