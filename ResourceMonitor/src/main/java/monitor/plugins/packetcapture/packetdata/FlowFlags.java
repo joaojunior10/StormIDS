@@ -1,6 +1,8 @@
 package monitor.plugins.packetcapture.packetdata;
 
-public class FlowFlags {
+import java.io.Serializable;
+
+public class FlowFlags implements Serializable {
 	public static final int TO_CLIENT = 1;
 	public static final int TO_SERVER = 2;
 	public static final int FROM_CLIENT = 3;

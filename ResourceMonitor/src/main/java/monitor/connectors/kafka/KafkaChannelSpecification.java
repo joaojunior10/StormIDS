@@ -16,7 +16,7 @@ public class KafkaChannelSpecification implements ChannelSpecification {
 		
 	}
 	public void send(Response objToSend) throws Exception {
-		KeyedMessage<String, Response> data = new KeyedMessage<String, Response>("ResourceMonitorTopic",InetAddress.getLocalHost().getHostName(), objToSend);
+		KeyedMessage<String, Response> data = new KeyedMessage<String, Response>("ResourceMonitorTopic", objToSend);
         producer.send( data);
 	}
 
