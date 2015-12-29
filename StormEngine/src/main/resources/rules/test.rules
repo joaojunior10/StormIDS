@@ -1,0 +1,1 @@
+alert tcp 10.1.1.157 any -> any any (msg:"StormIDS Test"; flow:established,to_server; content:"StormIDS Test"; http_method; metadata:policy balanced-ips drop, policy security-ips drop, ruleset community, service http; reference:url,isc.sans.edu/diary/Linksys+Worm+%28%22TheMoon%22%29+Captured/17630; classtype:attempted-admin; sid:29831; rev:1;)

@@ -9,7 +9,7 @@ public class Variables implements Serializable{
 	public static HashMap<String,String[]> portvars = new HashMap<String,String[]>();
 
 	static{
-		ipvars.put("$HOME_NET", new String[]{"10.0.1.5","10.0.1.13"});
+		ipvars.put("$HOME_NET", new String[]{});
 		ipvars.put("$EXTERNAL_NET", new String[]{"any"});
 		ipvars.put("$HTTP_SERVERS", new String[]{"10.0.1.5"});
 		ipvars.put("$SSH_PORTS", new String[]{"22,1234"});

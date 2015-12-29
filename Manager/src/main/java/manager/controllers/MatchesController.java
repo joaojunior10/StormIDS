@@ -38,6 +38,7 @@ public class MatchesController {
             match.msg = row.getString("msg");
             matches.add(match);
         }
+
         matches.sort((o1, o2) -> o2.timelog.compareTo(o1.timelog));
         return gson.toJson(matches);
     }
