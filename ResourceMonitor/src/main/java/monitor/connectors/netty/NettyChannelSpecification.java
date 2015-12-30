@@ -4,7 +4,7 @@ import java.nio.channels.ClosedChannelException;
 
 import monitor.connectors.ChannelSpecification;
 import io.netty.channel.Channel;
-import monitor.plugins.packetcapture.Response;
+import util.Response;
 
 public class NettyChannelSpecification implements ChannelSpecification {
 	Channel channel = null;

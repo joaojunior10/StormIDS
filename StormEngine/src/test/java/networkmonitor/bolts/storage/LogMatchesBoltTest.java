@@ -8,7 +8,6 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import com.google.gson.Gson;
 import networkmonitor.bolts.MockTupleHelpers;
 import org.junit.Test;
 import util.matcher.Match;
@@ -39,11 +38,11 @@ public class LogMatchesBoltTest {
         config.put("cassandra.keyspace","stormids");
         config.put("cassandra.address","localhost");
         logMatchesBolt.prepare(config,null,null);
-        Gson gson = new Gson();
+//        Gson gson = new Gson();
         List<Match> list = new ArrayList<Match>();
         list.add(match);
-        String matches = gson.toJson(list);
-        Tuple input = MockTupleHelpers.mockTickTuple(matches);
+//        String matches = gson.toJson(list);
+        Tuple input = MockTupleHelpers.mockTickTuple(null);
         logMatchesBolt.execute(input);
 
         Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();

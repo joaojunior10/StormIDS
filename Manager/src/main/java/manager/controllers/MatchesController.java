@@ -19,7 +19,7 @@ public class MatchesController {
     public String matches() {
         //TODO paged search
 
-        Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
+        Cluster cluster = Cluster.builder().addContactPoint("10.1.1.121").build();
         Session session = cluster.connect("stormids");
         Gson gson = new Gson();
         ResultSet results = session.execute("SELECT * FROM matches");
@@ -40,7 +40,8 @@ public class MatchesController {
         }
 
         matches.sort((o1, o2) -> o2.timelog.compareTo(o1.timelog));
-        return gson.toJson(matches);
+
+        return gson.toJson(matches.subList(1,100));
     }
     @RequestMapping("/api/matchesByHost")
     public String matchesByHost(@RequestParam(value="hostname") String hostname) {

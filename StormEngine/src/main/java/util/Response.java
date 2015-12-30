@@ -1,5 +1,5 @@
 package util;
-import networkmonitor.bolts.networkdata.PacketData;
+import util.packetdata.PacketData;
 
 import java.io.Serializable;
 import java.util.List;

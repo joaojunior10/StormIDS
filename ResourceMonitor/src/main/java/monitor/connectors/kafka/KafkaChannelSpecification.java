@@ -1,11 +1,9 @@
 package monitor.connectors.kafka;
 
-import java.net.InetAddress;
-
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import monitor.connectors.ChannelSpecification;
-import monitor.plugins.packetcapture.Response;
+import util.Response;
 
 public class KafkaChannelSpecification implements ChannelSpecification {
 	//Kafka API

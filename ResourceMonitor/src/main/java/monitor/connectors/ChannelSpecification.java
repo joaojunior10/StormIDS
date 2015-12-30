@@ -1,6 +1,6 @@
 package monitor.connectors;
 
-import monitor.plugins.packetcapture.Response;
+import util.Response;
 
 public interface ChannelSpecification {
 	 void send(Response objToSend) throws Exception;

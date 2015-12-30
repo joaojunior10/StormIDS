@@ -1,6 +1,6 @@
 package util.matcher;
 
-import networkmonitor.bolts.networkdata.PacketData;
+import util.packetdata.PacketData;
 import util.rules.Operators;
 import util.rules.nonpayload.NonPayloadOptions;
 

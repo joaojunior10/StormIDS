@@ -1,24 +1,14 @@
 package monitor.plugins.packetcapture;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.google.gson.Gson;
 import monitor.Config;
-import monitor.plugins.packetcapture.packetdata.PacketData;
+import util.packetdata.PacketData;
 
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
@@ -27,12 +17,10 @@ import org.pcap4j.packet.IpV4Packet.IpV4Header;
 import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.IpV6Packet.IpV6Header;
 import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.SimpleBuilder;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.TcpPacket.TcpHeader;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UdpPacket.UdpHeader;
-import org.pcap4j.util.IpV4Helper;
 import org.pcap4j.util.NifSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

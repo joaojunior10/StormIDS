@@ -1,17 +1,13 @@
 package monitor.plugins.prototype;
 
-import java.net.ConnectException;
 import java.net.InetAddress;
-import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import monitor.connectors.ChannelSpecification;
-import monitor.plugins.packetcapture.Response;
-import monitor.plugins.packetcapture.packetdata.PacketData;
+import util.Response;
+import util.packetdata.PacketData;
 
 
 //Abstract class that defines the default behaviour of a plugin.

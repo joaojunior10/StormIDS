@@ -33,27 +33,7 @@ public class MultiplexerBolt extends BaseRichBolt {
 	@Override
 	public void execute(Tuple input) {
 		try {
-			Response response;
-			ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) input.getValue(0));
-			ObjectInput in = null;
-			try {
-				in = new ObjectInputStream(bis);
-				response = (Response) in.readObject();
-			} finally {
-				try {
-					bis.close();
-				} catch (IOException ex) {
-					throw new Exception("error") ;
-				}
-				try {
-					if (in != null) {
-						in.close();
-					}
-				} catch (IOException ex) {
-					throw new Exception("error") ;
-				}
-			}
-
+			Response response = (Response) input.getValue(0);
 			String topic = response.topic;
 			boolean sent = false;
 			for (topics tc : topics.values()){

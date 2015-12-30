@@ -4,9 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import monitor.plugins.packetcapture.packetdata.PacketData;
-import monitor.plugins.packetcapture.packetdata.PacketList;
+import util.packetdata.PacketData;
+import util.packetdata.PacketList;
 
 public class PacketQueue {
 	public List<PacketData> packets;

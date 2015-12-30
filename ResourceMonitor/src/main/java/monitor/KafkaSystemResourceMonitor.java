@@ -5,7 +5,7 @@ import java.util.Properties;
 import monitor.connectors.SystemResourceMonitor;
 import monitor.connectors.kafka.KafkaChannelSpecification;
 import monitor.plugins.*;
-import monitor.plugins.packetcapture.Response;
+import util.Response;
 import monitor.plugins.prototype.SystemResourcePlugin;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
@@ -57,7 +57,7 @@ public class KafkaSystemResourceMonitor extends SystemResourceMonitor {
 
 		Properties props = new Properties();
 		props.put("metadata.broker.list", Config.getInstance().kafkaBroker);
-		props.put("serializer.class", "monitor.plugins.packetcapture.ResponseEncoder");
+		props.put("serializer.class", "util.ResponseEncoder");
 		//props.put("partitioner.class", "example.producer.SimplePartitioner");
 		props.put("request.required.acks", "1");
 		props.put("zk.connect", Config.getInstance().kafkaZooKeeper);

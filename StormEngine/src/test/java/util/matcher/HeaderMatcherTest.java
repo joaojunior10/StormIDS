@@ -1,6 +1,6 @@
 package util.matcher;
 
-import networkmonitor.bolts.networkdata.PacketData;
+import util.packetdata.PacketData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

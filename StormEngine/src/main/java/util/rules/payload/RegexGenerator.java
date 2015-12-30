@@ -1,6 +1,5 @@
 package util.rules.payload;
 
-import com.google.gson.Gson;
 import util.rules.payload.options.Content;
 
 import java.util.List;

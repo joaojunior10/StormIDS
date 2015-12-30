@@ -7,13 +7,9 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import com.datastax.driver.core.*;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.matcher.Match;
-
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -64,8 +60,8 @@ public class LogMatchesBolt extends BaseRichBolt{
         for(ResultSetFuture future: futures){
             future.getUninterruptibly();
         }
-        LOG.info("Matches Saved: " + size +" - "+ sdf.format(System.currentTimeMillis()));
-        LOG.info("Total: " + total);
+        //LOG.info("Matches Saved: " + size +" - "+ sdf.format(System.currentTimeMillis()));
+        //LOG.info("Total: " + total);
         this.collector.ack(input);
     }
 
