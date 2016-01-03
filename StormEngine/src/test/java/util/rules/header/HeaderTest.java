@@ -14,7 +14,7 @@ public class HeaderTest {
     }
     @Test
     public void parseHeader() throws Exception {
-        String headerWithIpMask = "alert tcp $HOME_NET any -> 192.168.1.0/24 111";
+        String headerWithIpMask = "alert tcp 10.0.1.5 any -> 192.168.1.0/24 111";
         _header.parse(headerWithIpMask);
 
         Assert.assertEquals("alert", _header.action);

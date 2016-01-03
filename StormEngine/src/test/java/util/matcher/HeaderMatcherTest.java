@@ -1,9 +1,9 @@
 package util.matcher;
 
-import util.packetdata.PacketData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import util.packetdata.PacketData;
 import util.rules.header.Header;
 
 /**
@@ -26,7 +26,7 @@ public class HeaderMatcherTest {
         packet.destinationIP = "192.168.1.5";
         packet.destinationPort = "111";
 
-        String headerWithIpMask = "alert tcp $HOME_NET any -> 192.168.1.5 111";
+        String headerWithIpMask = "alert tcp 10.0.1.5 any -> 192.168.1.5 111";
         _header.parse(headerWithIpMask);
 
         boolean match = _matcher.match(packet,_header);

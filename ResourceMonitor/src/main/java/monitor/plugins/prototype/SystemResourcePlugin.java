@@ -15,7 +15,7 @@ public abstract class SystemResourcePlugin implements Runnable {
     protected Integer period;
     ChannelSpecification channel = null;
     protected JsonObject objToReturn = null;
-    private final static int processor = 6;
+    private final static int processor = 4;
     public abstract Object getSystemInformation();
 
     public abstract String topicName();

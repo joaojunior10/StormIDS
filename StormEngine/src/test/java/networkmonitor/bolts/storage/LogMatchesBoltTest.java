@@ -2,13 +2,12 @@ package networkmonitor.bolts.storage;
 
 
 import backtype.storm.Config;
-import backtype.storm.Constants;
 import backtype.storm.tuple.Tuple;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import networkmonitor.bolts.MockTupleHelpers;
+import networkmonitor.bolts.MockTuple;
 import org.junit.Test;
 import util.matcher.Match;
 
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by joao on 9/6/15.
@@ -42,7 +40,7 @@ public class LogMatchesBoltTest {
         List<Match> list = new ArrayList<Match>();
         list.add(match);
 //        String matches = gson.toJson(list);
-        Tuple input = MockTupleHelpers.mockTickTuple(null);
+        Tuple input = MockTuple.mockTickTuple(null);
         logMatchesBolt.execute(input);
 
         Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();

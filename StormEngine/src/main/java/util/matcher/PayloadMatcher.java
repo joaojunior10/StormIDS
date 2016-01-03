@@ -11,13 +11,12 @@ import java.util.regex.Matcher;
  */
 public class PayloadMatcher {
     public static boolean match(byte[] packetData, PayloadOptions payload){
-//        if (payload.contents.size() > 0) {
-            boolean match = true;
+        boolean match = true;
+        if (payload.contents.size() > 0) {
             String stringData = new String(packetData, StandardCharsets.ISO_8859_1);
             Matcher matcher = payload.pattern.matcher(stringData);
             match &= matcher.find();
+        }
             return match;
-//        }
-//        else return false;
     }
 }

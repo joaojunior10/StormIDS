@@ -38,6 +38,7 @@ public class NetworkDataBolt extends BaseRichBolt {
 
         try {
             this.rules = rules.get();
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
             LOG.error("Error reading rules - " + e.getStackTrace());
@@ -55,11 +56,7 @@ public class NetworkDataBolt extends BaseRichBolt {
 
     public void treatData(Response response, OutputCollector collector) {
         String hostname = response.hostname;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
 		List<PacketData> packets = response.packetData;
-        //LOG.info(taskId+" - Packets received: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
-        //Match packets
         Matcher matcher = new Matcher(this.rules);
         matcher.match(packets, hostname);
         //Send result to LogMatchesBolt
@@ -69,7 +66,6 @@ public class NetworkDataBolt extends BaseRichBolt {
 			if(collector != null)
             	collector.emit(new Values(matcher.matches));
         }
-       // LOG.info(taskId + " - Packets processed: " + packets.size() +" - "+ sdf.format(System.currentTimeMillis()));
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
