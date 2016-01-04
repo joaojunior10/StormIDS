@@ -38,15 +38,17 @@ public class LogMatchesBolt extends BaseRichBolt{
     }
 
     public void execute(Tuple input) {
-        saveMatches(input);
+        try {
+            saveMatches(input);
+        }catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("Error saving matches - " + e.getStackTrace());
+        }
     }
 
     private void saveMatches(Tuple input) {
-        //Type listType = new TypeToken<List<Match>>() {}.getType();
-        //String json = (String) input.getValue(0);
         List<Match> matches =  (List<Match>) input.getValue(0);
         int size = matches.size();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         List<ResultSetFuture> futures = new ArrayList<ResultSetFuture>();
         for (int i = 0; i < size ; i++) {
             Match match = matches.get(i);

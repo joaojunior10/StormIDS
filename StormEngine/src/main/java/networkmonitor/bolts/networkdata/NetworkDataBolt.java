@@ -50,7 +50,13 @@ public class NetworkDataBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple input) {
         Response response = (Response) input.getValue(0);
-        treatData(response,  collector);
+        try {
+            treatData(response, collector);
+        }catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("Error treating data - " + e.getStackTrace());
+        }
+
         this.collector.ack(input);
     }
 

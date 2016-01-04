@@ -10,7 +10,7 @@ public class Variables implements Serializable{
 
 	static{
 		ipvars.put("$HOME_NET", new String[]{});
-		ipvars.put("$STORM_TEST", new String[]{"10.1.1.128","10.1.1.186"});
+		ipvars.put("$STORM_TEST", new String[]{"10.1.1.106","10.1.1.114"});
 		ipvars.put("$EXTERNAL_NET", new String[]{"any"});
 		ipvars.put("$HTTP_SERVERS", new String[]{"10.0.1.5"});
 		ipvars.put("$SSH_PORTS", new String[]{"22,1234"});

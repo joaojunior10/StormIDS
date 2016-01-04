@@ -36,12 +36,12 @@ public class NetworkDataBoltTest {
         PacketData packetData = new PacketData();
         packetData.data = GetData();
         packetData.protocol = "tcp";
-        packetData.sourceIP = "10.1.1.128";
+        packetData.sourceIP = "10.1.1.114";
         packetData.sourcePort = "3000";
         packetData.destinationIP = "10.1.1.32";
         packetData.destinationPort = "3000";
         List<PacketData> packets = new ArrayList<>();
-        for (int i = 0; i < 1000 ; i++) {
+        for (int i = 0; i < 10000 ; i++) {
             packets.add(packetData);
         }
         Response response = new Response(packets,"Joaos-MacBook-Pro.local","NetworkData");

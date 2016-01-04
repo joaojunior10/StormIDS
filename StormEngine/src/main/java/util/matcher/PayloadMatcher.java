@@ -17,6 +17,6 @@ public class PayloadMatcher {
             Matcher matcher = payload.pattern.matcher(stringData);
             match &= matcher.find();
         }
-            return match;
+        return match;
     }
 }

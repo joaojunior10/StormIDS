@@ -35,7 +35,7 @@ public class KafkaTopology{
 		config.put("cassandra.address",util.Config.getInstance().cassandraAddress);
 
 		if (args != null && args.length > 0) {
-			config.setNumWorkers(1);
+			config.setNumWorkers(3);
 
 			try {
 				StormSubmitter.submitTopologyWithProgressBar(args[0], config, builder.createTopology());
@@ -60,7 +60,7 @@ public class KafkaTopology{
 
 		topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("KafkaSpout");
 		//topology.setBolt("MultiplexerBolt", new MultiplexerBolt(), 1).shuffleGrouping("NettySpout");
-		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 8).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
+		topology.setBolt("NetworkDataBolt", new NetworkDataBolt("NetworkData"), 24).shuffleGrouping("MultiplexerBolt", "NetworkDataStream");
 		topology.setBolt("LogMatchesBolt", new LogMatchesBolt("LogMatches"), 1).fieldsGrouping("NetworkDataBolt", new Fields("matches"));
 //		topology.setBolt("MemUsageRollingCountBolt", new RollingCountBolt("MemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "MemUsageStream");
 //		topology.setBolt("MemUsageAnalyser", new UsageAnalyser("MemUsage")).fieldsGrouping("MemUsageRollingCountBolt", new Fields("hostname","count"));
@@ -68,7 +68,7 @@ public class KafkaTopology{
 //		topology.setBolt("CpuUsageAnalyser", new UsageAnalyser("CpuUsage")).fieldsGrouping("CpuUsageRollingCountBolt", new Fields("hostname","count"));
 //		topology.setBolt("FileSystemUsageRollingCountBolt", new RollingCountBolt("FileSystemUsage",30,1)).shuffleGrouping("MultiplexerBolt", "FileSystemUsageStream");
 //		topology.setBolt("FileSystemUsageAnalyser", new UsageAnalyser("FileSystemUsage")).fieldsGrouping("FileSystemUsageRollingCountBolt", new Fields("hostname","count"));
-		topology.setBolt("PrettyPrinterBolt", new PrettyPrinterBolt(), 1).shuffleGrouping("MultiplexerBolt", "DefaultStream");
+		//topology.setBolt("PrettyPrinterBolt", new PrettyPrinterBolt(), 1).shuffleGrouping("MultiplexerBolt", "DefaultStream");
 		return topology;
 	}
 }

@@ -2,6 +2,7 @@ package util.rules;
 
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
+import org.apache.storm.shade.org.apache.zookeeper.server.persistence.SnapShot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.RuleFiles;
@@ -28,7 +29,6 @@ public class Rules implements Serializable {
         List<SnortSignature> snortSignatures = new ArrayList<SnortSignature>();
         ClassLoader classLoader = getClass().getClassLoader();
         Pattern pattern = Pattern.compile("rules.*");
-
         try {
             Path path = RuleFiles.getInstance().path;
             Files.walk(path).forEach(filePath -> {
@@ -37,7 +37,7 @@ public class Rules implements Serializable {
                         Matcher matcher = pattern.matcher(filePath.toString());
                         matcher.find();
                         String group = matcher.group();
-                        if(group.equals("rules/rules/web-misc.rules")){
+                        if(group.equals("rules/stormids.rules")){
                             count = 1;
                         }
                         BufferedReader txtReader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(group)));
@@ -53,7 +53,16 @@ public class Rules implements Serializable {
 
             e.printStackTrace();
         }
-        LOG.info("Number of rules: " + snortSignatures.size());
+
+        List<SnortSignature> signatures = snortSignatures.subList(0,1000);
+        BufferedReader txtReader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream("rules/test.rules")));
+
+        try {
+            readFile(signatures, txtReader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOG.info("Number of rules: " + signatures.size());
 
         return snortSignatures;
 
