@@ -10,9 +10,8 @@ import java.util.Base64;
 /**
  * Created by joao on 9/5/15.
  */
-public class ContentTest {
+public class PayloadOptionsTest {
 
-    @Test
     public void parseContentWithNoFlag() throws Exception {
         String content = "content:\"|5c 00|P|00|I|00|P|00|E|00 5c|\";";
         Option option = new Option();

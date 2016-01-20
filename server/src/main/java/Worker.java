@@ -28,7 +28,7 @@ public class Worker extends Thread {
 
             for (int i = 0; i< count; i++) {
                 Random random = new Random();
-                byte[] buffer = new byte[256];
+                byte[] buffer = new byte[658];
                 random.nextBytes(buffer);
                 byte[] msg = ("StormIDS Test" + Integer.toString(i)).getBytes();
                 for (int j = 0; j < msg.length; j++){

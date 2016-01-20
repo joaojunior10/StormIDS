@@ -1,4 +1,5 @@
 package util.matcher;
+import com.google.gson.Gson;
 import util.packetdata.PacketData;
 import util.rules.SnortSignature;
 
@@ -34,9 +35,9 @@ public class Match implements Serializable {
         this.destinationPort = packet.destinationPort;
         this.msg = rule.generalOptions.msg;
         this.action = rule.header.action;
-//        Gson gson = new Gson();
-        this.rule = "";
-        this.packet = "";
+        Gson gson = new Gson();
+        this.rule = gson.toJson(rule);
+        this.packet = gson.toJson(packet);
     }
 }
 

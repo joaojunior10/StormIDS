@@ -1,17 +1,18 @@
-package util.rules.general;
-
+package util.rules.nonpayload;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import util.rules.SnortSignature;
+import util.rules.general.GeneralOptions;
+import util.rules.header.Header;
 
 /**
- * Created by joao on 11/11/15.
+ * Created by joao on 7/11/15.
  */
-public class GeneralOptionsTest {
+public class NonPayloadOptionsTest {
     private SnortSignature _snortSignature;
     @Before
-     public void setup(){
+    public void setup(){
         _snortSignature = new SnortSignature();
     }
     @Test
