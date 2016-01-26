@@ -21,9 +21,9 @@ public class PayloadMatcherTest {
         payloadOptions.contents.add(content);
         payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
-        String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eCAvLi4v";
-        PayloadMatcher.match(new byte[300], payloadOptions);
-        Assert.assertTrue(true);
+        String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eCAvLi4v/../";
+        boolean match = PayloadMatcher.match(data.getBytes(), payloadOptions);
+        Assert.assertTrue(match);
 
     }
     @Test
@@ -37,9 +37,9 @@ public class PayloadMatcherTest {
         payloadOptions.contents.add(content);
         payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
-        String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eERFRg==";
-        PayloadMatcher.match(new byte[300], payloadOptions);
-        Assert.assertTrue(true);
+        String data = "dddddnfcsdcdcdscsdcdABCcxzczxczxczcxczxDEF";
+        boolean match = PayloadMatcher.match(data.getBytes(), payloadOptions);
+        Assert.assertTrue(match);
 
     }
     @Test
@@ -60,9 +60,9 @@ public class PayloadMatcherTest {
 
         payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
-        String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eERFRiBBQkM=";
-        PayloadMatcher.match(new byte[300], payloadOptions);
-        Assert.assertTrue(true);
+        String data = "dddddnfcsdcdcdscsdcdABCcxzczxczxczcxczxDEF";
+        boolean match = PayloadMatcher.match(data.getBytes(), payloadOptions);
+        Assert.assertTrue(match);
 
     }
 }
