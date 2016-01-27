@@ -29,7 +29,8 @@ public class Matcher implements Serializable {
             boolean match = true;
             match &= HeaderMatcher.match(packet, rule.header);
             if(!match) continue;
-            //match &= NonPayloadMatcher.match(packet, rule.nonPayloadOptions);
+            match &= NonPayloadMatcher.match(packet, rule.nonPayloadOptions);
+            if(!match) continue;
             match &= PayloadMatcher.match(packet.data, rule.payloadOptions);
             if(match){
                 Match matchAlert = new Match(packet,rule,hostname);
