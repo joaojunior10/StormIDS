@@ -37,7 +37,6 @@ public class Header implements Serializable{
 		portsDst = new HashMap<String, Integer>();
 
 	}
-	//TODO Verify if the rule is valid
 	public void parse(String snortRule){
 		if( snortRule == null ){
 			throw new IllegalArgumentException("Snort rule must not be null");

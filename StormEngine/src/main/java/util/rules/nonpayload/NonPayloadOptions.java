@@ -22,7 +22,7 @@ public class NonPayloadOptions implements Serializable{
 	public Integer ack;
 	public Window window;
 	public IType itype;
-	//public  icode;
+	public Icode icode;
 	public Integer icmp_id;
 	public Integer icmp_seq;
 	//public int rpc;
@@ -54,17 +54,25 @@ public class NonPayloadOptions implements Serializable{
 	}
 	
 	public NonPayloadOptions(){
+		this.fragoffset = new Fragoffset();
+		this.ttl = new TTL();
+		this.tos = new TOS();
+		this.fragbits = new Fragbits();
+		this.dsize = new DSize();
+		this.flags = new Flags();
+		this.flow = new Flow();
+		this.window = new Window();
+		this.itype = new IType();
+
 	}
 	
 	@SuppressWarnings("serial")
 	public void parse(Option option){
 		switch (NONPAYLOADPTIONS.get(option.getName())){
 			case 1:
-				this.fragoffset = new Fragoffset();
 				this.fragoffset.parse(option.getValue());
 				break;
 			case 2:
-				this.ttl = new TTL();
 				this.ttl.parse(option.getValue());
 				break;
 			case 3:
@@ -77,19 +85,15 @@ public class NonPayloadOptions implements Serializable{
 				this.ipopts = option.getValue();
 				break;
 			case 6:
-				this.fragbits = new Fragbits();
 				this.fragbits.parse(option.getValue());
 				break;
 			case 7:
-				this.dsize = new DSize();
 				this.dsize.parse(option.getValue());
 				break;
 			case 8:
-				this.flags = new Flags();
 				this.flags.parse(option.getValue());
 				break;
 			case 9:
-				this.flow = new Flow();
 				this.flow.parse(option.getValue());
 				break;
 //			case 10:
@@ -102,11 +106,9 @@ public class NonPayloadOptions implements Serializable{
 				this.ack = Integer.parseInt(option.getValue());
 				break;
 			case 13:
-				this.window = new Window();
 				this.window.parse(option.getValue());
 				break;
 			case 14:
-				this.itype = new IType();
 				this.itype.parse(option.getValue());
 				break;
 //			case 15:

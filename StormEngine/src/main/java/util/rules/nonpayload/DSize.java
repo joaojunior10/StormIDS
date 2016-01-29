@@ -12,21 +12,12 @@ public class DSize implements Serializable{
 	public void setOperation(String operation) {
 		this.operation = Operators.OPERATORS.get(operation);
 	}
-	
+
 	public void parse(String option){
-		char firstChar = option.charAt(0);
-		if(!Character.isDigit(firstChar)){
-			setOperation(firstChar + "");
-			max = Integer.parseInt(option.substring(1, option.length()));
-		}
-		else{
-			String[] op = option.split("-");
-			min = Integer.parseInt(op[0]);
-			if(op.length > 1){
-				setOperation("-");
-				max = Integer.parseInt(op[1]);
-			}
-		}
+		max = Integer.parseInt(option.replaceAll("[^\\d]", ""));
+		String op = option.replaceAll("[\\d]", "");
+		if(!op.isEmpty())
+			this.operation = Operators.OPERATORS.get(op);
 	}
 	
 	public String toString(){

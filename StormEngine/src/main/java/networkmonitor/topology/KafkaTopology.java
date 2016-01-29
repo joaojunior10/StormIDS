@@ -35,7 +35,7 @@ public class KafkaTopology{
 		config.put("cassandra.address",util.Config.getInstance().cassandraAddress);
 
 		if (args != null && args.length > 0) {
-			config.setNumWorkers(3);
+			config.setNumWorkers(2);
 
 			try {
 				StormSubmitter.submitTopologyWithProgressBar(args[0], config, builder.createTopology());

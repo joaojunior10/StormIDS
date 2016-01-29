@@ -8,18 +8,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import monitor.Config;
+import org.pcap4j.packet.*;
 import util.packetdata.PacketData;
 
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
-import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.IpV4Packet.IpV4Header;
-import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.IpV6Packet.IpV6Header;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.TcpPacket.TcpHeader;
-import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UdpPacket.UdpHeader;
 import org.pcap4j.util.NifSelector;
 import org.slf4j.Logger;
@@ -100,47 +96,59 @@ public class PacketCapture extends Thread {
 
 	private PacketData getPacketData(Packet packet) {
 		PacketData packetData = new PacketData();
-		//packetData.connectionId = id;
-		if(packet.get(IpV4Packet.class) != null){
-			IpV4Header ipPacket = packet.get(IpV4Packet.class).getHeader();
-			packetData.sourceIP = ipPacket.getSrcAddr().toString().replace('/', '\0').trim();
-			packetData.destinationIP = ipPacket.getDstAddr().toString().replace('/', '\0').trim();
-			packetData.fragoffset = ipPacket.getFragmentOffset();
-			packetData.TTL = ipPacket.getTtlAsInt();
-			packetData.tos =  ipPacket.getTos().value();
-			packetData.id = ipPacket.getIdentificationAsInt();
-			//TODO packetData.ipopts = ipPacket.getOptions();
-			packetData.fragbits.D = ipPacket.getDontFragmentFlag();
-			packetData.fragbits.M = ipPacket.getMoreFragmentFlag();
-			packetData.fragbits.R = ipPacket.getReservedFlag();
-			packetData.dsize = ipPacket.getTotalLengthAsInt();
-		}
-		else if(packet.get(IpV6Packet.class) != null){
-			IpV6Header ipPacket = packet.get(IpV6Packet.class).getHeader();
-			packetData.sourceIP = ipPacket.getSrcAddr().toString().replace('/', '\0').trim();
-			packetData.destinationIP = ipPacket.getDstAddr().toString().replace('/', '\0').trim();
-			packetData.dsize = ipPacket.getPayloadLength();
-		}
+		try {
+			//packetData.connectionId = id;
+			if(packet.get(IpV4Packet.class) != null){
+				IpV4Header ipPacket = packet.get(IpV4Packet.class).getHeader();
+				packetData.sourceIP = ipPacket.getSrcAddr().toString().replace('/', '\0').trim();
+				packetData.destinationIP = ipPacket.getDstAddr().toString().replace('/', '\0').trim();
+				packetData.fragoffset = ipPacket.getFragmentOffset();
+				packetData.TTL = ipPacket.getTtlAsInt();
+				packetData.tos =  ipPacket.getTos().value();
+				packetData.id = ipPacket.getIdentificationAsInt();
+				//TODO packetData.ipopts = ipPacket.getOptions();
+				packetData.fragbits.D = ipPacket.getDontFragmentFlag();
+				packetData.fragbits.M = ipPacket.getMoreFragmentFlag();
+				packetData.fragbits.R = ipPacket.getReservedFlag();
+				packetData.dsize = ipPacket.getTotalLengthAsInt();
+			}
+			else if(packet.get(IpV6Packet.class) != null){
+				IpV6Header ipPacket = packet.get(IpV6Packet.class).getHeader();
+				packetData.sourceIP = ipPacket.getSrcAddr().toString().replace('/', '\0').trim();
+				packetData.destinationIP = ipPacket.getDstAddr().toString().replace('/', '\0').trim();
+				packetData.dsize = ipPacket.getPayloadLength();
+			}
 
-		//Transport layer information
-		if(packet.get(TcpPacket.class) != null){
-			TcpHeader tcpPacket = packet.get(TcpPacket.class).getHeader();
-			packetData.sourcePort = tcpPacket.getSrcPort().toString().split(" ")[0].trim();
-			packetData.destinationPort = tcpPacket.getDstPort().toString().split(" ")[0].trim();
-			// TODO packetData.flags
-			// TODO packetData.flow
-			packetData.seq = tcpPacket.getSequenceNumber();
-			packetData.ack = tcpPacket.getAcknowledgmentNumber();
-			packetData.window = tcpPacket.getWindowAsInt();
-			packetData.protocol = "TCP";
-		}
-		else if(packet.get(UdpPacket.class) != null){
-			UdpHeader udpPacket = packet.get(UdpPacket.class).getHeader();
-			packetData.sourcePort = udpPacket.getSrcPort().toString().split(" ")[0].trim();
-			packetData.destinationPort = udpPacket.getDstPort().toString().split(" ")[0].trim();
-			packetData.protocol = "UDP";
-		}
-		packetData.data =  packet.getRawData();
+			//Transport layer information
+			if(packet.get(TcpPacket.class) != null){
+				TcpHeader tcpPacket = packet.get(TcpPacket.class).getHeader();
+				packetData.sourcePort = tcpPacket.getSrcPort().toString().split(" ")[0].trim();
+				packetData.destinationPort = tcpPacket.getDstPort().toString().split(" ")[0].trim();
+				// TODO packetData.flags
+				// TODO packetData.flow
+				packetData.seq = tcpPacket.getSequenceNumber();
+				packetData.ack = tcpPacket.getAcknowledgmentNumber();
+				packetData.window = tcpPacket.getWindowAsInt();
+				packetData.protocol = "TCP";
+			}
+			else if(packet.get(UdpPacket.class) != null){
+				UdpHeader udpPacket = packet.get(UdpPacket.class).getHeader();
+				packetData.sourcePort = udpPacket.getSrcPort().toString().split(" ")[0].trim();
+				packetData.destinationPort = udpPacket.getDstPort().toString().split(" ")[0].trim();
+				packetData.protocol = "UDP";
+			}
+			else if(packet.get(IcmpV4CommonPacket.class) != null){
+				IcmpV4CommonPacket.IcmpV4CommonHeader icmpPacket = packet.get(IcmpV4CommonPacket.class).getHeader();
+				packetData.icode = icmpPacket.getCode().value();
+				packetData.itype = icmpPacket.getType().value();
+				packetData.sourcePort = "";
+				packetData.destinationPort = "";
+				packetData.protocol = "ICMP";
+			}
+			packetData.data =  packet.getRawData();
+			}catch (Exception e){
+
+			}
 		return packetData;
 	}
 }

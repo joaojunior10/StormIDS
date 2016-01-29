@@ -22,19 +22,17 @@ public class NonPayloadOptionsTest {
                 "(msg:\"MALWARE-TOOLS Browser Password Decryptor - Password List sent via FTP\"; " +
                 "flow:to_client,established; content:\"Browser Password Recovery Report|0D 0A|\"; " +
                 "nocase; content:\"Password List|20 0D 0A|\"; distance:0; nocase;fragbits:M;" +
-                " fragoffset:0; ttl:>=5;tos:4; id:31337; ipopts:lsrr; fragbits:MD+; flags:SF,CE;)";
+                " fragoffset:!400; ttl:>=5;tos:4; id:31337; ipopts:lsrr; fragbits:MD+; flags:SF,CE;)";
         _snortSignature.parse(rules);
 
         NonPayloadOptions nonPayloadOptions = _snortSignature.nonPayloadOptions;
-        Assert.assertEquals(0, nonPayloadOptions.fragoffset.fragoffset);
-        Assert.assertEquals(31337, nonPayloadOptions.id.intValue());
-        Assert.assertEquals(5, nonPayloadOptions.ttl.min);
+        Assert.assertEquals(400, nonPayloadOptions.fragoffset.fragoffset);
+        Assert.assertEquals(5, nonPayloadOptions.ttl.max);
         Assert.assertEquals(Operators.GREATEROREQUALTHAN, nonPayloadOptions.ttl.operation);
-        Assert.assertEquals(4, nonPayloadOptions.tos);
-        Assert.assertEquals("lsrr", nonPayloadOptions.ipopts);
+        Assert.assertEquals(31337, nonPayloadOptions.id.intValue());
+        Assert.assertEquals(4, nonPayloadOptions.tos.tos);
+        Assert.assertEquals("lsrr",nonPayloadOptions.ipopts);
         Assert.assertEquals("SF", nonPayloadOptions.flags.flags.get(0));
         Assert.assertEquals("CE", nonPayloadOptions.flags.flags.get(1));
-        Assert.assertEquals(Flow.TO_CLIENT, nonPayloadOptions.flow.flows.get(0).intValue());
-        Assert.assertEquals(Flow.ESTABLISHED, nonPayloadOptions.flow.flows.get(0).intValue());
     }
 }

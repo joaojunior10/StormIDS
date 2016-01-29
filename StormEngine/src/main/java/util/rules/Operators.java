@@ -52,6 +52,13 @@ public class Operators implements Serializable{
 				return value < base;
 			case GREATERTHAN:
 				return value > base;
+			case EQUAL:
+				return value == base;
+			case LESSOREQUALTHAN:
+				return value <= base;
+			case GREATEROREQUALTHAN:
+				return value >= base;
+
 		}
 		return false;
 	}

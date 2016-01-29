@@ -21,7 +21,7 @@ public class PayloadMatcherTest {
         payloadOptions.contents.add(content);
         payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
-        String data = "a2RkZGRkbmZjc2RjZGNkc2NzZGNkQUJDY3h6Y3p4Y3p4Y3pjeGN6eCAvLi4v/../";
+        String data = "kdddddnfcsdcdcdscsdcdABCcxzczxczxczcxczx /../";
         boolean match = PayloadMatcher.match(data.getBytes(), payloadOptions);
         Assert.assertTrue(match);
 
@@ -60,7 +60,7 @@ public class PayloadMatcherTest {
 
         payloadOptions.pattern = RegexGenerator.generate(payloadOptions.contents);
 
-        String data = "dddddnfcsdcdcdscsdcdABCcxzczxczxczcxczxDEF";
+        String data = "kdddddnfcsdcdcdscsdcdABCcxzczxczxczcxczxDEF ABC";
         boolean match = PayloadMatcher.match(data.getBytes(), payloadOptions);
         Assert.assertTrue(match);
 

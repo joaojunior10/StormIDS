@@ -21,17 +21,8 @@ public class Flags implements Serializable{
 	}
 	
 	public void parse(String option){
-		char firstChar = option.charAt(0);
-		String[] flags;
-		if(!Character.isDigit(firstChar)){
-			setOperation(firstChar + "");
-			flags = option.substring(1, option.length()).split(",");
-		}
-		else{
-			flags = option.substring(0, option.length()).split(",");
-		}
-		this.flags.addAll(Arrays.asList(flags[0].split("")));
-		this.ignore.addAll(Arrays.asList(flags[1].split("")));
+
+		this.flags.addAll(Arrays.asList(option.split(",")));
 	}
 	
 	public String toString(){

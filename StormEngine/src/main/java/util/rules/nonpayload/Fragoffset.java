@@ -12,14 +12,10 @@ public class Fragoffset implements Serializable{
 		this.operation = Operators.OPERATORS.get(operation);
 	}
 	public void parse(String option){
-		char firstChar = option.charAt(0);
-		if(!Character.isDigit(firstChar)){
-			setOperation(firstChar + "");
-			fragoffset = Integer.parseInt(option.substring(1, option.length()));
-		}
-		else{
-			fragoffset = Integer.parseInt(option.substring(0, option.length()));
-		}
+		fragoffset = Integer.parseInt(option.replaceAll("[^\\d]", ""));
+		String op = option.replaceAll("[\\d]", "");
+		if(!op.isEmpty())
+			this.operation = Operators.OPERATORS.get(op);
 	}
 	
 	public String toString(){

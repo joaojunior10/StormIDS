@@ -5,35 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PacketData implements Serializable {
-
-	public PacketData(PacketData packet) {
-		super();
-		this.data = packet.data;
-		this.sourceIP = packet.sourceIP;
-		this.destinationIP = packet.destinationIP;
-		this.sourcePort = packet.sourcePort;
-		this.destinationPort = packet.destinationPort;
-		this.fragoffset = packet.fragoffset;
-		this.TTL = packet.TTL;
-		this.tos = packet.tos;
-		this.id = packet.id;
-		this.ipopts = packet.ipopts;
-		this.fragbits = packet.fragbits;
-		this.dsize = packet.dsize;
-		this.flags = packet.flags;
-		this.flow = packet.flow;
-		this.seq = packet.seq;
-		this.ack = packet.ack;
-		this.window = packet.window;
-		this.icmp = packet.icmp;
-		this.icode = packet.icode;
-		this.icmp_id = packet.icmp_id;
-		this.icmp_seq = packet.icmp_seq;
-		this.ip_proto_int = packet.ip_proto_int;
-		this.ip_proto_string = packet.ip_proto_string;
-		this.sameip = packet.sameip;
-		this.protocol = packet.protocol;
-	}
 	public byte[] data;
 	//Protocol
 	public  String protocol;
@@ -60,7 +31,7 @@ public class PacketData implements Serializable {
 	public int window;
 	
 	//ICMP
-	public int icmp;
+	public int itype;
 	public int icode;
 	public int icmp_id;
 	public int icmp_seq;
